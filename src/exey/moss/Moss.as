@@ -1,10 +1,10 @@
 package exey.moss
 {
 	/**
-	 * Kit for speedcoding
+	 * Kit for game speedcoding on AS3/Flash
 	 * Dependencies:
 	 *   http://code.google.com/p/actuate/
-     *   https://github.com/robertpenner/as3-signals
+	 *   https://github.com/robertpenner/as3-signals
 	 * @author Exey Panteleev
 	 */
 	public class Moss 
