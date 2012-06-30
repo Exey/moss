@@ -1,6 +1,6 @@
 package exey.moss.mngr
 {
-	import exey.mngr.data.ResourceData;
+	import exey.moss.mngr.data.ResourceData;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
@@ -249,8 +249,9 @@ package exey.moss.mngr
 	}
 
 }
-import exey.malevich.mngr.data.ResourceData;
-import exey.malevich.mngr.ResourceManager;
+
+import exey.moss.mngr.data.ResourceData;
+import exey.moss.mngr.ResourceManager;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 /**

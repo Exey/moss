@@ -2,9 +2,9 @@ package exey.moss.gui.comps.window
 {
 	import exey.moss.gui.abstract.ComponentAbstract;
 	import exey.moss.gui.comps.text.TextFieldLabel;
-	import exey.malevich.view.styles.Fonts;
 	import flash.display.DisplayObjectContainer;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	/**
 	 * ...
@@ -23,7 +23,7 @@ package exey.moss.gui.comps.window
 		
 		private function initialize(title:String, type:String):void
 		{
-			_titleTF = new TextFieldLabel(this, 0, 0, Fonts.TREBUCHET_24_WHITE, "title")
+			_titleTF = new TextFieldLabel(this, 0, 0, new TextFormat("Verdana"), "title")
 		}
 		
 	}
