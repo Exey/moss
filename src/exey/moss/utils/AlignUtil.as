@@ -68,6 +68,13 @@ package exey.moss.utils
 			obj.y = container.height - obj.height;
 		}
 		
+		static public function centerXToPosition(obj:DisplayObject, x:Number, y:Number = NaN):void 
+		{
+			obj.x = x - obj.width * 0.5;
+			if (!isNaN(y))
+				obj.y = y;
+		}
+		
 	}
 
 }

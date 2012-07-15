@@ -1,4 +1,4 @@
-package exey.moss.utils
+package exey.moss.helpers
 {
 	/**
 	 * based on by.blooddy.core.utils.getCallerInfo
@@ -44,7 +44,7 @@ package exey.moss.utils
 			}
 			rest.unshift("4:[" + formatDate(date.getUTCHours()) + ":"
 							 + formatDate(date.getUTCMinutes()) + ":"
-							 + formatDate(date.getSeconds()) 	+ ":"
+							 + formatDate(date.getSeconds()) 	+ "."
 							 + formatDate(date.getMilliseconds(), 3)+"] "+callerClass+" -> "+className+"/"+functionName+"()");
 			trace.apply(null, rest);
 		}

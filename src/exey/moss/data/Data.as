@@ -192,6 +192,44 @@
 		
 		//--------------------------------------------------------------------------
 		//
+		//  Array
+		//
+		//--------------------------------------------------------------------------
+		
+		public function initArrayVar(name:String, value:Array = undefined):void
+		{
+			vars.push(new ArrayVar(name, new Signal(Array), value));
+		}
+		
+		public function getArrayVar(name:String):Array
+		{
+			var v:IVar;
+			for (var i:uint = 0; i < vars.length; i++)
+			{
+				v = vars[i];
+				if (v.name == name)
+					return (v as ArrayVar).value;
+			}
+			return null;
+		}
+		
+		public function updateArrayVar(name:String, value:Array):void
+		{
+			var v:IVar;
+			for (var i:uint = 0; i < vars.length; i++)
+			{
+				v = vars[i];
+				if (v.name == name)
+				{
+					(v as ArrayVar).value = value;
+					v.signal.dispatch(value);
+					break;
+				}
+			}
+		}		
+		
+		//--------------------------------------------------------------------------
+		//
 		//  Common
 		//
 		//--------------------------------------------------------------------------		

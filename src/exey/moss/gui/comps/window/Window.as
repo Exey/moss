@@ -3,8 +3,8 @@ package exey.moss.gui.comps.window
 	import exey.moss.gui.comps.button.EmptyButton;
 	import exey.moss.gui.comps.events.WindowEvent;
 	import exey.moss.utils.AlignUtil;
-	import exey.moss.utils.DrawUtils;
-	import exey.moss.utils.LoaderUtils;
+	import exey.moss.utils.DrawUtil;
+	import exey.moss.utils.LoaderUtil;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -46,7 +46,7 @@ package exey.moss.gui.comps.window
 			_closeButton = new EmptyButton(_container, width-30, 5, onClose);
 			//_closeButton.addChild(LoaderUtils.getFromCurrentDomain("CloseButton"));
 			//_closeButton.addChild(LoaderUtils.getBitmap("closeButton"));
-			DrawUtils.drawCloseButton(_closeButton.graphics);
+			DrawUtil.drawCloseButton(_closeButton.graphics);
 			_closeButton.scaleX = 1.5;
 			_closeButton.scaleY = 1.5;
 			//ToolTipManager.addStaticToolTip(_closeButton, Conf.lang.CLOSE_BTN);

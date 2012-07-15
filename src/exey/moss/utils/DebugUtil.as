@@ -1,7 +1,7 @@
 package exey.moss.utils
 {
 	import flash.external.ExternalInterface;
-	public class DebugUtils
+	public class DebugUtil
 	{
 		static public function dump(obj:Object, showFunctions:Boolean = false, showUndefined:Boolean = false, showXMLstructures:Boolean = false, maxLineLength:int = 100, indent:int = 0):String
 		{

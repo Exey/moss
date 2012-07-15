@@ -1,4 +1,4 @@
-package exey.moss.helpers{
+package exey.moss.factories{
 	import exey.moss.utils.ColorUtils;
 	/**
 	 * 1567 names of colors

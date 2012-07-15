@@ -4,9 +4,8 @@ package exey.moss.utils
 	 * ...
 	 * @author 
 	 */
-	public class TimeUtils
+	public class TimeUtil
 	{
-		
 		static private const EXACT_SECONDS_IN_YEAR:uint = 	31556926; 	// according to Google
 		static private const EXACT_SECONDS_IN_MONTH:Number =	2629743.83;	// according to Google
 		static private const EXACT_SECONDS_IN_DAY:uint =		86400;		// according to Google

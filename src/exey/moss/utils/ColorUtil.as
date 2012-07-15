@@ -4,7 +4,7 @@ package exey.moss.utils{
 	 * ...
 	 * @author Exey
 	 */
-	public class ColorUtils {
+	public class ColorUtil {
 		
 		/**Difference ratio between colors*/
 		static public function compareColors(color1:uint, color2:uint):Number

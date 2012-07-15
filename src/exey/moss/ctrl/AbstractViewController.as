@@ -1,6 +1,6 @@
 ﻿package exey.moss.ctrl
 {
-	import exey.moss.data.IDataBase;
+	import exey.moss.data.DataBaseProto;
 	import flash.display.DisplayObjectContainer;
 	/**
 	 * ...
@@ -14,10 +14,10 @@
 		//
 		//--------------------------------------------------------------------------
 		
-		public function AbstractViewController(container:DisplayObjectContainer, dataBase:IDataBase)
+		public function AbstractViewController(container:DisplayObjectContainer, dataBase:DataBaseProto)
 		{
 			this.container = container;
-			this.database = dataBase;
+			_database = dataBase;
 		}
 		
 		//--------------------------------------------------------------------------
@@ -27,7 +27,7 @@
 		//--------------------------------------------------------------------------
 		
 		protected var container:DisplayObjectContainer;
-		protected var database:IDataBase;
+		protected var _database:DataBaseProto;
 		
 		//--------------------------------------------------------------------------
 		//

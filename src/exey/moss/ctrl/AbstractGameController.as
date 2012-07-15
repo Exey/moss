@@ -1,6 +1,6 @@
 ﻿package exey.moss.ctrl
 {
-	import exey.moss.data.IDataBase;
+	import exey.moss.data.DataBaseProto;
 	import exey.moss.gui.comps.container.Container;
 	import exey.moss.mngr.KeyboardManager;
 	import exey.moss.mngr.WindowManager;
@@ -30,7 +30,7 @@
 		//--------------------------------------------------------------------------
 		
 		// data model
-		protected var _dataBase:IDataBase;
+		protected var _dataBase:DataBaseProto;
 		
 		// main container, usually root sprite
 		public var container:DisplayObjectContainer;

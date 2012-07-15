@@ -4,7 +4,7 @@ package exey.moss.utils
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class TmxUtils
+	public class TmxUtil
 	{
 		
 		/**
@@ -39,6 +39,11 @@ package exey.moss.utils
 				}
 			}
 			return result;
+		}
+		
+		static public function printTMX():String
+		{
+			
 		}
 	}
 }

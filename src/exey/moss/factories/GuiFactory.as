@@ -1,4 +1,4 @@
-package exey.moss.utils 
+package exey.moss.factories 
 {
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -8,7 +8,7 @@ package exey.moss.utils
 	 * ...
 	 * @author 
 	 */
-	public class UserInterfaceCreatingUtils
+	public class GuiFactory
 	{
 		
 		static public function createGlassyButton(width:Number, height:Number, cornerRadius:Number, fillColor:Number, fillAlpha:Number, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0):Sprite

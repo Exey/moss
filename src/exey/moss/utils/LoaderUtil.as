@@ -11,7 +11,7 @@ package exey.moss.utils
 	 * Loader and Application domain utilits
 	 * @author Exey Panteleev
 	 */
-	public class LoaderUtils
+	public class LoaderUtil
 	{
 		public static function getFromCurrentDomain(linkage:String, isBitmapData:Boolean = false):*
 		{

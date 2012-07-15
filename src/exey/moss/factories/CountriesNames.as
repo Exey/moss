@@ -1,4 +1,4 @@
-package exey.moss.utils 
+package exey.moss.factories 
 {
 	/**
 	 * http://linux.nist.fss.ru/hr/doc/ok/oksm.htm

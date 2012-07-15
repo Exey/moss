@@ -4,7 +4,7 @@ package exey.moss.utils
 	 * Russian Language Utils
 	 * @author Exey Panteleev
 	 */
-	public class RussianLangUtils
+	public class RussianLangUtil
 	{		
 		/**
 		 * Chooses variant of declension dependent on the number

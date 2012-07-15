@@ -7,7 +7,7 @@
 	 * Helpers for working with isometric view
 	 * @author Exey Panteleev
 	 */
-	public class IsoUtils
+	public class IsoUtil
 	{
 		/**
 		 * 

@@ -8,7 +8,7 @@ package exey.moss.utils
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class DrawUtils
+	public class DrawUtil
 	{
 		static public function drawVerticalGradientRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array):void 
 		{

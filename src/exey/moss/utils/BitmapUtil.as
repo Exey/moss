@@ -7,7 +7,7 @@ package exey.moss.utils
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class BitmapUtils
+	public class BitmapUtil
 	{
 		static public function cropBitmapData(bitmapData:BitmapData, x:Number, y:Number, width:Number, height:Number, color:uint = 0xE7D79B):BitmapData
 		{

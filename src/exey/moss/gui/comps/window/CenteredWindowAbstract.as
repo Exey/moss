@@ -2,8 +2,8 @@ package exey.moss.gui.comps.window
 {
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Cubic;
-	import exey.moss.utils.AnimationUtils;
-	import exey.moss.utils.stackTrace;
+	import exey.moss.utils.AnimationUtil;
+	import exey.moss.helpers.stackTrace;
 	import flash.display.Sprite;
 	
 	/**
@@ -48,15 +48,15 @@ package exey.moss.gui.comps.window
 		
 		public function animateIn():void
 		{
-			AnimationUtils.flyIn(this, ANIMATION_DURATION, Cubic.easeOut, _width, _height);
-			AnimationUtils.fadeIn(this, ANIMATION_DURATION, Cubic.easeIn);
+			AnimationUtil.flyIn(this, ANIMATION_DURATION, Cubic.easeOut, _width, _height);
+			AnimationUtil.fadeIn(this, ANIMATION_DURATION, Cubic.easeIn);
 			this.visible = true;
 		}
 
 		public function animateOut():void
 		{
-			AnimationUtils.flyOut(this, ANIMATION_DURATION, Cubic.easeIn);
-			AnimationUtils.fadeOut(this, ANIMATION_DURATION, Cubic.easeOut);
+			AnimationUtil.flyOut(this, ANIMATION_DURATION, Cubic.easeIn);
+			AnimationUtil.fadeOut(this, ANIMATION_DURATION, Cubic.easeOut);
 			Actuate.timer(ANIMATION_DURATION).onComplete(destroy);
 		}
 		

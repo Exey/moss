@@ -9,7 +9,7 @@ package exey.moss.utils
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class AnimationUtils{
+	public class AnimationUtil{
 		
 		static public function flyIn(target:DisplayObject, time:Number, ease:IEasing, containerWidth:Number, containerHeight:Number):void
 		{
@@ -51,14 +51,14 @@ package exey.moss.utils
 		
 		static public function fadeAndFlyIn(target:DisplayObject, time:Number, containerWidth:Number, containerHeight:Number):void
 		{
-			AnimationUtils.flyIn(target, time, Cubic.easeOut, containerWidth, containerHeight);
-			AnimationUtils.fadeIn(target, time, Cubic.easeIn);
+			AnimationUtil.flyIn(target, time, Cubic.easeOut, containerWidth, containerHeight);
+			AnimationUtil.fadeIn(target, time, Cubic.easeIn);
 		}
 		
 		static public function fadeAndFlyOut(target:DisplayObject, time:Number):void
 		{
-			AnimationUtils.flyOut(target, time, Cubic.easeIn);
-			AnimationUtils.fadeOut(target, time, Cubic.easeOut);
+			AnimationUtil.flyOut(target, time, Cubic.easeIn);
+			AnimationUtil.fadeOut(target, time, Cubic.easeOut);
 		}
 	}
 }

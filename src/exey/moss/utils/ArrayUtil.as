@@ -4,7 +4,7 @@ package exey.moss.utils
  * ...
  * @author Exey Panteleev
  */
-	public class ArrayUtils {
+	public class ArrayUtil {
 		
 		/**
 		 * Counting the properties(with specified value) of elements in array

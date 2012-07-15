@@ -17,7 +17,7 @@ package exey.moss.utils
 	 * Utils for easy work with Text Layout Engine
 	 * @author Exey
 	 */
-	public class TextFlowUtils{
+	public class TextFlowUtil{
 		
 		public static function createLink(text:String, linkId:String, listener:Function, fontSize:uint, color:uint = 0x000000):LinkElement {
 			var link:LinkElement = new LinkElement();

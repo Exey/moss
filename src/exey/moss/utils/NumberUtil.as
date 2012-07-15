@@ -4,7 +4,7 @@ package exey.moss.utils
 	 * Number utils
 	 * @author Exey
 	 */
-	public class NumberUtils{
+	public class NumberUtil{
 		
 		/**
 		 * Anologue on Number.toFixed() without rounding
