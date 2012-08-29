@@ -1,11 +1,10 @@
 package exey.moss.mngr
 {
 	import exey.moss.mngr.data.ResourceData;
+	import exey.moss.utils.ObjectUtil;
 	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	/**
 	 * The load manager for multiple loaders.
@@ -41,10 +40,11 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private var _cache:Dictionary = new Dictionary();
-		static private var _freeLoaders:Vector.<Loader>;
-		static private var _activeLoaders:Dictionary = new Dictionary();
-		static private var _pendingHandlers:Dictionary = new Dictionary();
+		static private var cache:Dictionary = new Dictionary();
+		static private var freeLoaders:Vector.<AnyResourceLoader>;
+		static private var activeLoaders:Dictionary = new Dictionary();
+		static private var pendingHandlers:Dictionary = new Dictionary();
+		static private var pendingHandlerCompleteParams:Dictionary = new Dictionary();
 		
 		//--------------------------------------------------------------------------
 		//
@@ -54,8 +54,8 @@ package exey.moss.mngr
 		
 		static public function get(url:String):*
 		{
-			if (_cache[url] != null)
-				return _cache[url];
+			if (cache[url] != null)
+				return cache[url];
 			else
 				return null;
 		}
@@ -68,25 +68,25 @@ package exey.moss.mngr
 		 * the function takes one parameter of type Object
 		 * (which is a loaded content) on success or null on load error
 		 */
-		static public function load(url:String, loadHandler:Function):void
+		static public function load(url:String, loadHandler:Function, ...completeParams):void
 		{
-			if(_cache[url] != null)
+			if(cache[url] != null)
 			{
-				loadHandler(_cache[url]);
+				loadHandler(cache[url]);
 				return;
 			}
 
-			if(_pendingHandlers[url] == null)
+			if(pendingHandlers[url] == null)
 			{
-				_pendingHandlers[url] = new Vector.<Function>;
+				pendingHandlers[url] = new Vector.<Function>;
 			}
-			_pendingHandlers[url].push(loadHandler);
-
-			if(_activeLoaders[url] == null)
+			pendingHandlers[url].push(loadHandler);
+			pendingHandlerCompleteParams[url] = completeParams;
+			if(activeLoaders[url] == null)
 			{
-				var loader:Loader = getLoader();
-				_activeLoaders[loader] = url;
-				loader.load(new URLRequest(url));
+				var loader:AnyResourceLoader = getLoader();
+				activeLoaders[loader] = url;
+				loader.load(url);
 			}
 		}
 
@@ -97,21 +97,21 @@ package exey.moss.mngr
 		 */
 		static public function cancel(url:String, loadHandler:Function):void
 		{
-			if(_pendingHandlers[url] != null)
+			if(pendingHandlers[url] != null)
 			{
-				for (var i:int=0;i<_pendingHandlers[url].length;i++)
+				for (var i:int=0;i<pendingHandlers[url].length;i++)
 				{
-					if(_pendingHandlers[url][i] == loadHandler)
+					if(pendingHandlers[url][i] == loadHandler)
 					{
-						_pendingHandlers[url].splice(i,1);
+						pendingHandlers[url].splice(i,1);
 						break;
 					}
 				}
-				if(_pendingHandlers[url].length == 0)
+				if(pendingHandlers[url].length == 0)
 				{
-					_activeLoaders[url].close();
-					_activeLoaders[url] = null;
-					delete _activeLoaders[url];
+					activeLoaders[url].close();
+					activeLoaders[url] = null;
+					delete activeLoaders[url];
 				}
 			}
 		}
@@ -122,16 +122,16 @@ package exey.moss.mngr
 		 */
 		static public function clearCache(disposeLoaders:Boolean = true):void
 		{
-			for (var url:String in _cache)
+			for (var url:String in cache)
 			{
-				_cache[url] = null;
-				delete _cache[url];
+				cache[url] = null;
+				delete cache[url];
 			}
-			if(disposeLoaders && _freeLoaders != null)
+			if(disposeLoaders && freeLoaders != null)
 			{
-				while(_freeLoaders.length)
+				while(freeLoaders.length)
 				{
-					_freeLoaders.shift();
+					freeLoaders.shift();
 				}
 			}
 		}
@@ -141,7 +141,7 @@ package exey.moss.mngr
 		 * @param	group [url]
 		 * @param	errorHandler
 		 */
-		static public function loadGroup(group:Array, completeHandler:Function = null, id:String = ''):void
+		static public function loadGroup(group:Array, completeHandler:Function = null, id:String = '', ...completeParams):void
 		{
 			if (id == "")
 				id = new Date().getTime().toString();
@@ -159,12 +159,13 @@ package exey.moss.mngr
 			//trace("ResourceManagerItem/loadGroupWithCombatBulk", groupForLoading.length, groupForLoading);
 			if (groupForLoading.length == 0 && completeHandler != null)
 			{
-				completeHandler.apply(null, [groupLoaded]);
+				completeHandler.apply(null, [groupLoaded].concat(completeParams));
 			}
 			else
 			{
 				var resourceManagerGroup:ResourceManagerGroup = new ResourceManagerGroup(groupForLoading, groupLoaded, completeHandler);
 				resourceManagerGroup.id = id;
+				resourceManagerGroup.completeParams = completeParams;
 				resourceManagerGroup.addEventListener(Event.COMPLETE, deleteResourceManagerGroup);
 				resourceManagerGroups.push(resourceManagerGroup);
 			}
@@ -195,101 +196,183 @@ package exey.moss.mngr
 			resourceManagerGroups.splice(index, 1);
 		}
 
-		static private function getLoader():Loader
+		static private function getLoader():AnyResourceLoader
 		{
-			if(_freeLoaders != null && _freeLoaders.length > 0)
+			if(freeLoaders != null && freeLoaders.length > 0)
 			{
-				return _freeLoaders.shift();
+				return freeLoaders.shift();
 			}
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeLoadHandler);
-			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, errorLoadHandler);
+			var loader:AnyResourceLoader = new AnyResourceLoader();
+			loader.addEventListener(Event.COMPLETE, completeLoadHandler);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, errorLoadHandler);
 			return loader;
 		}
 
-		static private function errorLoadHandler(event:IOErrorEvent):void
+		static private function errorLoadHandler(e:IOErrorEvent):void
 		{
-			trace("3: ResourceManager ERROR LOAD", event.text)
-			handleResult(LoaderInfo(event.target));
+			trace("3: ResourceManager ERROR LOAD", e.text)
+			handleResult(e.target as AnyResourceLoader);
 		}
 
-		static private function completeLoadHandler(event:Event):void
+		static private function completeLoadHandler(e:Event):void
 		{
-			handleResult(LoaderInfo(event.target));
+			handleResult(e.target as AnyResourceLoader);
 		}
 
-		static private function handleResult(loaderInfo:LoaderInfo):void
+		static private function handleResult(loader:AnyResourceLoader):void
 		{
-			var url:String = _activeLoaders[loaderInfo.loader];
-			var handlers:Vector.<Function> = _pendingHandlers[url];
+			var url:String = activeLoaders[loader];
+			var handlers:Vector.<Function> = pendingHandlers[url];
 			if(handlers != null)
 			{
 				while(handlers.length)
 				{
 					var handler:Function = handlers.shift();
-					handler(new ResourceData(url, loaderInfo.content));
+					var params:Array = [new ResourceData(url, loader.content)];
+					params = params.concat(pendingHandlerCompleteParams[url])
+					delete pendingHandlerCompleteParams[url];
+					//trace("================ResourceManager====================", ObjectUtil.getKeys(pendingHandlerCompleteParams).length, "|", params)
+					handler.apply(null, params);
 				}
-				_pendingHandlers[url] = null;
-				delete _pendingHandlers[url];
+				pendingHandlers[url] = null;
+				delete pendingHandlers[url];
 			}
-			if(loaderInfo.content)
+			if(loader.content)
 			{
-				_cache[url] = loaderInfo.content;
-				loaderInfo.loader.unload();
+				cache[url] = loader.content;
+				loader.unload();
 			}
-			_activeLoaders[loaderInfo.loader] = null;
-			delete _activeLoaders[loaderInfo.loader];
-			if(_freeLoaders == null)
+			activeLoaders[loader] = null;
+			delete activeLoaders[loader];
+			if(freeLoaders == null)
 			{
-				_freeLoaders = new Vector.<Loader>;
+				freeLoaders = new Vector.<AnyResourceLoader>;
 			}
-			_freeLoaders.push(loaderInfo.loader);
+			freeLoaders.push(loader);
 		}
 		
 	}
 
 }
 
+import exey.moss.helpers.stackTrace;
 import exey.moss.mngr.data.ResourceData;
 import exey.moss.mngr.ResourceManager;
+import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
+import flash.events.IOErrorEvent;
+import flash.media.Sound;
+import flash.net.URLLoader;
+import flash.net.URLRequest;
+import flash.system.ApplicationDomain;
+import flash.system.LoaderContext;
+import flash.system.Security;
+import flash.system.SecurityDomain;
 /**
  * @private
  */
 internal final class ResourceManagerGroup extends EventDispatcher
 {
-	private var _completeHandler:Function;
-	private var _groupLoaded:Vector.<ResourceData>;
-	private var _urls:Vector.<String> = new Vector.<String>();
-	private var _result:Vector.<ResourceData>;
+	private var completeHandler:Function;
+	private var groupLoaded:Vector.<ResourceData>;
+	private var urls:Vector.<String> = new Vector.<String>();
+	private var result:Vector.<ResourceData>;
 	public var id:String;
+	public var completeParams:Array
 	
 	public function ResourceManagerGroup(urls:Vector.<String>, groupLoaded:Vector.<ResourceData>, completeHandler:Function):void
 	{
-		_completeHandler = completeHandler;
-		_groupLoaded = groupLoaded;
-		_result = new Vector.<ResourceData>();
-		_urls = urls;
+		this.completeHandler = completeHandler;
+		this.groupLoaded = groupLoaded;
+		result = new Vector.<ResourceData>();
+		this.urls = urls;
 		
-		for (var i:int = 0; i < _urls.length; i++)
+		for (var i:int = 0; i < urls.length; i++)
 			ResourceManager.load(urls[i], load_complete);
 	}
 	
 	public function unlinkCompleteHandler():void
 	{
-		_completeHandler = null;
+		completeHandler = null;
 	}
 	
 	private function load_complete(data:ResourceData):void
 	{
-		_result.push(data);
-		//trace("loadingItem_complete "+loadingItem.url.url)
-		_urls.splice(_urls.indexOf(data.url), 1);
-		if (_urls.length == 0 && _completeHandler != null)
+		result.push(data);
+		urls.splice(urls.indexOf(data.url), 1);
+		if (urls.length == 0 && completeHandler != null)
 		{
-			_completeHandler.apply(null, [_result.concat(_groupLoaded)]);
+			completeHandler.apply(null, [result.concat(groupLoaded)].concat(completeParams));
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
+	}
+}
+
+internal final class AnyResourceLoader extends EventDispatcher
+{
+	public var request:URLRequest;
+	public var content:*;
+	private var loader:Object;
+	
+	public function AnyResourceLoader():void 
+	{
+		
+	}
+	
+	public function load(url:String):void 
+	{
+		trace("1:LOAD", url);
+		request = new URLRequest(url)
+		var ext:String = url.substr(url.lastIndexOf('.') + 1, url.length);
+		if (ext == "json" || ext == "js" || ext == "xml" || ext == "tmx")
+		{
+			loader = new URLLoader()
+				//trace("loadNextFile", _currentItem.fileExtension )
+			loader.load(request);
+			loader.addEventListener(Event.COMPLETE, loader_complete); 
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loader_error); 				
+		}
+		else if (ext == "mp3")
+		{
+			loader = new Sound();
+			loader.load(request);
+			loader.addEventListener(Event.COMPLETE, loader_complete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loader_error);
+		}
+		else
+		{
+			var context:LoaderContext = new LoaderContext(true, ApplicationDomain.currentDomain);
+			if (Security.sandboxType != 'localTrusted') context.securityDomain = SecurityDomain.currentDomain;			
+			loader = new Loader();
+			loader.load(request, context);
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_complete); 
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_error); 				
+		}
+	}
+	
+	public function unload():void
+	{
+		if (loader is URLLoader) content = (loader as URLLoader).data = null;
+		else if (loader is Sound) loader = null;
+		else content = (loader as Loader).unload();
+		content = null
+	}
+
+	private function loader_error(e:IOErrorEvent):void
+	{ 
+		dispatchEvent(e)
+	}
+	
+	private function loader_complete(e:Event):void
+	{
+		if (loader is URLLoader)
+			content = (loader as URLLoader).data;
+		else if (loader is Sound)
+			content = loader as Sound;
+		else // Loader
+			content = (loader as Loader).contentLoaderInfo.content;
+		var event:Event = new Event(Event.COMPLETE);
+		dispatchEvent(event);
 	}
 }

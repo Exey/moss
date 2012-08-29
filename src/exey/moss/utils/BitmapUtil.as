@@ -1,6 +1,7 @@
 package exey.moss.utils
 {
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	/**
@@ -27,9 +28,14 @@ package exey.moss.utils
 			return result;
 		}
 		
+		static public function rasterize(source:DisplayObject):BitmapData {
+			var b:BitmapData = new BitmapData(source.width, source.height, true, 0x00000000);
+			b.draw(source)
+			return b;
+		}
+		
 		/**Proportional, decrease-only*/
-		static public function decrease(bigBMD:BitmapData, maxWidth:Number = NaN, maxHeight:Number = NaN):BitmapData 
-		{			
+		static public function decrease(bigBMD:BitmapData, maxWidth:Number = NaN, maxHeight:Number = NaN):BitmapData {			
 			var dx:Number = maxWidth / bigBMD.width;
 			var dy:Number = maxHeight / bigBMD.height;
 			if (dx >= 1 && dy >= 1)

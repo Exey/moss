@@ -1,5 +1,7 @@
 package exey.moss.utils{
 	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	/**
 	 * ...
 	 * @author Exey
@@ -9,12 +11,19 @@ package exey.moss.utils{
 		/**Difference ratio between colors*/
 		static public function compareColors(color1:uint, color2:uint):Number
 		{
-			var rgb1:Object = ColorUtils.hex2RGB(color1)
-			var rgb2:Object = ColorUtils.hex2RGB(color2)
+			var rgb1:Object = ColorUtil.hex2RGB(color1)
+			var rgb2:Object = ColorUtil.hex2RGB(color2)
 			return 1.0 - Number(Math.abs(rgb1.r - rgb2.r) + 
 								Math.abs(rgb1.g - rgb2.g) + 
 								Math.abs(rgb1.b - rgb2.b)) / (256.0 * 3);
-		}		
+		}
+		
+		static public function averageColorFromBitmapRegion(b:BitmapData, x:Number, y:Number, w:Number, h:Number):uint {
+			var rect:Rectangle = new Rectangle( x, y, w, h );
+			var box:BitmapData = new BitmapData( w, h, false );
+			box.copyPixels( b, rect, new Point() );
+			return ColorUtil.averageColor( box );
+		}
 		
 		static public function averageColor( source:BitmapData ):uint
 		{

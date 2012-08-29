@@ -19,7 +19,7 @@ package exey.moss.utils
 	 */
 	public class TextFlowUtil{
 		
-		public static function createLink(text:String, linkId:String, listener:Function, fontSize:uint, color:uint = 0x000000):LinkElement {
+		static public function createLink(text:String, linkId:String, listener:Function, fontSize:uint, color:uint = 0x000000):LinkElement {
 			var link:LinkElement = new LinkElement();
 			link.id = linkId;
 			link.addEventListener(FlowElementMouseEvent.CLICK, listener, false, 0, true);
@@ -39,7 +39,7 @@ package exey.moss.utils
 		 * @param	color
 		 * @param	format // for resolve conflict with Flex4 beta2 vs. Nighty Builds, by defaults "textFieldHTMLFormat" for Nighty Builds
 		 */
-		public static function parseHTML(text:String, p:ParagraphElement, color:uint = 0x000000, format:String = "textFieldHTMLFormat"):void {
+		static public function parseHTML(text:String, p:ParagraphElement, color:uint = 0x000000, format:String = "textFieldHTMLFormat"):void {
 			// parsing HTML
 			var htmlParagraph:FlowElement;
 			var leaf:FlowLeafElement;  

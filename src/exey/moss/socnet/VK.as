@@ -8,9 +8,11 @@ package exey.moss.socnet {
 	 */
 	public class VK 
 	{
-		static public function ():void {
+		static public function connect():void {
 			
 		}
+		
+		static public function wall_Post
 		
 	}
 }

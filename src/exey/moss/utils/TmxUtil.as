@@ -43,7 +43,7 @@ package exey.moss.utils
 		
 		static public function printTMX():String
 		{
-			
+			return ""
 		}
 	}
 }

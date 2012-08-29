@@ -1,5 +1,4 @@
-package exey.moss.gui.comps.text
-{
+package exey.moss.gui.comps.text {
 	import flash.display.DisplayObjectContainer;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -9,11 +8,9 @@ package exey.moss.gui.comps.text
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class TextFieldLabel extends TextField
-	{
+	public class TextFieldLabel extends TextField {
 		
-		public function TextFieldLabel(parent:DisplayObjectContainer, xpos:Number, ypos:Number, textFormat:TextFormat, text:String = "", embedFonts:Boolean = false, mouseEnabled:Boolean = false)
-		{
+		public function TextFieldLabel(parent:DisplayObjectContainer, xpos:Number, ypos:Number, textFormat:TextFormat, text:String = "", embedFonts:Boolean = false, mouseEnabled:Boolean = false) {
 			super();
 			if (parent != null) parent.addChild(this);
 			this.x = xpos;
@@ -26,8 +23,7 @@ package exey.moss.gui.comps.text
 			this.autoSize = TextFieldAutoSize.LEFT;
 		}
 		
-		public function destroy():void
-		{
+		public function destroy():void {
 			if (parent)
 				this.parent.removeChild(this);
 		}

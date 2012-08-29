@@ -10,7 +10,7 @@ package exey.moss.utils
 	 */
 	public class DrawUtil
 	{
-		static public function drawVerticalGradientRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array):void 
+		static public function verticalGradientRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array):void 
 		{
 			var m:Matrix = new Matrix();
 			m.createGradientBox( width, height, (Math.PI/180)*90, 0, 0 );
@@ -18,7 +18,7 @@ package exey.moss.utils
 			graphics.drawRect( startX, startY, width, height );
 		}
 		
-		static public function drawPlate(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, alpha:Number = 1):void
+		static public function plate(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, alpha:Number = 1):void
 		{
 			// shadow
 			graphics.beginFill(0x000000, .5*alpha)
@@ -30,30 +30,30 @@ package exey.moss.utils
 			graphics.drawRoundRect(startX, startY, width, height, 8, 8);
 		}
 		
-		static public function drawRoundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, ellipseWidth:Number = 20, alpha:Number = 1):void
+		static public function roundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, ellipseWidth:Number = 20, alpha:Number = 1):void
 		{
 			graphics.beginFill(color, alpha)
 			graphics.drawRoundRect(startX, startY, width, height, ellipseWidth)
 		}		
 		
-		static public function drawRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, alpha:Number = 1):void {
+		static public function rect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, alpha:Number = 1):void {
 			graphics.beginFill(color, alpha)
 			graphics.drawRect(startX, startY, width, height)
 		}
 		
-		static public function drawBorder(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, borderColor:uint, borderThickness:Number, borderApha:Number = 1, pixelHinting:Boolean = false):void {
+		static public function border(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, borderColor:uint, borderThickness:Number, borderApha:Number = 1, pixelHinting:Boolean = false):void {
 			graphics.lineStyle(borderThickness, borderColor, borderApha, pixelHinting);
 			//graphics.beginFill(color)
 			graphics.drawRect(startX, startY, width, height)
 		}		
 		
-		static public function drawBorderedRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, alpha:Number):void {
+		static public function borderedRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, alpha:Number):void {
 			graphics.lineStyle(borderThickness, borderColor);
 			graphics.beginFill(color, alpha);
 			graphics.drawRect(startX, startY, width, height)
 		}
 		
-		static public function drawBorderedRoundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, ellipseWidth:Number = 20, alpha:Number = 1, borderAlpha:Number = 1, pixelHinting:Boolean = false):void
+		static public function borderedRoundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, ellipseWidth:Number = 20, alpha:Number = 1, borderAlpha:Number = 1, pixelHinting:Boolean = false):void
 		{
 			graphics.lineStyle(borderThickness, borderColor, borderAlpha, pixelHinting);
 			graphics.beginFill(color, alpha)
@@ -61,13 +61,13 @@ package exey.moss.utils
 			graphics.drawRoundRect(startX, startY, width, height, ellipseWidth)
 		}			
 		
-		static public function drawEllipse(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint):void
+		static public function ellipse(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint):void
 		{
 			graphics.beginFill(color)
 			graphics.drawEllipse(startX, startY, width, height)
 		}
 		
-		static public function drawCloseButton(graphics:Graphics, color:uint = 0x966234, startX:Number = 0, startY:Number = 0, isBackground:Boolean = true, backgroundColor:uint = 0xe5c2a0, borderColor:uint = 0xb2966d, borderShadowColor:uint = 0x835613):void 
+		static public function closeButton(graphics:Graphics, color:uint = 0x966234, startX:Number = 0, startY:Number = 0, isBackground:Boolean = true, backgroundColor:uint = 0xe5c2a0, borderColor:uint = 0xb2966d, borderShadowColor:uint = 0x835613):void 
 		{
 			if (isBackground)
 			{
@@ -85,7 +85,7 @@ package exey.moss.utils
 			graphics.lineTo(startX+5, 	startY+10);
 		}
 		
-		static public function drawRhombus(graphics:Graphics, color:uint, width:Number, height:Number):void 
+		static public function rhombus(graphics:Graphics, color:uint, width:Number, height:Number):void 
 		{
 			graphics.beginFill(color, 0.5)
 			//graphics.lineStyle(3, color, 1, true);
@@ -106,7 +106,7 @@ package exey.moss.utils
 		 * @param y:Number - The y centre of the circumscribed circle.
 		 * @param ps:Number - The phase shift or angular offset of the polygons vertices.
 		 */
-		static public function drawStar(graphics:Graphics, p:Number, er:Number, ir:Number, x:Number, y:Number, color:uint, borderColor:uint, ps:Number = undefined):void
+		static public function star(graphics:Graphics, p:Number, er:Number, ir:Number, x:Number, y:Number, color:uint, borderColor:uint, ps:Number = undefined):void
 		{
 			graphics.lineStyle(2, borderColor, 1, true);
 			graphics.beginFill(color);
@@ -130,7 +130,7 @@ package exey.moss.utils
 			graphics.lineTo(x + Math.cos(ps) * er, y + Math.sin(-ps) * er);
 		}
 		
-		static public function drawRightArrow(graphics:Graphics, color:uint, width:Number, height:Number, shiftX:Number = 0, shiftY:Number = 0):void
+		static public function rightArrow(graphics:Graphics, color:uint, width:Number, height:Number, shiftX:Number = 0, shiftY:Number = 0):void
 		{
 			var g:Graphics = graphics;
 			g.beginFill(color, 1);
@@ -141,7 +141,7 @@ package exey.moss.utils
 			g.endFill();
 		}
 		
-		static public function drawLeftArrow(graphics:Graphics, color:uint, width:Number, height:Number, shiftX:Number = 0, shiftY:Number = 0):void
+		static public function leftArrow(graphics:Graphics, color:uint, width:Number, height:Number, shiftX:Number = 0, shiftY:Number = 0):void
 		{
 			var g:Graphics = graphics;
 			g.beginFill(color, 1);
@@ -152,7 +152,7 @@ package exey.moss.utils
 			g.endFill();
 		}
 		
-		static public function drawLine(graphics:Graphics, x1:int, y1:int, x2:int, y2:int, borderColor:uint, borderThickness:Number, borderAlpha:Number = 1, pixelHinting:Boolean = false):void 
+		static public function line(graphics:Graphics, x1:int, y1:int, x2:int, y2:int, borderColor:uint, borderThickness:Number, borderAlpha:Number = 1, pixelHinting:Boolean = false):void 
 		{
 			graphics.lineStyle(borderThickness, borderColor, borderAlpha, pixelHinting);
 			graphics.moveTo(x1, y1);

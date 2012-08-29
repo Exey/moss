@@ -13,7 +13,7 @@ package exey.moss.utils
 	 */
 	public class LoaderUtil
 	{
-		public static function getFromCurrentDomain(linkage:String, isBitmapData:Boolean = false):*
+		static public function getFromCurrentDomain(linkage:String, isBitmapData:Boolean = false):*
 		{
 			var skinClass:* = ApplicationDomain.currentDomain.getDefinition(linkage)
 			if (isBitmapData)
@@ -22,7 +22,7 @@ package exey.moss.utils
 				return new skinClass()
 		}
 		
-		public static function getDefinition(linkage:String):*
+		static public function getDefinition(linkage:String):*
 		{
 			if(ApplicationDomain.currentDomain.hasDefinition(linkage))
 				return ApplicationDomain.currentDomain.getDefinition(linkage);
@@ -30,7 +30,7 @@ package exey.moss.utils
 				return null;
 		}
 		
-		public static function addTo(parent:DisplayObjectContainer, linkage:String, xpos:Number = 0, ypos:Number = 0):DisplayObject
+		static public function addTo(parent:DisplayObjectContainer, linkage:String, xpos:Number = 0, ypos:Number = 0):DisplayObject
 		{
 			var displayObject:DisplayObject = getFromCurrentDomain(linkage) as DisplayObject;
 			displayObject.x = xpos
@@ -39,7 +39,7 @@ package exey.moss.utils
 			return displayObject
 		}
 		
-		public static function addBitmapTo(parent:DisplayObjectContainer, linkage:String, xpos:Number, ypos:Number):DisplayObject
+		static public function addBitmapTo(parent:DisplayObjectContainer, linkage:String, xpos:Number, ypos:Number):DisplayObject
 		{
 			var bitmap:Bitmap = new Bitmap(getFromCurrentDomain(linkage, true));
 			bitmap.x = xpos

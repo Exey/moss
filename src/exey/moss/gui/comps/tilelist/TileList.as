@@ -1,4 +1,5 @@
-package exey.moss.gui.comps.tilelist {
+package exey.moss.gui.comps.tilelist
+{
 	import exey.moss.gui.abstract.ComponentAbstract;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -7,7 +8,7 @@ package exey.moss.gui.comps.tilelist {
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class SimpleTileList extends ComponentAbstract 
+	public class TileList extends ComponentAbstract 
 	{	
 		private var _data:Array;
 		private var _pageNum:uint = 0;
@@ -18,8 +19,22 @@ package exey.moss.gui.comps.tilelist {
 		private var _rows:uint;
 		private var _horizontalGap:Number;
 		private var _verticalGap:Number;
+		public function get step():uint { return _step; }
+		public function set step(value:uint):void {_step = value;}
+		public function get horizontalGap():Number { return _horizontalGap; }
+		public function set horizontalGap(value:Number):void {_horizontalGap = value;}
+		public function get verticalGap():Number { return _verticalGap; }
+		public function set verticalGap(value:Number):void {_verticalGap = value;}
+		public function get data():Array { return _data; }
+		public function set data(value:Array):void {
+			_data = value;
+			showFrom(_pageNum*_step);
+		}
+		public function set pageNum(value:uint):void  {_pageNum = value;}
+		public function get pageNum():uint { return _pageNum; }
 		
-		public function SimpleTileList(parent:DisplayObjectContainer, xpos:Number, ypos:Number, columns:uint = 3, gap:Number = 20)
+		
+		public function TileList(parent:DisplayObjectContainer, xpos:Number, ypos:Number, columns:uint = 3, gap:Number = 20)
 		{
 			super(parent, xpos, ypos);
 			_columns = columns;
@@ -42,8 +57,8 @@ package exey.moss.gui.comps.tilelist {
 					_currentItems[i].destroy();
 			}
 			_currentItems = []
-			var currentData:ISimpleTileListItemData;
-			var item:ISimpleTileListItem;
+			var currentData:ITileListItemData;
+			var item:ITileListItem;
 			var currX:Number
 			var currY:Number
 			var length:uint = value+_step
@@ -82,7 +97,7 @@ package exey.moss.gui.comps.tilelist {
 		}
 		
 		
-		public function getItemByProperty(propertyName:String, value:*):ISimpleTileListItem
+		public function getItemByProperty(propertyName:String, value:*):ITileListItem
 		{
 			for (var i:int = 0; i < _currentItems.length; i++) 
 			{
@@ -94,7 +109,7 @@ package exey.moss.gui.comps.tilelist {
 		
 		public function removeItemByProperty(propertyName:String, value:*):void 
 		{
-			var item:ISimpleTileListItem = getItemByProperty(propertyName, value);
+			var item:ITileListItem = getItemByProperty(propertyName, value);
 			if (item)
 			{
 				
@@ -121,40 +136,5 @@ package exey.moss.gui.comps.tilelist {
 			hide();
 		}
 		
-		public function get step():uint { return _step; }
-		
-		public function set step(value:uint):void 
-		{
-			_step = value;
-		}
-		
-		public function get horizontalGap():Number { return _horizontalGap; }
-		
-		public function set horizontalGap(value:Number):void 
-		{
-			_horizontalGap = value;
-		}
-		
-		public function get verticalGap():Number { return _verticalGap; }
-		
-		public function set verticalGap(value:Number):void 
-		{
-			_verticalGap = value;
-		}
-		
-		public function get data():Array { return _data; }
-		
-		public function set data(value:Array):void 
-		{
-			_data = value;
-			showFrom(_pageNum*_step);
-		}
-		
-		public function set pageNum(value:uint):void 
-		{
-			_pageNum = value;
-		}
-		
-		public function get pageNum():uint { return _pageNum; }
 	}
 }

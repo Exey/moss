@@ -6,8 +6,8 @@ package exey.moss.mngr.data
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class ToolTipData {
-		
+	public class ToolTipData
+	{	
 		public var target:DisplayObject
 		public var toolTip:ComponentAbstract
 		public var onOver:Function

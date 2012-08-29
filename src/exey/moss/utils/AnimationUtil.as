@@ -14,8 +14,8 @@ package exey.moss.utils
 		static public function flyIn(target:DisplayObject, time:Number, ease:IEasing, containerWidth:Number, containerHeight:Number):void
 		{
 			target.cacheAsBitmap = true
-			target.x = target.x+containerWidth * .5;
-			target.y = target.y+containerHeight * .5;
+			target.x = target.x+containerWidth ;
+			target.y = target.y+containerHeight ;
 			target.scaleX = .025;
 			target.scaleY = .025;
 			Actuate.tween(target, time, { scaleX: 1, scaleY: 1 } ).ease(ease);

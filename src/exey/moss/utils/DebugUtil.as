@@ -5,7 +5,7 @@ package exey.moss.utils
 	{
 		static public function dump(obj:Object, showFunctions:Boolean = false, showUndefined:Boolean = false, showXMLstructures:Boolean = false, maxLineLength:int = 100, indent:int = 0):String
 		{
-			var du:DebugUtils = new DebugUtils();
+			var du:DebugUtil = new DebugUtil();
 			//if (maxLineLength == undefined)
 			//{
 			//   maxLineLength = 100;
@@ -16,8 +16,7 @@ package exey.moss.utils
 			return du.realToString(obj, showFunctions, showUndefined, showXMLstructures, maxLineLength, indent);
 		}
 
-		public function DebugUtils()
-		{
+		public function DebugUtil() {
 			this.inProgress = new Array();
 		}
 
@@ -108,7 +107,7 @@ package exey.moss.utils
 
 			if (result == "undefined") result = "-";
 			this.inProgress.pop();
-			return DebugUtils.replaceAll(result, "`", (result.length < maxLineLength) ? "" : ("\n" + doIndent(indent)));
+			return DebugUtil.replaceAll(result, "`", (result.length < maxLineLength) ? "" : ("\n" + doIndent(indent)));
 		}
 
 		static public function replaceAll (str:String, from:String, to:String):String

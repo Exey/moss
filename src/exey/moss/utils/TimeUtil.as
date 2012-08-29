@@ -2,21 +2,21 @@ package exey.moss.utils
 {
 	/**
 	 * ...
-	 * @author 
+	 * @author Exey Panteleev
 	 */
 	public class TimeUtil
 	{
-		static private const EXACT_SECONDS_IN_YEAR:uint = 	31556926; 	// according to Google
-		static private const EXACT_SECONDS_IN_MONTH:Number =	2629743.83;	// according to Google
-		static private const EXACT_SECONDS_IN_DAY:uint =		86400;		// according to Google
+		static private const EXACT_SECONDS_IN_YEAR:uint = 		31556926; 
+		static private const EXACT_SECONDS_IN_MONTH:Number =	2629743.83;	
+		static private const EXACT_SECONDS_IN_DAY:uint =		86400;		
 		
-		static private const SECONDS_IN_MONTH:Number =		60 * 60 * 24 * 30.4167;// non leap year
-		static private const SECONDS_IN_DAY:uint = 			60 * 60 * 24;//	86400;
+		static private const SECONDS_IN_MONTH:Number =			60 * 60 * 24 * 30.4167;// non leap year
+		static private const SECONDS_IN_DAY:uint = 				60 * 60 * 24;//	86400;
 		static private const SECONDS_IN_YEAR:uint = 			SECONDS_IN_DAY * 365;
 		
-		static private const MILLISECONDS_IN_MINUTE:int = 	1000 * 60;
+		static private const MILLISECONDS_IN_MINUTE:int = 		1000 * 60;
 		static private const MILLISECONDS_IN_HOUR:int = 		1000 * 60 * 60;
-		static private const MILLISECONDS_IN_DAY:int = 		1000 * 60 * 60 * 24;		
+		static private const MILLISECONDS_IN_DAY:int = 			1000 * 60 * 60 * 24;		
 		
         /** 
 		 * returns time in hh:mm:ss format from seconds

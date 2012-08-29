@@ -6,7 +6,7 @@ package exey.moss.factories
 	 */
 	public class CountriesNames {
 	
-		public static const NAMES:Object = {
+		static public const NAMES:Object = {
 			"AD": "Андорра",
 			"AE": "Объединенные Арабские Эмираты",
 			"AF": "Афганистан",

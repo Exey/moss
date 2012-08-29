@@ -11,7 +11,7 @@ package exey.moss.factories
 	public class GuiFactory
 	{
 		
-		static public function createGlassyButton(width:Number, height:Number, cornerRadius:Number, fillColor:Number, fillAlpha:Number, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0):Sprite
+		static public function glassyButton(width:Number, height:Number, cornerRadius:Number, fillColor:Number, fillAlpha:Number, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0):Sprite
 		{
 			var button:Sprite = new Sprite();
 			var matrix:Matrix = new Matrix();
@@ -32,6 +32,25 @@ package exey.moss.factories
 			return button;
 		}
 		
+		static public function closeButton(color:uint = 0x966234, startX:Number = 0, startY:Number = 0, isBackground:Boolean = true, backgroundColor:uint = 0xe5c2a0, borderColor:uint = 0xb2966d, borderShadowColor:uint = 0x835613):Sprite 
+		{
+			var button:Sprite = new Sprite();
+			if (isBackground)
+			{
+				button.graphics.beginFill(backgroundColor);
+				button.graphics.lineStyle(1, borderShadowColor, .5);
+				button.graphics.drawCircle(startX+7.5, startY+7.5, 6.5);
+				button.graphics.endFill();
+				button.graphics.lineStyle(1, borderColor, 0.2);
+				button.graphics.drawCircle(startX+7.5, startY+7.5, 5.5);
+			}
+			button.graphics.lineStyle(2, color);
+			button.graphics.moveTo(startX+5, 	startY+5);
+			button.graphics.lineTo(startX+10, 	startY+10);
+			button.graphics.moveTo(startX+10, 	startY+5);
+			button.graphics.lineTo(startX+5, 	startY+10);
+			return button;
+		}
+		
 	}
-
 }

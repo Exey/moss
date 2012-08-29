@@ -5,7 +5,7 @@ package exey.moss.utils
 	 * @author Exey Panteleev
 	 */
 	public class JSONUtil 
-	{
+	{ 
 		
 		static public function getRootElementName(json:Object):String 
 		{

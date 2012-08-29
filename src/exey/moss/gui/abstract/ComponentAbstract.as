@@ -1,5 +1,6 @@
 package exey.moss.gui.abstract
 {
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -9,6 +10,7 @@ package exey.moss.gui.abstract
 	 */
 	public class ComponentAbstract extends Sprite
 	{
+		protected var basicSkin:DisplayObject;
 		/**
 		 * Constructor
 		 * @param parent The parent DisplayObjectContainer on which to add this Component.
@@ -57,6 +59,11 @@ package exey.moss.gui.abstract
 		public function draw():void
 		{
 			
+		}
+		
+		public function addBasicSkin(basicSkin:DisplayObject):void 
+		{
+			this.basicSkin = basicSkin;			
 		}
 	}
 }

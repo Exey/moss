@@ -8,7 +8,7 @@ package exey.moss.factories{
 	 */
 	public class ColorNames {
 
-		public static const NAMES:Array = [
+		static public const NAMES:Array = [
 											[0x000000, "Black"],
 											[0x000080, "Navy Blue"],
 											[0x0000C8, "Dark Blue"],
@@ -1588,21 +1588,21 @@ package exey.moss.factories{
 			var hsl:Object;
 			for(var i:int = 0; i < ColorNames.NAMES.length; i++) {
 			  hexColor = ColorNames.NAMES[i][0];
-			  rgb = ColorUtils.hex2RGB(hexColor);
-			  hsl = ColorUtils.rgbToHSL(rgb.r, rgb.g, rgb.b);
+			  rgb = ColorUtil.hex2RGB(hexColor);
+			  hsl = ColorUtil.rgbToHSL(rgb.r, rgb.g, rgb.b);
 			  approxColorNames[i].push(rgb.r, rgb.g, rgb.b, hsl.h, hsl.s, hsl.l);
 			}
 		}
 		
-		public static function findApproxColorName(hex:Number):String {
+		static public function findApproxColorName(hex:Number):String {
 			
 			if (!approxColorNames) initApproxColorNames();
 
-			var rgb:Object = ColorUtils.hex2RGB(hex);
+			var rgb:Object = ColorUtil.hex2RGB(hex);
 			var r:Number = rgb.r; 
 			var g:Number = rgb.g; 
 			var b:Number = rgb.b;
-			var hsl:Object = ColorUtils.rgbToHSL(r, g, b);
+			var hsl:Object = ColorUtil.rgbToHSL(r, g, b);
 			var h:Number = hsl.h; 
 			var s:Number = hsl.s;
 			var l:Number = hsl.l;
