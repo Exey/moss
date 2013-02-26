@@ -9,7 +9,7 @@ package exey.moss
 	 */
 	public class Moss 
 	{		
-		static public const version:String = "0.002";
+		static public const version:String = "0.003";
 	}
 
 }
