@@ -1,6 +1,8 @@
 package exey.moss.gui.comps.container 
 {
 	import exey.moss.gui.abstract.ComponentAbstract;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	
 	/**
@@ -9,12 +11,14 @@ package exey.moss.gui.comps.container
 	 */
 	public class ImageContainer extends ComponentAbstract
 	{
-		public var data:Object;
+		public var bitmap:Bitmap;
+		public var userData:Object;
 		
-		public function ImageContainer(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0) 
+		public function ImageContainer(parent:DisplayObjectContainer, xpos:Number, ypos:Number, bitmapData:BitmapData) 
 		{
 			super(parent, xpos, ypos);
-			
+			bitmap = new Bitmap(bitmapData);
+			addChild(bitmap)
 		}
 		
 	}

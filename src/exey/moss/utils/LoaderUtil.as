@@ -3,10 +3,14 @@ package exey.moss.utils
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.utils.ByteArray;
 	/**
 	 * Loader and Application domain utilits
 	 * @author Exey Panteleev
@@ -48,14 +52,23 @@ package exey.moss.utils
 			return bitmap
 		}
 		
-		static public function loadWithURLLoader(url:String, handler:Function):void 
+		static public function loadWithURLLoader(url:String, handler:Function, dataFormat:String = null):void 
 		{
 			var loader:URLLoader = new URLLoader();
+			if (dataFormat)
+				loader.dataFormat = dataFormat;
 			loader.addEventListener(Event.COMPLETE, function(e:Event):void {
 				loader.removeEventListener(Event.COMPLETE, arguments.callee);
 				handler.apply(null, [e.target.data]);
 			});
 			loader.load(new URLRequest(url));
+		}
+		
+		static public function loadBytesToCurrentDomain(bytes:ByteArray, eventHandler:Function):void 
+		{
+			var skinLoader:Loader = new Loader();
+			skinLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, eventHandler);
+			skinLoader.loadBytes(bytes, new LoaderContext(false, ApplicationDomain.currentDomain));
 		}
 		
 		/*

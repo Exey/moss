@@ -1,6 +1,7 @@
 package exey.moss.gui.comps.tilelist
 {
 	import exey.moss.gui.abstract.ComponentAbstract;
+	import exey.moss.debug.stackTrace;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	
@@ -10,15 +11,15 @@ package exey.moss.gui.comps.tilelist
 	 */
 	public class TileList extends ComponentAbstract 
 	{	
-		private var _data:Array;
-		private var _pageNum:uint = 0;
-		private var _step:uint = 6;
-		private var _currentItems:Array;
-		private var _itemClass:Class;
-		private var _columns:uint;
-		private var _rows:uint;
-		private var _horizontalGap:Number;
-		private var _verticalGap:Number;
+		protected var _data:Array;
+		protected var _pageNum:uint = 0;
+		protected var _step:uint = 6;
+		protected var _currentItems:Array;
+		protected var _itemClass:Class;
+		protected var _columns:uint;
+		protected var _rows:uint;
+		protected var _horizontalGap:Number;
+		protected var _verticalGap:Number;
 		public function get step():uint { return _step; }
 		public function set step(value:uint):void {_step = value;}
 		public function get horizontalGap():Number { return _horizontalGap; }
@@ -44,6 +45,7 @@ package exey.moss.gui.comps.tilelist
 		
 		public function initialize(data:Array, itemClass:Class):void
 		{
+			//stackTrace(data);
 			_data = data;
 			_itemClass = itemClass;
 			showFrom(0)
@@ -64,6 +66,7 @@ package exey.moss.gui.comps.tilelist
 			var length:uint = value+_step
 			for (i = value; i < length; i++) {
 				currentData = _data[i];
+				
 				if (!currentData) break;
 				item = new _itemClass();
 				currX = (_horizontalGap + item.itemWidth) * ((i - value) % _columns);				
@@ -101,6 +104,7 @@ package exey.moss.gui.comps.tilelist
 		{
 			for (var i:int = 0; i < _currentItems.length; i++) 
 			{
+				//trace("::::::::", propertyName, value, _currentItems[i][propertyName])
 				if (_currentItems[i][propertyName] && _currentItems[i][propertyName] == value)
 					return _currentItems[i]
 			}

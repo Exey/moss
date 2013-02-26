@@ -1,17 +1,18 @@
 package exey.moss.gui.comps.control {
+	import exey.moss.factories.GuiFactory;
 	import exey.moss.gui.comps.button.GrowButton;
 	import exey.moss.gui.comps.text.TextFieldLabel;
 	import exey.moss.utils.AlignUtil;
-	import exey.moss.utils.LoaderUtil;
+	import exey.moss.utils.DrawUtil;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	/**
 	 * ...
-	 * @author 
+	 * @author Exey Panteleev
 	 */
 	public class SubButton extends GrowButton
 	{
@@ -49,10 +50,15 @@ package exey.moss.gui.comps.control {
 		private function initialize(scaleRatio:Number):void
 		{
 			// draw bg
-			//skin = MovieClip(LoaderUtil.addTo(this, "SubButtonSkin"));
-			skin = MovieClip(LoaderUtil.addTo(this, "SubButtonSkin"));
+			//skin = GuiFactory.glassyButton(50, 20, 6, 0xE4DF23, 0.8);
+			skin = new Sprite();
 			_tf = new TextFieldLabel(this, 10, 0, new TextFormat( "Arial", 14, 0x000000, true ), _label);
 			_tf.mouseEnabled = false;
+			var skinWidth:Number = _tf.textWidth + 20;
+			var skinHeight:Number = _tf.textHeight + 8;
+			skin.x = skinWidth * 0.5; 
+			skin.y = skinHeight * 0.5;
+			DrawUtil.rect((skin as Sprite).graphics, -skinWidth*0.5, -skinHeight*0.5, skinWidth, skinHeight, 0xEED186);
 			AlignUtil.toHorizontalCenter(_tf, skin as DisplayObjectContainer);
 		}
 		

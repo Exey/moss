@@ -22,30 +22,26 @@ package exey.moss.utils
 		 * returns time in hh:mm:ss format from seconds
 		 * @author andrewwright
 		 * */
-		static public  function formatTime ( time:Number ):String
+		static public function formatTime(sec:int, delimeter:String = ':'):String
 		{
-			var remainder:Number;
-			var hours:Number = time / ( 60 * 60 );			
-			remainder = hours - (Math.floor ( hours ));			
-			hours = Math.floor ( hours );			
-			var minutes:Number = remainder * 60;			
-			remainder = minutes - (Math.floor ( minutes ));			
-			minutes = Math.floor ( minutes );			
-			var seconds:Number = remainder * 60;			
-			remainder = seconds - (Math.floor ( seconds ));			
-			seconds = Math.floor ( seconds );			
-			var hString:String = hours < 10 ? "0" + hours : "" + hours;	
-			var mString:String = minutes < 10 ? "0" + minutes : "" + minutes;
-			var sString:String = seconds < 10 ? "0" + seconds : "" + seconds;						
-			if ( time < 0 || isNaN(time)) return "00:00";									
-			if ( hours > 0 )
-			{			
-				return hString + ":" + mString + ":" + sString;
-			}else
-			{
-				return mString + ":" + sString;
-			}
+			var hrs:String = (sec > 3600 ? Math.floor(sec / 3600) + delimeter : '');
+			var mins:String = (hrs && sec % 3600 < 600 ? '0' : '') + Math.floor(sec % 3600 / 60) + delimeter;
+			var secs:String = (sec % 60 < 10 ? '0' : '') + sec % 60;
+			return hrs+mins+secs;
 		}
+		
+		static public function timestamp(d:Date):String {
+			var s:String = d.fullYear + '-';
+			s += prependZero( d.month + 1 ) + '-';
+			s += prependZero( d.day ) + '_';
+			s += prependZero( d.hours ) + '-';
+			s += prependZero( d.minutes ) + '-';
+			s += prependZero( d.seconds );			
+			function prependZero( n:Number ):String {
+				return ( n < 10 ) ? '0' + n : n.toString();
+			}			
+			return s;
+		}		
 		
 		/**
 		 * Converting seconds to English readable time duration
@@ -138,9 +134,7 @@ package exey.moss.utils
 										" и 1 секунда";
 			} else if( secs > 0 ) {
 				d = insertEndSpace( d );
-				d += ( secs > 1 ) ?
-										String( secs ) + " сек." :
-										"1 секунда";
+				d += ( secs > 1 ) ? String( secs ) + " сек." : "1 секунда";
 			}		 
 			return d;
 		}

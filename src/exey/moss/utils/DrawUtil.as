@@ -4,6 +4,7 @@ package exey.moss.utils
 	import flash.display.Graphics;
 	import flash.display.SpreadMethod;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author Exey Panteleev
@@ -47,8 +48,8 @@ package exey.moss.utils
 			graphics.drawRect(startX, startY, width, height)
 		}		
 		
-		static public function borderedRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, alpha:Number):void {
-			graphics.lineStyle(borderThickness, borderColor);
+		static public function borderedRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, alpha:Number, borderAlpha:Number = 1, pixelHinting:Boolean = false):void {
+			graphics.lineStyle(borderThickness, borderColor, borderAlpha, pixelHinting);
 			graphics.beginFill(color, alpha);
 			graphics.drawRect(startX, startY, width, height)
 		}
@@ -161,5 +162,34 @@ package exey.moss.utils
 			//graphics.moveTo(100, 100); 
 			//graphics.lineTo(200, 200);
 		}
+		
+		/**
+		 * Draw Flower
+		 * @param	g
+		 * @param	color
+		 * @param	size
+		 */
+		static public function flower(g:Graphics, color:uint, size:Number):void 
+		{
+			const RAD:Number = Math.PI / 180;
+			const petalsCount:int = 5;			
+			var radius:int = size * .5;
+			var innerRadius:int = radius * .05;
+			var petalGage:Number = 360 / petalsCount;			
+			var angle:Number
+			for (var i:int = 1; i <= petalsCount; i++) {
+				angle = i * petalGage
+				var p1:Point = Point.polar(radius, angle * RAD);
+				var p2:Point = Point.polar(radius, (angle + petalGage / 2) * RAD);
+				var p3:Point = Point.polar(innerRadius, angle * RAD);
+				var p4:Point = Point.polar(radius, (angle - petalGage / 2) * RAD);
+				g.moveTo(p1.x, p1.y);
+				g.beginFill(color);
+				g.curveTo(p2.x, p2.y, p3.x, p3.y);
+				g.curveTo(p4.x, p4.y, p1.x, p1.y);
+				g.endFill();
+			}
+		}
+		
 	}
 }

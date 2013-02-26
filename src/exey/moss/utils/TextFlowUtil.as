@@ -23,7 +23,6 @@ package exey.moss.utils
 			var link:LinkElement = new LinkElement();
 			link.id = linkId;
 			link.addEventListener(FlowElementMouseEvent.CLICK, listener, false, 0, true);
-
 			var s:SpanElement = new SpanElement();
 			s.color = 0xFF0000;
 			s.text = text;
@@ -45,7 +44,6 @@ package exey.moss.utils
 			var leaf:FlowLeafElement;  
 			var htmlLeafs:Array = [];
 			var htmlTextFlow:TextFlow;
-			
 			/*// Configuration passed to any TextFlows the default importer is importing
 			var config:Configuration = new Configuration();
 			// take control of the tabkey - normally it will be ignored and used to move between widgets.
@@ -57,10 +55,7 @@ package exey.moss.utils
             ca.textDecoration=TextDecoration.UNDERLINE;
             config.defaultLinkNormalFormat = ca;	*/	
 			//htmlTextFlow = TextConverter.importToFlow(text, format, config);
-			
 			htmlTextFlow = TextConverter.importToFlow(text, format);
-			
-
 			////trace("addMessage", htmlTextFlow.numChildren, text)
 			htmlParagraph =	htmlTextFlow.getChildAt(0); // just get first, you can also for (var j:int = 0; j < htmlTextFlow.numChildren; j++) {
 			////trace("- ", htmlParagraph, htmlParagraph.getText(), htmlParagraph.textLength, text.length, ParagraphElement(htmlParagraph).getFirstLeaf(), ParagraphElement(htmlParagraph).getLastLeaf());
@@ -76,13 +71,9 @@ package exey.moss.utils
 				//leaf.color = channelColor;
 				leaf.color = color;
 				p.addChild(htmlLeafs[j]);
-				
-				
-				
 				////trace("-- ", leaf, SpanElement(leaf).text);
 				////trace("-- ", describeType(leaf).@name, leaf.format.color, FlowLeafElement(leaf).text);
 			}
-			
 			//return p;
 		}
 

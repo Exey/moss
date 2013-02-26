@@ -16,10 +16,11 @@
 		//
 		//--------------------------------------------------------------------------
 		
-		public function Container(parent:DisplayObjectContainer, width:Number, height:Number)
+		public function Container(parent:DisplayObjectContainer, width:Number = 0, height:Number = 0)
 		{
 			this.graphics.drawRect(0, 0, width, height);
-			parent.addChild(this);
+			if(parent)
+				parent.addChild(this);
 		}
 		
 		//--------------------------------------------------------------------------

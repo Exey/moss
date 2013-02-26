@@ -14,7 +14,7 @@ package exey.moss.gui.comps.window
 	 */
 	public class Popup extends CenteredWindowAbstract 
 	{
-		public var closeSignal:Signal;
+		public var closeSignal:Signal = new Signal();
 		protected var closeButton:EmptyButton;
 		protected var header:PopupHeader;
 		
@@ -31,7 +31,6 @@ package exey.moss.gui.comps.window
 		{
 			initContainer(width, height);
 			addHeader(title);
-			closeSignal = new Signal();
 		}
 		
 		protected function addHeader(title:String, type:String = "simple"):void 
@@ -44,7 +43,7 @@ package exey.moss.gui.comps.window
 		{
 			if (isNaN(width))
 				width = this.width			
-			closeButton = new EmptyButton(_container, width-80, 5, onClose);
+			closeButton = new EmptyButton(_container, width-30, 5, onClose);
 			closeButton.addChild(GuiFactory.closeButton());
 			closeButton.scaleX = 1.5;
 			closeButton.scaleY = 1.5;

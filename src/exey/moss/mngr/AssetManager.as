@@ -1,6 +1,6 @@
 package exey.moss.mngr
 {
-	import exey.moss.mngr.data.ResourceData;
+	import exey.moss.mngr.data.AssetData;
 	import exey.moss.utils.ObjectUtil;
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -12,7 +12,7 @@ package exey.moss.mngr
 	 * Content should be allowed by flash player security
 	 * @author Exey Panteleev
 	 */
-	public class ResourceManager
+	public class AssetManager
 	{
 
 		//--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		public function ResourceManager()
+		public function AssetManager()
 		{
 			
 		}
@@ -72,7 +72,9 @@ package exey.moss.mngr
 		{
 			if(cache[url] != null)
 			{
-				loadHandler(cache[url]);
+				var params:Array = [new AssetData(url, cache[url])];
+				params = params.concat(completeParams)
+				loadHandler.apply(null, params);
 				return;
 			}
 
@@ -89,7 +91,7 @@ package exey.moss.mngr
 				loader.load(url);
 			}
 		}
-
+		
 		/**
 		 * cancel the loading which was previously initiated by the load() method
 		 * @param url
@@ -146,27 +148,26 @@ package exey.moss.mngr
 			if (id == "")
 				id = new Date().getTime().toString();
 			unlinkGroupCompleteHandler(id);
-			var groupLoaded:Vector.<ResourceData> = new Vector.<ResourceData>();
+			var groupLoaded:Vector.<AssetData> = new Vector.<AssetData>();
 			var groupForLoading:Vector.<String> = new Vector.<String>();
 			for (var i:int = 0; i < group.length; i++)
 			{
 				var url:String = group[i];
-				if (ResourceManager.get(url))
-					groupLoaded.push(new ResourceData(url, ResourceManager.get(url)));
+				if (AssetManager.get(url))
+					groupLoaded.push(new AssetData(url, AssetManager.get(url)));
 				else
 					groupForLoading.push(url);
 			}
-			//trace("ResourceManagerItem/loadGroupWithCombatBulk", groupForLoading.length, groupForLoading);
 			if (groupForLoading.length == 0 && completeHandler != null)
 			{
 				completeHandler.apply(null, [groupLoaded].concat(completeParams));
 			}
 			else
 			{
-				var resourceManagerGroup:ResourceManagerGroup = new ResourceManagerGroup(groupForLoading, groupLoaded, completeHandler);
+				var resourceManagerGroup:AssetManagerGroup = new AssetManagerGroup(groupForLoading, groupLoaded, completeHandler);
 				resourceManagerGroup.id = id;
 				resourceManagerGroup.completeParams = completeParams;
-				resourceManagerGroup.addEventListener(Event.COMPLETE, deleteResourceManagerGroup);
+				resourceManagerGroup.addEventListener(Event.COMPLETE, deleteAssetManagerGroup);
 				resourceManagerGroups.push(resourceManagerGroup);
 			}
 		}
@@ -175,7 +176,7 @@ package exey.moss.mngr
 		{
 			for (var i:int = 0; i < resourceManagerGroups.length; i++)
 			{
-				var group:ResourceManagerGroup = resourceManagerGroups[i];
+				var group:AssetManagerGroup = resourceManagerGroups[i];
 				if (group.id == id)
 					group.unlinkCompleteHandler();
 			}
@@ -187,10 +188,10 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function deleteResourceManagerGroup(e:Event):void
+		static private function deleteAssetManagerGroup(e:Event):void
 		{
-			var group:ResourceManagerGroup = e.target as ResourceManagerGroup;
-			group.removeEventListener(Event.COMPLETE, deleteResourceManagerGroup);
+			var group:AssetManagerGroup = e.target as AssetManagerGroup;
+			group.removeEventListener(Event.COMPLETE, deleteAssetManagerGroup);
 			var index:uint = resourceManagerGroups.indexOf(group);
 			resourceManagerGroups[index] = null;
 			resourceManagerGroups.splice(index, 1);
@@ -228,7 +229,7 @@ package exey.moss.mngr
 				while(handlers.length)
 				{
 					var handler:Function = handlers.shift();
-					var params:Array = [new ResourceData(url, loader.content)];
+					var params:Array = [new AssetData(url, loader.content)];
 					params = params.concat(pendingHandlerCompleteParams[url])
 					delete pendingHandlerCompleteParams[url];
 					//trace("================ResourceManager====================", ObjectUtil.getKeys(pendingHandlerCompleteParams).length, "|", params)
@@ -255,9 +256,9 @@ package exey.moss.mngr
 
 }
 
-import exey.moss.helpers.stackTrace;
-import exey.moss.mngr.data.ResourceData;
-import exey.moss.mngr.ResourceManager;
+import exey.moss.debug.stackTrace;
+import exey.moss.mngr.data.AssetData;
+import exey.moss.mngr.AssetManager;
 import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
@@ -272,24 +273,24 @@ import flash.system.SecurityDomain;
 /**
  * @private
  */
-internal final class ResourceManagerGroup extends EventDispatcher
+internal final class AssetManagerGroup extends EventDispatcher
 {
 	private var completeHandler:Function;
-	private var groupLoaded:Vector.<ResourceData>;
+	private var groupLoaded:Vector.<AssetData>;
 	private var urls:Vector.<String> = new Vector.<String>();
-	private var result:Vector.<ResourceData>;
+	private var result:Vector.<AssetData>;
 	public var id:String;
 	public var completeParams:Array
 	
-	public function ResourceManagerGroup(urls:Vector.<String>, groupLoaded:Vector.<ResourceData>, completeHandler:Function):void
+	public function AssetManagerGroup(urls:Vector.<String>, groupLoaded:Vector.<AssetData>, completeHandler:Function):void
 	{
 		this.completeHandler = completeHandler;
 		this.groupLoaded = groupLoaded;
-		result = new Vector.<ResourceData>();
+		result = new Vector.<AssetData>();
 		this.urls = urls;
 		
 		for (var i:int = 0; i < urls.length; i++)
-			ResourceManager.load(urls[i], load_complete);
+			AssetManager.load(urls[i], load_complete);
 	}
 	
 	public function unlinkCompleteHandler():void
@@ -297,7 +298,7 @@ internal final class ResourceManagerGroup extends EventDispatcher
 		completeHandler = null;
 	}
 	
-	private function load_complete(data:ResourceData):void
+	private function load_complete(data:AssetData):void
 	{
 		result.push(data);
 		urls.splice(urls.indexOf(data.url), 1);
@@ -324,8 +325,8 @@ internal final class AnyResourceLoader extends EventDispatcher
 	{
 		trace("1:LOAD", url);
 		request = new URLRequest(url)
-		var ext:String = url.substr(url.lastIndexOf('.') + 1, url.length);
-		if (ext == "json" || ext == "js" || ext == "xml" || ext == "tmx")
+		var ext:String = url.substr(url.lastIndexOf('.') + 1, url.length).toLowerCase();
+		if (ext == "json" || ext == "js" || ext == "xml" || ext == "tmx" || ext == "dae" || ext == "css")
 		{
 			loader = new URLLoader()
 				//trace("loadNextFile", _currentItem.fileExtension )

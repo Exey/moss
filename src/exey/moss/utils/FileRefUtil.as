@@ -1,7 +1,12 @@
 package exey.moss.utils 
 {
+	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	/**
@@ -17,7 +22,7 @@ package exey.moss.utils
 			name = pathSplit[pathSplit.length - 1];
 			if (!withExtension)
 				name = name.split(".")[0]
-			return name
+			return name;
 		}
 		
 		static public function saveBytes(ba:ByteArray, fileName:String = null):void {
@@ -32,7 +37,7 @@ package exey.moss.utils
 			function select(e:Event):void {
 				fr.removeEventListener(Event.SELECT, arguments.callee);
 				fr.addEventListener(Event.COMPLETE, complete);
-				fr.load();				
+				fr.load();
 			}
 			function complete(e:Event):void {
 				fr.removeEventListener(Event.COMPLETE, arguments.callee);
@@ -45,6 +50,20 @@ package exey.moss.utils
 				completeHandler.apply(null, [e.target.content]);
 			}
 		}
+		
+		static public function readBinary(f:File, handler:Function):void 
+		{
+			var fs:FileStream=new FileStream();
+			var ba:ByteArray=new ByteArray();
+			fs.open(f, FileMode.READ);
+			fs.readBytes(ba);
+			fs.close();
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event):void {
+				trace("3:CAN'T READ FILE AS BINARY", f.url)
+			})
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handler);
+			loader.loadBytes(ba);
+		}
 	}
-
 }

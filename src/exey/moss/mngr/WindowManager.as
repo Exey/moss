@@ -4,7 +4,7 @@ package exey.moss.mngr
 	import exey.moss.gui.comps.events.WindowEvent;
 	import exey.moss.gui.comps.window.CenteredWindowAbstract;
 	import exey.moss.gui.comps.window.Window;
-	import exey.moss.helpers.stackTrace;
+	import exey.moss.debug.stackTrace;
 	import flash.display.DisplayObjectContainer;
 	/**
 	 * ...

@@ -7,7 +7,6 @@
 	public class Data {
 		private var _name:String;
 		protected var vars:Vector.<IVar> = new Vector.<IVar>();
-		
 		//--------------------------------------------------------------------------
 		//
 		//  Constructor
@@ -327,7 +326,7 @@
 			return null;
 		}
 		
-		protected function updateVar(name:String, value:Object):void
+		protected function updateVar(name:String, value:Object, signal:Boolean = false):IVar
 		{
 			var v:IVar;
 			for (var i:uint = 0; i < vars.length; i++)
@@ -336,10 +335,11 @@
 				if (v.name == name)
 				{
 					(v as Object).value = value;
-					v.signal.dispatch((v as Object).value);
-					break;
+					if (signal) v.signal.dispatch((v as Object).value);
+					return v;
 				}
 			}
+			return null
 		}
 		
 		//--------------------------------------------------------------------------

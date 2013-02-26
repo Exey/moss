@@ -137,7 +137,7 @@ package exey.moss.mngr
 		static public function fadeSound(soundData:SoundData, targetVolume:Number = 0, fadeDuration:Number = 1, onComplete:Function = null):void
 		{
 			var fadeChannel:SoundChannel = soundData.channel;
-			Actuate.tween(fadeChannel, fadeDuration, {_sound_volume:targetVolume}).onComplete(onComplete).ease(Quad.easeInOut)
+			Actuate.tween(fadeChannel.soundTransform, fadeDuration, {volume:targetVolume}).onComplete(onComplete).ease(Quad.easeInOut)
 		}
 		
 		static private function playBySoundData(soundData:SoundData, volume:Number = 1, startTime:Number = 0, loops:int = 0):void 

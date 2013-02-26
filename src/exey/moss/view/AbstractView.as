@@ -2,13 +2,13 @@
 {
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Quad;
-	import flash.display.Sprite;
+	import exey.moss.gui.comps.container.Container;
 	
 	/**
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class AbstractView extends Sprite implements IView
+	public class AbstractView extends Container implements IView
 	{
 		//--------------------------------------------------------------------------
 		//
@@ -18,7 +18,7 @@
 		
 		public function AbstractView()
 		{
-			
+			super(null, 0, 0);
 		}
 		
 		//--------------------------------------------------------------------------

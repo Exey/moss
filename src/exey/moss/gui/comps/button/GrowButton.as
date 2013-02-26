@@ -2,6 +2,7 @@ package exey.moss.gui.comps.button
 {
 	import exey.moss.utils.LoaderUtil;
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
@@ -48,12 +49,14 @@ package exey.moss.gui.comps.button
 		
 		protected function growDown():void 
 		{
+			if (!skin) return;
 			this.skin.scaleX = 1;
 			this.skin.scaleY = 1;
 		}
 		
 		protected function growUp():void 
 		{
+			if (!skin) return;
 			this.skin.scaleX = growRatio;
 			this.skin.scaleY = growRatio;
 		}
@@ -74,6 +77,9 @@ package exey.moss.gui.comps.button
 			return skin as Bitmap
 		}
 		
+		public function add(displayObject:DisplayObject):void 
+		{
+			addChild(displayObject)
+		}
 	}
-
 }

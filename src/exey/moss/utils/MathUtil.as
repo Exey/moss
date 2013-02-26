@@ -1,6 +1,7 @@
 package exey.moss.utils 
 {
 	import flash.geom.Point;
+	import flash.geom.Vector3D;
 	/**
 	 * ...
 	 * @author Exey Panteleev
@@ -53,6 +54,18 @@ package exey.moss.utils
 			var dY:Number = toY - fromY;
 			return Math.sqrt(dX*dX + dY*dY);
 		}
+		
+		static public function distance3d(from:Vector3D, to:Vector3D):void 
+		{
+			
+		}
+		
+		private function nearRatio(min:Number, max:Number, value:Number):Number
+		{
+			var length:Number = Math.abs(max - min);
+			var nearness:Number = Math.abs(max - value);
+			return nearness/length
+		}		
 		
 	}
 }

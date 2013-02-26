@@ -1,6 +1,7 @@
 package exey.moss.gui.comps.text 
 {
 	import exey.moss.gui.comps.text.TextFieldLabel;
+	import exey.moss.debug.stackTrace;
 	import exey.moss.utils.DrawUtil;
 	import flash.display.DisplayObjectContainer;
 	import flash.text.TextField;
@@ -8,35 +9,35 @@ package exey.moss.gui.comps.text
 	import exey.moss.gui.abstract.ComponentAbstract;
 	
 	/**
-	 * ...
-	 * @author 
+	 * Primitive Label
+	 * @author Exey Panteleev
 	 */
 	public class SimpleLabel extends ComponentAbstract
 	{
-		private var _tf:TextField;
-		
-		private var _horizontalPadding:Number;
-		private var _verticalPadding:Number;
+		private var textField:TextField;
+		private var horizontalPadding:Number;
+		private var verticalPadding:Number;
 		
 		public function SimpleLabel(parent:DisplayObjectContainer, xpos:Number, ypos:Number, text:String, color:uint, textFormat:TextFormat, embedFonts:Boolean = false, horizontalPadding:Number = 5, verticalPadding:Number = 5)
 		{
-			_horizontalPadding = horizontalPadding;
-			_verticalPadding = verticalPadding;
+			this.horizontalPadding = horizontalPadding;
+			this.verticalPadding = verticalPadding;
 			initialize(text, color, textFormat, embedFonts);
 			super(parent, xpos, ypos);
 		}
 		
 		private function initialize(text:String, color:uint, textFormat:TextFormat, embedFonts:Boolean):void
 		{
-			_tf = new TextFieldLabel(this, _horizontalPadding, _verticalPadding, textFormat, text, embedFonts);
-			DrawUtil.roundRect(this.graphics, 0, 0, _tf.width + _horizontalPadding*2, _tf.height + _verticalPadding*2, color, 5);
+			stackTrace(text)
+			textField = new TextFieldLabel(this, horizontalPadding, verticalPadding, textFormat, text, embedFonts);
+			DrawUtil.roundRect(this.graphics, 0, 0, textField.width + horizontalPadding*2, textField.height + verticalPadding*2, color, 5);
 		}
 		
 		public function set text(value:String):void 
 		{
-			_tf.text = value;
+			stackTrace(value)
+			textField.text = value;
 		}
 		
 	}
-
 }

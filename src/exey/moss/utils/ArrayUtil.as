@@ -6,6 +6,24 @@ package exey.moss.utils
  */
 	public class ArrayUtil {
 		
+		/** Returns an index of nearest element of array to value*/
+		static public function nearest(arr:Array, value:Number):Number {
+			if (arr.length <= 1) { return 0; }
+			// must be null as zero would mean an exact match
+			var near:Number = NaN;
+			var neardiff:Number = NaN;
+			var diff:Number;
+			for (var i:int = 0; i < arr.length; i++) {
+					diff = Math.abs(arr[i] - value);
+					//trace("Diff:"+diff);
+					if (diff <= neardiff || isNaN(neardiff)) {
+							neardiff = diff;
+							near = i;
+					}
+			}
+			return near;
+		}		
+		
 		/**
 		 * Counting the properties(with specified value) of elements in array
 		 * @param	arr The Array
@@ -61,7 +79,8 @@ package exey.moss.utils
 		{
 			var result:Array = []
 			for (var name:String in obj) {
-				obj[name].id = name
+				if(!(obj[name] is Number))
+					obj[name].id = name
 				//////trace("object2Array", name, obj[name].id)
 				result.push(obj[name])
 			}
@@ -125,6 +144,56 @@ package exey.moss.utils
 				result += array[i];
 			}
 			return result;
+		}
+		
+		static public function columnFrom2DArrayByIndex(source:Array, index:uint):Array 
+		{
+			var result:Array = [];
+			var sourceLength:int = source.length;
+			for (var i:int = 0; i < sourceLength; i++)
+				result.push(source[i][index])
+			return result
+		}
+		
+		static public function objectByPropertyFromArray(propertyName:String, propertyValue:String, source:Array):Object 
+		{
+			var length:uint = source.length;
+			var item:Object;
+			for (var i:int = 0; i < length; i++) {
+				item = source[i]
+				if (item[propertyName] == propertyValue)
+					return item;
+			}
+			return null
+		}
+		
+		static public function objectsAsArrayByPropertyFromArray(propertyName:String, propertyValue:String, source:Array):Array 
+		{
+			var length:uint = source.length;
+			var item:Object;
+			var items:Array = [];
+			for (var i:int = 0; i < length; i++) {
+				item = source[i]
+				if (item[propertyName] == propertyValue)
+					items.push(item)
+			}
+			return items
+		}
+		
+		static public function objectsAsArrayByConditionFromArray(func:Function, source:Array):Array 
+		{
+			return source.filter(func);
+		}
+		
+		static public function rowFrom2DArrayByValueAndIndex(colValue:String, colIndex:Number, source:Array):Array
+		{
+			var item:Array
+			var length:uint = source.length;
+			for (var i:int = 0; i < length; i++) {
+				item = source[i];
+				if (item[colIndex] == colValue) break;
+			}
+			return item
 		}
 	}
 }

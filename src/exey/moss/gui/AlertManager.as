@@ -34,12 +34,12 @@ package exey.moss.gui
 				alertMessage.hide();
 			if (animate)
 			{
-				alertMessage = new AlertMessage(alertContainer, 0, 0, text, color);
-				AnimationUtil.slideY(alertMessage, 1, Cubic.easeOut, 0);
+				alertMessage = new AlertMessage(alertContainer, 150, 150, text, color);
+				AnimationUtil.slideY(alertMessage, 1, Cubic.easeOut, 200);
 			}
 			else
 			{
-				alertMessage = new AlertMessage(alertContainer, 0, 0, text, color);
+				alertMessage = new AlertMessage(alertContainer, 150, 150, text, color);
 			}
 		}
 		

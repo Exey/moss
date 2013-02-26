@@ -3,6 +3,7 @@ package exey.moss.gui.comps.control
 	import com.eclecticdesignstudio.motion.Actuate;
 	import exey.moss.gui.abstract.ComponentAbstract;
 	import exey.moss.gui.comps.text.TextFieldLabel;
+	import exey.moss.debug.stackTrace;
 	import exey.moss.utils.AlignUtil;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -10,6 +11,7 @@ package exey.moss.gui.comps.control
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import org.osflash.signals.Signal;
 	
 	/**
 	 * ...
@@ -53,6 +55,8 @@ package exey.moss.gui.comps.control
 		
 		public var additionalText:String = "";
 		
+		public var updated:Signal = new Signal();
+		
 		public function RectProgressBar(parent:DisplayObjectContainer, xpos:Number, ypos:Number, width:Number, height:Number, color:uint, borderColor:uint, progressColor:uint, borderWidth:Number = 3, textFormat:TextFormat = null, embedFonts:Boolean = false)
 		{
 			super(parent, xpos, ypos);
@@ -73,7 +77,7 @@ package exey.moss.gui.comps.control
 			}
 			else
 			{
-				textField = new TextFieldLabel(this, 0, 0, new TextFormat( "Arial", 20, 0xFFFFFF, "bold" ));
+				textField = new TextFieldLabel(this, 0, 0, new TextFormat( "Arial", 14, 0xFFFFFF, "bold" ));
 				textField.embedFonts = true;
 			}
 			textField.mouseEnabled = false;
@@ -96,6 +100,8 @@ package exey.moss.gui.comps.control
 			// draw progress
 			graphics.lineStyle();
 			graphics.beginFill(progressColor);
+			//stackTrace(progressPadding, currentPercent, barWidth, distance, barWidth * currentPercent - distance, barHeight - distance)
+			graphics.beginFill(0xFFFF00, .7)
 			graphics.drawRoundRect(progressPadding, progressPadding, barWidth * currentPercent - distance, barHeight - distance, 5);
 			graphics.beginFill(0xffffff, .6)
 			graphics.drawRoundRect(0, 1, barWidth, 5, 8)
@@ -103,6 +109,7 @@ package exey.moss.gui.comps.control
 		
 		public function update(currentValue:Number, startValue:Number, endValue:Number):void
 		{
+			//stackTrace(currentValue, startValue, endValue)
 			_endValue = endValue;
 			Actuate.tween(this, 0.5, { 'value': currentValue } ).onComplete(onUpdateComplete);
 			currentPercent = (currentValue-startValue) / (endValue-startValue);
@@ -114,7 +121,7 @@ package exey.moss.gui.comps.control
 		
 		private function onUpdateComplete():void
 		{
-			this.dispatchEvent(new Event(Event.COMPLETE));
+			updated.dispatch();
 		}
 		
 	}

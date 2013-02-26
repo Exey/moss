@@ -3,6 +3,7 @@ package exey.moss.utils
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Cubic;
 	import com.eclecticdesignstudio.motion.easing.IEasing;
+	import exey.moss.debug.stackTrace;
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
 	/**
@@ -14,8 +15,10 @@ package exey.moss.utils
 		static public function flyIn(target:DisplayObject, time:Number, ease:IEasing, containerWidth:Number, containerHeight:Number):void
 		{
 			target.cacheAsBitmap = true
-			target.x = target.x+containerWidth ;
-			target.y = target.y+containerHeight ;
+			//stackTrace(target.x, target.y)
+			target.x = target.x+containerWidth*0.5;
+			target.y = target.y+containerHeight*0.5;
+			//stackTrace(target.x, target.y, containerWidth, containerHeight)
 			target.scaleX = .025;
 			target.scaleY = .025;
 			Actuate.tween(target, time, { scaleX: 1, scaleY: 1 } ).ease(ease);
@@ -24,13 +27,13 @@ package exey.moss.utils
 		static public function flyOut(target:DisplayObject, time:Number, ease:IEasing):void
 		{
 			target.cacheAsBitmap = true
-			Actuate.tween(target, time, { scaleX: .025, scaleY: .025 }).ease(ease);
+			Actuate.tween(target, time, { scaleX: .025, scaleY: .025 } ).ease(ease);
 		}
 		
 		static public function flyOutTo(target:DisplayObject, time:Number, ease:IEasing, destinationPoint:Point):void
 		{
 			target.cacheAsBitmap = true
-			Actuate.tween(target, time, { scaleX: .025, scaleY: .025, x:destinationPoint.x, y:destinationPoint.y}).ease(ease);
+			Actuate.tween(target, time, { scaleX: .025, scaleY: .025, x:destinationPoint.x, y:destinationPoint.y } ).ease(ease);
 		}
 		
 		static public function fadeIn(target:DisplayObject, time:Number, ease:IEasing):void

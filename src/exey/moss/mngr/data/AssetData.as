@@ -4,12 +4,12 @@
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class ResourceData
+	public class AssetData
 	{
 		public var url:String;
 		public var content:*;
 		
-		public function ResourceData(url:String, content:*)
+		public function AssetData(url:String, content:*)
 		{
 			this.url = url;
 			this.content = content;
@@ -17,7 +17,7 @@
 		
 		public function toString():String
 		{
-			return "[ResourceData url: " + url + "  content: " + content + "]";
+			return "[AssetData url: " + url + "  content: " + content + "]";
 		}
 		
 	}

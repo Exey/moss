@@ -3,7 +3,7 @@ package exey.moss.gui.comps.window
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Cubic;
 	import exey.moss.utils.AnimationUtil;
-	import exey.moss.helpers.stackTrace;
+	import exey.moss.debug.stackTrace;
 	import flash.display.Sprite;
 	
 	/**
@@ -13,6 +13,9 @@ package exey.moss.gui.comps.window
 	public class CenteredWindowAbstract extends Sprite {
 		private var _width:Number;
 		private var _height:Number;
+		
+		private var originX:Number;
+		private var originY:Number;
 		
 		static public const ANIMATION_DURATION:Number = 0.33;
 		
@@ -48,6 +51,8 @@ package exey.moss.gui.comps.window
 		
 		public function animateIn():void
 		{
+			originX = this.x
+			originY = this.y
 			AnimationUtil.flyIn(this, ANIMATION_DURATION, Cubic.easeOut, _width, _height);
 			AnimationUtil.fadeIn(this, ANIMATION_DURATION, Cubic.easeIn);
 			this.visible = true;
@@ -62,8 +67,11 @@ package exey.moss.gui.comps.window
 		
 		public function destroy():void
 		{
-			if (parent && parent.contains(this))
+			if (parent && parent.contains(this)){
+				this.x = originX
+				this.y = originY
 				parent.removeChild(this);
+			}
 		}
 	}
 }

@@ -38,9 +38,9 @@ package exey.moss.gui.comps.control
 		
 		private function initialize(text:String, color:uint):void
 		{
-			var skin:Sprite = new Sprite();
-			DrawUtil.rect(skin.graphics, 0, 0, messageWidth, 100, 0xFEF5C2, 1)
-			this.addChild(skin);
+			//var skin:Sprite = new Sprite();
+			//DrawUtil.rect(skin.graphics, 0, 0, messageWidth, 100, 0xFEF5C2, 1)
+			//this.addChild(skin);
 			var format:TextFormat
 			var multiline:Boolean = false;
 			var wordWrap:Boolean = false;

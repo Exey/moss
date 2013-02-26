@@ -17,7 +17,7 @@ package exey.moss.gui.comps.button
 		private var _selected:Boolean;		
 		public function get selected():Boolean
 		{
-			return selected;
+			return _selected;
 		}
 		public function set selected(value:Boolean):void 
 		{

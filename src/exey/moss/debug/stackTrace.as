@@ -1,4 +1,4 @@
-package exey.moss.helpers
+package exey.moss.debug
 {
 	/**
 	 * based on by.blooddy.core.utils.getCallerInfo
@@ -10,7 +10,7 @@ package exey.moss.helpers
 		CONFIG::debug {
 			var stack:String = new Error().getStackTrace();
 			//trace(stack);
-			var match:Array =stack.match( /(?<=^\sat\s).+?(?=\(\))/gm )
+			var match:Array = stack.match( /(?<=^\sat\s).+?(?=\(\))/gm )
 			var instance:String = match[1];
 			var callerInstance:String = match[2];
 			var functionName:String;
@@ -42,7 +42,7 @@ package exey.moss.helpers
 					result += "0";
 				return result + s;
 			}
-			rest.unshift("4:[" + formatDate(date.getUTCHours()) + ":"
+			rest.unshift("[" + formatDate(date.getUTCHours()) + ":"
 							 + formatDate(date.getUTCMinutes()) + ":"
 							 + formatDate(date.getSeconds()) 	+ "."
 							 + formatDate(date.getMilliseconds(), 3)+"] "+callerClass+" -> "+className+"/"+functionName+"()");
