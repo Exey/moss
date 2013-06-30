@@ -1,5 +1,6 @@
 package exey.moss.utils{
 	import flash.display.BitmapData;
+	import flash.filters.ColorMatrixFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	/**
@@ -7,6 +8,8 @@ package exey.moss.utils{
 	 * @author Exey
 	 */
 	public class ColorUtil {
+		
+		static public const DESATURATE_FILTER:ColorMatrixFilter = new ColorMatrixFilter([0.212671, 0.715160, 0.072169, 0, 0, 0.212671, 0.715160, 0.072169, 0, 0, 0.212671, 0.715160, 0.072169, 0, 0, 0, 0, 0, 1, 0]);
 		
 		/**
 		 * Example: <code>
@@ -44,13 +47,15 @@ package exey.moss.utils{
 								Math.abs(rgb1.b - rgb2.b)) / (256.0 * 3);
 		}
 		
-		static public function averageColorFromBitmapRegion(b:BitmapData, x:Number, y:Number, w:Number, h:Number):uint {
+		static public function averageColorFromBitmapRegion(b:BitmapData, x:Number, y:Number, w:Number, h:Number):uint
+		{
 			var rect:Rectangle = new Rectangle( x, y, w, h );
 			var box:BitmapData = new BitmapData( w, h, false );
 			box.copyPixels( b, rect, new Point() );
 			return ColorUtil.averageColor( box );
 		}
 		
+		/** bitshifting way (slow) */
 		static public function averageColor( source:BitmapData ):uint
 		{
 			var red:Number = 0;
@@ -73,8 +78,34 @@ package exey.moss.utils{
 			green /= count;
 			blue /= count;
 			return red << 16 | green << 8 | blue;
-		}		
-			
+		}
+		
+		/** histogram way (fast) */
+		static public function averageColorByHistogram(source:BitmapData):uint 
+		{
+			 var histogram:Vector.<Vector.<Number>> = source.histogram();
+			 
+			 var red:Number = 0;
+			 var green:Number = 0;
+			 var blue:Number = 0;
+			 
+			 var w:Number = source.width;
+			 var h:Number = source.height;
+			 var countInverse:Number = 1 / (w*h);
+			 
+			 for (var i:int = 0; i < 256; ++i) {
+			  red += i * histogram[0][i];
+			  green += i * histogram[1][i];
+			  blue += i * histogram[2][i];
+			 }
+			 
+			 red *= countInverse;
+			 green *= countInverse;
+			 blue *= countInverse;
+			 
+			 return red << 16 | green << 8 | blue;
+		}
+		
 		/**
 		 * thanks @see http://www.easyrgb.com/math.php?MATH=M19#text19
 		 * @param	r
@@ -82,7 +113,8 @@ package exey.moss.utils{
 		 * @param	b
 		 * @return
 		 */
-		static public function rgbToHSL(r:Number, g:Number, b:Number):Object {
+		static public function rgbToHSL(r:Number, g:Number, b:Number):Object
+		{
 			var hsl:Object = { };
 			
 			r = r/255.0;
@@ -127,25 +159,28 @@ package exey.moss.utils{
 			return hsl;
 		}
 		
-		static public function hex2RGB ( hex:Number ):Object {
-			var rgb:Object = { };
+		static public function hex2RGB ( hex:Number ):Object
+		{
+			var rgb:Object = {};
 			rgb.r = (hex & 0xff0000) >> 16;
 			rgb.g = (hex & 0x00ff00) >> 8;
 			rgb.b = hex & 0x0000ff;
 			return rgb;
 		}
 		
-		static public function numberToHex(number:uint, minimumLength:uint = 1, showHexDenotation:Boolean = true):String {
+		static public function numberToHex(number:uint, minimumLength:uint = 1, showHexDenotation:Boolean = true):String
+		{
             var hex:String = number.toString(16).toUpperCase();
 			while (minimumLength > hex.length) 
 				hex = "0" + hex;
             if (showHexDenotation) 
-				hex = "0x" + hex; 
+				hex = "0x" + hex;
             return hex;
         }
 
 		
-		static public function rgbToMatrix ( r:Number, g:Number, b:Number, a:Number ):Array {
+		static public function rgbToMatrix ( r:Number, g:Number, b:Number, a:Number ):Array
+		{
 			var matrix:Array = [];
 			matrix = matrix.concat([Number(Number(r/255).toFixed(3)), 0, 0, 0, 0]); // red
 			matrix = matrix.concat([0, Number(Number(g/255).toFixed(3)), 0, 0, 0]); // green
@@ -154,7 +189,24 @@ package exey.moss.utils{
 			return matrix;
 		}
 		
-		static public function findApproxColorName(hex:Number, colorsDictionary:Array, approxColorNames:Array):String {
+		/**
+		 * http://en.wikipedia.org/wiki/YIQ
+		 * @param	r
+		 * @param	g
+		 * @param	b
+		 * @return
+		 */
+		static public function rgbToYIQ(r:Number, g:Number, b:Number):Object 
+		{
+			var yiq:Object = {};
+			yiq.y = 0.299 * r + 0.587 * g + 0.114 * b;
+			yiq.i = 0.596 * r - 0.274 * g - 0.322 * b;
+			yiq.q = 0.211 * r - 0.522 * g + 0.311 * b;
+			return yiq;
+		}		
+		
+		static public function findApproxColorName(hex:Number, colorsDictionary:Array, approxColorNames:Array):String
+		{
 			var rgb:Object = ColorUtil.hex2RGB(hex);
 			var r:Number = rgb.r; 
 			var g:Number = rgb.g; 
@@ -182,6 +234,26 @@ package exey.moss.utils{
 				}
 			}
 			return colorsDictionary[cl][1];
+		}
+		
+		/**
+		 * luminance("6699CC", 0.2);	// "#7ab8f5" - 20% lighter
+		 * luminance("69C", -0.5);	// "#334d66" - 50% darker
+		 * @param	color
+		 * @param	lum
+		 * @return
+		 */
+		static public function luminance(color:uint, lum:Number):int 
+		{
+			var hex:String = numberToHex(color, 1, false);
+			lum = lum || 0;
+			var resultHex:String = "", c:int, cs:String, i:int;
+			for (i = 0; i < 3; i++) {
+				c = parseInt(hex.substr(i*2,2), 16);
+				cs = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+				resultHex += ("00"+cs).substr(cs.length);
+			}
+			return parseInt("0x"+resultHex);
 		}
 		
 	}

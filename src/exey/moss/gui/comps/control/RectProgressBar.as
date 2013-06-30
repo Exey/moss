@@ -3,10 +3,8 @@ package exey.moss.gui.comps.control
 	import com.eclecticdesignstudio.motion.Actuate;
 	import exey.moss.gui.abstract.ComponentAbstract;
 	import exey.moss.gui.comps.text.TextFieldLabel;
-	import exey.moss.debug.stackTrace;
 	import exey.moss.utils.AlignUtil;
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
@@ -14,69 +12,68 @@ package exey.moss.gui.comps.control
 	import org.osflash.signals.Signal;
 	
 	/**
-	 * ...
+	 * Progress bar drawed with Graphics
 	 * @author Exey Panteleev
 	 */
 	public class RectProgressBar extends ComponentAbstract
 	{
-		private var textField:TextField;
-		private var color:uint;
-		private var borderColor:uint;
-		private var progressColor:uint;
-		private var barWidth:Number;
-		private var barHeight:Number;		
-		private var currentPercent:Number = 0;
+		protected var textField:TextField;
+		protected var color:uint;
+		protected var borderColor:uint;
+		protected var progressColor:uint;
+		protected var barWidth:Number;
+		protected var barHeight:Number;		
+		protected var currentPercent:Number = 0;
 		
-		private var _showEndValue:Boolean = false;
+		protected var _showEndValue:Boolean = false;
 		public function get showEndValue():Boolean { return _showEndValue; }
 		public function set showEndValue(value:Boolean):void {
 			_showEndValue = value;
 		}
-		private var _borderWidth:Number = 3;
+		protected var _borderWidth:Number = 3;
 		public function get borderWidth():Number { return _borderWidth; }
-		public function set borderWidth(value:Number):void 
-		{
+		public function set borderWidth(value:Number):void {
 			_borderWidth = value;
 		}
-		private var _value:Number;
+		protected var _value:Number;
 		public function get value():Number { return _value; }
-		public function set value(value:Number):void 
-		{
+		public function set value(value:Number):void {
 			_value = value;
-			if (_showEndValue) {
-				textField.text = int(_value) + "/" + _endValue + additionalText;
-			}else {
-				textField.text = String(int(_value)) + additionalText;;
-			}
+			if (_showEndValue) { textField.text = _value + "/" + _endValue + additionalText; }
+			else 			   { textField.text = _value.toFixed(1) + additionalText;			  }
 			AlignUtil.toHorizontalCenter(textField, this);
+			
+			currentPercent = (value-startValue) / (endValue-startValue);
+			if (isNaN(currentPercent)) currentPercent = 0;
+			if(value >= startValue) draw();
 		}
-		private var _endValue:Number;
+		protected var startValue:Number;
+		protected var _endValue:Number;
 		public function get endValue():Number { return _endValue; }
 		
 		public var additionalText:String = "";
 		
 		public var updated:Signal = new Signal();
 		
-		public function RectProgressBar(parent:DisplayObjectContainer, xpos:Number, ypos:Number, width:Number, height:Number, color:uint, borderColor:uint, progressColor:uint, borderWidth:Number = 3, textFormat:TextFormat = null, embedFonts:Boolean = false)
+		public function RectProgressBar(parent:DisplayObjectContainer, xpos:Number, ypos:Number, width:Number, height:Number, color:uint, borderColor:uint, progressColor:uint, borderWidth:Number = 3, textFormat:TextFormat = null, embedFonts:Boolean = false, additionalText:String = "")
 		{
 			super(parent, xpos, ypos);
 			barWidth = width;
 			barHeight = height;
-			color = color;
-			borderColor = borderColor;
-			progressColor = progressColor;
+			this.color = color;
+			this.borderColor = borderColor;
+			this.progressColor = progressColor;
+			if (additionalText.length)
+				this.additionalText = additionalText;
 			initialize(textFormat, embedFonts);
 		}
 		
-		private function initialize(textFormat:TextFormat, embedFonts:Boolean):void
+		protected function initialize(textFormat:TextFormat, embedFonts:Boolean):void
 		{
-			if (textFormat)
-			{				
+			if (textFormat) {				
 				textField = new TextFieldLabel(this, 0, 0, textFormat);
 				textField.embedFonts = embedFonts;
-			}
-			else
-			{
+			} else {
 				textField = new TextFieldLabel(this, 0, 0, new TextFormat( "Arial", 14, 0xFFFFFF, "bold" ));
 				textField.embedFonts = true;
 			}
@@ -99,29 +96,21 @@ package exey.moss.gui.comps.control
 			graphics.drawRoundRect(0, 0, barWidth, barHeight, 10);
 			// draw progress
 			graphics.lineStyle();
-			graphics.beginFill(progressColor);
-			//stackTrace(progressPadding, currentPercent, barWidth, distance, barWidth * currentPercent - distance, barHeight - distance)
-			graphics.beginFill(0xFFFF00, .7)
+			graphics.beginFill(progressColor, 1);
 			graphics.drawRoundRect(progressPadding, progressPadding, barWidth * currentPercent - distance, barHeight - distance, 5);
+			graphics.endFill();
+			// glare
 			graphics.beginFill(0xffffff, .6)
 			graphics.drawRoundRect(0, 1, barWidth, 5, 8)
 		}
 		
 		public function update(currentValue:Number, startValue:Number, endValue:Number):void
 		{
-			//stackTrace(currentValue, startValue, endValue)
+			//deb(currentValue, startValue, endValue)
 			_endValue = endValue;
-			Actuate.tween(this, 0.5, { 'value': currentValue } ).onComplete(onUpdateComplete);
-			currentPercent = (currentValue-startValue) / (endValue-startValue);
-			if (isNaN(currentPercent))
-				currentPercent = 0;
-			if(currentValue >= startValue)
-				draw();
-		}
-		
-		private function onUpdateComplete():void
-		{
-			updated.dispatch();
+			this.startValue = startValue;
+			Actuate.tween(this, 0.5, { 'value': currentValue } ).onComplete(function():void { updated.dispatch() } );
+			if(currentValue >= startValue) draw();
 		}
 		
 	}

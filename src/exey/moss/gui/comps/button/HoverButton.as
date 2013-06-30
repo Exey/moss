@@ -10,17 +10,9 @@ package exey.moss.gui.comps.button
 	 */
 	public class HoverButton extends EmptyButton 
 	{
-		private var _hoverSkin:Sprite;
-		
-		public function get hoverSkin():Sprite 
-		{
-			return _hoverSkin;
-		}
-		
-		public function set hoverSkin(value:Sprite):void 
-		{
-			_hoverSkin = value;
-		}		
+		private var _hoverSkin:Sprite;		
+		public function get hoverSkin():Sprite { return _hoverSkin;}		
+		public function set hoverSkin(value:Sprite):void { _hoverSkin = value;}
 		
 		public function HoverButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, skin:Sprite, hoverSkin:Sprite) 
 		{
@@ -31,6 +23,12 @@ package exey.moss.gui.comps.button
 			this.addEventListener(MouseEvent.ROLL_OVER, handler_RollOver);
 			this.addEventListener(MouseEvent.ROLL_OUT, handler_RollOut);
 		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Event handlers
+		//
+		//--------------------------------------------------------------------------		
 		
 		private function handler_RollOver(e:MouseEvent):void 
 		{

@@ -188,7 +188,7 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function deleteAssetManagerGroup(e:Event):void
+		static private function deleteAssetManagerGroup(e:Event = null):void
 		{
 			var group:AssetManagerGroup = e.target as AssetManagerGroup;
 			group.removeEventListener(Event.COMPLETE, deleteAssetManagerGroup);
@@ -211,11 +211,11 @@ package exey.moss.mngr
 
 		static private function errorLoadHandler(e:IOErrorEvent):void
 		{
-			trace("3: ResourceManager ERROR LOAD", e.text)
+			trace("3: AssetManager ERROR LOAD", e.text)
 			handleResult(e.target as AnyResourceLoader);
 		}
 
-		static private function completeLoadHandler(e:Event):void
+		static private function completeLoadHandler(e:Event = null):void
 		{
 			handleResult(e.target as AnyResourceLoader);
 		}
@@ -253,10 +253,8 @@ package exey.moss.mngr
 		}
 		
 	}
-
 }
 
-import exey.moss.debug.stackTrace;
 import exey.moss.mngr.data.AssetData;
 import exey.moss.mngr.AssetManager;
 import flash.display.Loader;
@@ -265,6 +263,7 @@ import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
 import flash.media.Sound;
 import flash.net.URLLoader;
+import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.system.ApplicationDomain;
 import flash.system.LoaderContext;
@@ -286,11 +285,10 @@ internal final class AssetManagerGroup extends EventDispatcher
 	{
 		this.completeHandler = completeHandler;
 		this.groupLoaded = groupLoaded;
-		result = new Vector.<AssetData>();
 		this.urls = urls;
-		
+		result = new Vector.<AssetData>(urls.length);
 		for (var i:int = 0; i < urls.length; i++)
-			AssetManager.load(urls[i], load_complete);
+			AssetManager.load(urls[i], load_complete, i);
 	}
 	
 	public function unlinkCompleteHandler():void
@@ -298,9 +296,9 @@ internal final class AssetManagerGroup extends EventDispatcher
 		completeHandler = null;
 	}
 	
-	private function load_complete(data:AssetData):void
+	private function load_complete(data:AssetData, index:int):void
 	{
-		result.push(data);
+		result[index] = data;
 		urls.splice(urls.indexOf(data.url), 1);
 		if (urls.length == 0 && completeHandler != null)
 		{
@@ -326,23 +324,26 @@ internal final class AnyResourceLoader extends EventDispatcher
 		trace("1:LOAD", url);
 		request = new URLRequest(url)
 		var ext:String = url.substr(url.lastIndexOf('.') + 1, url.length).toLowerCase();
-		if (ext == "json" || ext == "js" || ext == "xml" || ext == "tmx" || ext == "dae" || ext == "css")
-		{
-			loader = new URLLoader()
-				//trace("loadNextFile", _currentItem.fileExtension )
+		if (ext == "json" || ext == "js" || ext == "xml" || ext == "tmx" || ext == "dae" || ext == "css") {
+			loader = new URLLoader();
 			loader.load(request);
-			loader.addEventListener(Event.COMPLETE, loader_complete); 
-			loader.addEventListener(IOErrorEvent.IO_ERROR, loader_error); 				
+			loader.addEventListener(Event.COMPLETE, loader_complete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loader_error);
 		}
-		else if (ext == "mp3")
-		{
+		else if (ext == "3ds" || ext == "flv") {
+			loader = new URLLoader();
+			loader.dataFormat = URLLoaderDataFormat.BINARY;
+			loader.load(request);
+			loader.addEventListener(Event.COMPLETE, loader_complete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loader_error);
+		}
+		else if (ext == "mp3") {
 			loader = new Sound();
 			loader.load(request);
 			loader.addEventListener(Event.COMPLETE, loader_complete);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, loader_error);
 		}
-		else
-		{
+		else {
 			var context:LoaderContext = new LoaderContext(true, ApplicationDomain.currentDomain);
 			if (Security.sandboxType != 'localTrusted') context.securityDomain = SecurityDomain.currentDomain;			
 			loader = new Loader();
@@ -365,14 +366,11 @@ internal final class AnyResourceLoader extends EventDispatcher
 		dispatchEvent(e)
 	}
 	
-	private function loader_complete(e:Event):void
+	private function loader_complete(e:Event = null):void
 	{
-		if (loader is URLLoader)
-			content = (loader as URLLoader).data;
-		else if (loader is Sound)
-			content = loader as Sound;
-		else // Loader
-			content = (loader as Loader).contentLoaderInfo.content;
+		if (loader is URLLoader)	content = (loader as URLLoader).data;
+		else if (loader is Sound)	content = loader as Sound;
+		else 						content = (loader as Loader).contentLoaderInfo.content;
 		var event:Event = new Event(Event.COMPLETE);
 		dispatchEvent(event);
 	}

@@ -1,6 +1,8 @@
 package exey.moss
 {
 	/**
+	 * @see https://github.com/exey/moss
+	 * 
 	 * Kit for game speedcoding on AS3/Flash
 	 * Dependencies:
 	 *   http://code.google.com/p/actuate/
@@ -9,7 +11,7 @@ package exey.moss
 	 */
 	public class Moss 
 	{		
-		static public const version:String = "0.003";
+		static public const version:String = "0.004";
 	}
 
 }

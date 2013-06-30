@@ -3,6 +3,7 @@ package exey.moss.utils
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.IBitmapDrawable;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	/**
@@ -39,14 +40,16 @@ package exey.moss.utils
 		
 		/**Proportional, decrease-only*/
 		static public function decrease(bigBitmapData:BitmapData, maxWidth:Number, maxHeight:Number = NaN):BitmapData
-		{			
+		{
 			var dx:Number = maxWidth / bigBitmapData.width;
 			var dy:Number = maxHeight / bigBitmapData.height;
 			if (dx >= 1 && dy >= 1) return bigBitmapData; // too small already
-			var scale:Number = (dx < 1 || dy < 1) ? Math.min(dx, dy) : 1;
+			var scale:Number 
+			if (isNaN(maxHeight)) scale = dx < 1 ? dx : 1;
+			else scale = (dx < 1 || dy < 1) ? Math.min(dx, dy) : 1;
 			var matrix:Matrix = new Matrix();
 			matrix.scale(scale, scale);
-			var result:BitmapData = new BitmapData(bigBitmapData.width * scale, bigBitmapData.height * scale, true, 0x000000);
+			var result:BitmapData = new BitmapData(Math.round(bigBitmapData.width * scale), Math.round(bigBitmapData.height * scale), true, 0x000000);
 			result.draw(bigBitmapData, matrix, null, null, null, true);
 			return result;
 		}
@@ -98,6 +101,98 @@ package exey.moss.utils
 					trace("3:CAN'T CROP width", bmd.width, "height", bmd.height); 
 					return bmd; }
 			return cropBitmapData(bmd, (bmd.width-size)*0.5, (bmd.height-size)*0.5, size, size)
+		}
+		
+		/**
+		 *	"Extremely Fast Line Algorithm"
+		 *	@author 	Po-Han Lin (original version: http://www.edepot.com/algorithm.html)
+		 *	@author 	Simo Santavirta (AS3 port: http://www.simppa.fi/blog/?p=521)
+		 *	@author 	Jackson Dunstan (minor formatting: http://jacksondunstan.com/articles/506)
+		 * 	@author 	skyboy (optimization for 10.1+)
+		 *	@param  BitmapData: bmd	Bitmap to draw on
+		 *	@param 	int: x			X component of the start point
+		 *	@param 	int: y			Y component of the start point
+		 *	@param 	int: x2			X component of the end point
+		 *	@param 	int: y2			Y component of the end point
+		 *	@param 	uint: color		Color of the line
+		 */
+		public function efla(bmd:BitmapData, x:int, y:int, x2:int, y2:int, color:uint):void {
+			var shortLen:int = y2 - y;
+			var longLen:int = x2 - x;
+			if (!longLen) if (!shortLen) return;
+			var i:int, id:int, inc:int;
+			var multDiff:Number;
+
+			bmd.lock();
+
+			// TODO: check for this above, swap x/y/len and optimize loops to ++ and -- (operators twice as fast, still only 2 loops)
+			if ((shortLen ^ (shortLen >> 31)) - (shortLen >> 31) > (longLen ^ (longLen >> 31)) - (longLen >> 31)) {
+				if (shortLen < 0) {
+					inc = -1;
+					id = -shortLen % 4;
+				} else {
+					inc = 1;
+					id = shortLen % 4;
+				}
+				multDiff = !shortLen ? longLen : longLen / shortLen;
+
+				if (id) {
+					bmd.setPixel32(x, y, color);
+					i += inc;
+					if (--id) {
+						bmd.setPixel32(x + i * multDiff, y + i, color);
+						i += inc;
+						if (--id) {
+							bmd.setPixel32(x + i * multDiff, y + i, color);
+							i += inc;
+						}
+					}
+				}
+				while (i != shortLen) {
+					bmd.setPixel32(x + i * multDiff, y + i, color);
+					i += inc;
+					bmd.setPixel32(x + i * multDiff, y + i, color);
+					i += inc;
+					bmd.setPixel32(x + i * multDiff, y + i, color);
+					i += inc;
+					bmd.setPixel32(x + i * multDiff, y + i, color);
+					i += inc;
+				}
+			} else {
+				if (longLen < 0) {
+					inc = -1;
+					id = -longLen % 4;
+				} else {
+					inc = 1;
+					id = longLen % 4;
+				}
+				multDiff = !longLen ? shortLen : shortLen / longLen;
+
+				if (id) {
+					bmd.setPixel32(x, y, color);
+					i += inc;
+					if (--id) {
+						bmd.setPixel32(x + i, y + i * multDiff, color);
+						i += inc;
+						if (--id) {
+							bmd.setPixel32(x + i, y + i * multDiff, color);
+							i += inc;
+						}
+					}
+				}
+				while (i != longLen) {
+					bmd.setPixel32(x + i, y + i * multDiff, color);
+					i += inc;
+					bmd.setPixel32(x + i, y + i * multDiff, color);
+					i += inc;
+					bmd.setPixel32(x + i, y + i * multDiff, color);
+					i += inc;
+					bmd.setPixel32(x + i, y + i * multDiff, color);
+					i += inc;
+				}
+			}
+
+			bmd.unlock();
 		}
 	}
 }

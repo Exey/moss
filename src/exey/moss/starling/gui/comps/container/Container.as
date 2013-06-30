@@ -1,12 +1,12 @@
-package exey.moss.gui.comps.container 
+package exey.moss.starling.gui.comps.container 
 {
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
 	/**
 	 * ...
-	 * @author ...
+	 * @author Exey Panteleec
 	 */
-	public class StarlingContainer extends Sprite
+	public class Container extends Sprite
 	{
 		
 		//--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ package exey.moss.gui.comps.container
 		//
 		//--------------------------------------------------------------------------
 		
-		public function StarlingContainer(parent:DisplayObjectContainer, width:Number, height:Number)
+		public function Container(parent:DisplayObjectContainer, width:Number, height:Number)
 		{
 			//this.graphics.drawRect(0, 0, width, height);
 			parent.addChild(this);
@@ -51,7 +51,7 @@ package exey.moss.gui.comps.container
 		{
 			if (!_locked)
 				return;
-			_locked = true;
+			_locked = false;
 			//mouseChildren = true;
 			//mouseEnabled = true;
 		}

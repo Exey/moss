@@ -8,26 +8,26 @@ package exey.moss.gui.comps.button
 	import flash.filters.GlowFilter;
 	
 	/**
-	 * ...
+	 * Button that grows on hower
 	 * @author Exey Panteleev
 	 */
 	public class GrowButton extends EmptyButton 
 	{
-		private var growRatio:Number;
+		protected var growRatio:Number;
 		
 		protected var _selected:Boolean;		
-		public function get selected():Boolean
-		{
-			return selected;
-		}
-		public function set selected(value:Boolean):void 
-		{
+		public function get selected():Boolean { return selected; }		
+		public function set selected(value:Boolean):void {
 			_selected = value;
-			if (_selected)
-				this.skin.filters = [new GlowFilter()];
-			else
-				this.skin.filters = [];
+			if (_selected) this.skin.filters = [new GlowFilter()];
+			else this.skin.filters = [];
 		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
 		
 		public function GrowButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, growRatio:Number = 1.1) 
 		{
@@ -37,34 +37,23 @@ package exey.moss.gui.comps.button
 			this.addEventListener(MouseEvent.ROLL_OUT, handler_rollOut);
 		}
 		
-		private function handler_rollOut(e:MouseEvent):void 
-		{
-			growDown();
-		}
-		
-		private function handler_rollOver(e:MouseEvent):void 
-		{
-			growUp();
-		}
-		
 		protected function growDown():void 
 		{
 			if (!skin) return;
-			this.skin.scaleX = 1;
-			this.skin.scaleY = 1;
+			skin.scaleX = skin.scaleY = 1;
 		}
 		
 		protected function growUp():void 
 		{
 			if (!skin) return;
-			this.skin.scaleX = growRatio;
-			this.skin.scaleY = growRatio;
+			skin.scaleY = skin.scaleX = growRatio;
 		}
 		
-		public function refreshOriginXY():void 
-		{
-			trace("3:FIX GrowButton Origin");
-		}		
+		//--------------------------------------------------------------------------
+		//
+		//  API
+		//
+		//--------------------------------------------------------------------------			
 		
 		public function addMovieClip(string:String):void 
 		{
@@ -81,5 +70,22 @@ package exey.moss.gui.comps.button
 		{
 			addChild(displayObject)
 		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Event Handlers
+		//
+		//--------------------------------------------------------------------------
+		
+		protected function handler_rollOut(e:MouseEvent):void 
+		{
+			growDown();
+		}
+		
+		protected function handler_rollOver(e:MouseEvent):void 
+		{
+			growUp();
+		}		
+		
 	}
 }

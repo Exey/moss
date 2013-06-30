@@ -48,11 +48,11 @@
 		//--------------------------------------------------------------------------
 		
 		protected function initLayers(container:DisplayObjectContainer, w:Number, h:Number):void {
-			viewLayer 		= new Container(container, w, h);
-			hudLayer 		= new Container(container, w, h);
-			windowLayer 	= new Container(container, w, h);
-			tooltipLayer 	= new Container(container, w, h);
-			topLayer 		= new Container(container, w, h);
+			viewLayer 		= new Container(container, w, h, "viewLayer");
+			hudLayer 		= new Container(container, w, h, "hudLayer");
+			windowLayer 	= new Container(container, w, h, "windowLayer");
+			tooltipLayer 	= new Container(container, w, h, "tooltipLayer");
+			topLayer 		= new Container(container, w, h, "topLayer");
 		}
 		
 		protected function initManagers():void {

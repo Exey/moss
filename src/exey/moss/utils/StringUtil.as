@@ -17,9 +17,9 @@ package exey.moss.utils
 			return !(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(text.replace(/"(\\.|[^"\\])*"/g,'')));
 		}
 		
-		static public function multiplieReplace(soutcre:String, pattern:String, replace:String):String 
+		static public function multiplieReplace(sourсe:String, pattern:String, replace:String):String 
 		{
-			return soutcre.split(pattern).join(replace);
+			return sourсe.split(pattern).join(replace);
 		}
 		
 		static public function capitalize(text:String):String
@@ -40,6 +40,10 @@ package exey.moss.utils
 				sep = to;
 			}
 			return result;
+		}
+		
+		static public function replace(input:String, replace:String, replaceWith:String):String{
+			return input.split(replace).join(replaceWith);
 		}
 		
 		static public function getI(i:int):String {

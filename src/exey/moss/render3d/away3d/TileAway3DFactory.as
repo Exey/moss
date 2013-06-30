@@ -2,7 +2,7 @@ package exey.moss.render3d.away3d
 {
 	import flash.display.BitmapData;
 	/**
-	 * ...
+	 * Tile Away3D Factory
 	 * @author Exey Panteleev
 	 */
 	public class TileAway3DFactory 

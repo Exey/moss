@@ -1,7 +1,7 @@
 package exey.moss.utils 
 {
 	/**
-	 * ...
+	 * Comfortable work with time
 	 * @author Exey Panteleev
 	 */
 	public class TimeUtil
@@ -28,6 +28,13 @@ package exey.moss.utils
 			var mins:String = (hrs && sec % 3600 < 600 ? '0' : '') + Math.floor(sec % 3600 / 60) + delimeter;
 			var secs:String = (sec % 60 < 10 ? '0' : '') + sec % 60;
 			return hrs+mins+secs;
+		}
+		
+		static public function formatDate(value:Number, digits:uint = 2):String
+		{
+			var result:String = "";
+			while (result.length == digits - value.toString().length - 1) result += "0";
+			return result + value.toString();
 		}
 		
 		static public function timestamp(d:Date):String {

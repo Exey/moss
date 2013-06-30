@@ -57,7 +57,7 @@ package exey.moss.utils
 			var loader:URLLoader = new URLLoader();
 			if (dataFormat)
 				loader.dataFormat = dataFormat;
-			loader.addEventListener(Event.COMPLETE, function(e:Event):void {
+			loader.addEventListener(Event.COMPLETE, function(e:Event = null):void {
 				loader.removeEventListener(Event.COMPLETE, arguments.callee);
 				handler.apply(null, [e.target.data]);
 			});

@@ -3,14 +3,17 @@ package exey.moss.gui.comps.window
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Cubic;
 	import exey.moss.utils.AnimationUtil;
-	import exey.moss.debug.stackTrace;
 	import flash.display.Sprite;
+	import org.osflash.signals.Signal;
 	
 	/**
-	 * ...
-	 * @author
+	 * Centered Window
+	 * @author Exey Panteleev
 	 */
 	public class CenteredWindowAbstract extends Sprite {
+		
+		public var closeSignal:Signal = new Signal();
+		
 		private var _width:Number;
 		private var _height:Number;
 		
@@ -46,7 +49,7 @@ package exey.moss.gui.comps.window
 			_container.graphics.drawRect(0,0,_width, _height);
 			_container.x = -width * 0.5
 			_container.y = -height * 0.5
-			//stackTrace(_container.x, _container.y);
+			//deb(_container.x, _container.y);
 		}
 		
 		public function animateIn():void

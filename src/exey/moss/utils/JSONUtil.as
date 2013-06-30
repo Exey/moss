@@ -1,7 +1,7 @@
 package exey.moss.utils 
 {
 	/**
-	 * ...
+	 * Work with JSON
 	 * @author Exey Panteleev
 	 */
 	public class JSONUtil 

@@ -2,7 +2,7 @@ package exey.moss.render3d.alternativa3d
 {
 	import flash.display.BitmapData;
 	/**
-	 * ...
+	 * Tile Alternativa3D Factory
 	 * @author Exey Panteleev
 	 */
 	public class TileAlt3DFactory 
@@ -15,5 +15,4 @@ package exey.moss.render3d.alternativa3d
 		}
 		
 	}
-
 }

@@ -1,120 +1,123 @@
 package exey.moss.mngr 
 {
-	import exey.moss.gui.abstract.ComponentAbstract;
+	import com.eclecticdesignstudio.motion.Actuate;
+	import com.eclecticdesignstudio.motion.easing.Quad;
 	import exey.moss.gui.comps.tooltip.TextToolTip;
-	import exey.moss.gui.comps.tooltip.XMLToolTip;
-	import exey.malevich.mngr.data.ToolTipData;
+	import exey.moss.mngr.data.ToolTipData;
+	import exey.moss.utils.AnimationUtil;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.MovieClip;
-	import flash.events.Event;
+	import flash.display.Stage;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.text.TextFormat;
+	
 	/**
-	 * ...
-	 * @author 
+	 * Comfortable adding tooltips
+	 * @author Exey Panteleev
 	 */
-	public class TooltipManager 
+	public class ToolTipManager 
 	{
 		static public const ZERO_POINT:Point = new Point(0, 0);
-		static private const DISTANCE:Number = 20;
+		static protected const DISTANCE:Number = 20;
+		static protected const DELAY:Number = 0.2; // showing delay in seconds
 		
-		static private var toolTipsContainer:DisplayObjectContainer;
-		static public var currentTarget:DisplayObject;
-		static public var currentToolTip:ComponentAbstract;
+		static private var container:DisplayObjectContainer;
+		static private var textFormat:TextFormat;
+		static public var current:ToolTipData;
 		
-		public function TooltipManager(toolTipsContainer:DisplayObjectContainer) 
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+		
+		public function ToolTipManager(container:DisplayObjectContainer, textFormat:TextFormat = null) 
 		{
-			TooltipManager.toolTipsContainer = toolTipsContainer;
+			if(container)	ToolTipManager.container = container;
+			if(textFormat) 	ToolTipManager.textFormat = textFormat;
 		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  API
+		//
+		//--------------------------------------------------------------------------
 		
 		public function update():void 
 		{
-			return;
-			if (!TooltipManager.currentToolTip || !TooltipManager.currentTarget)
-				return;
-			var target:DisplayObject = currentTarget;
-			var toolTip:ComponentAbstract = currentToolTip;
-			var targetCoords:Point = target.localToGlobal(ZERO_POINT);
-			var newX:Number = targetCoords.x + target.mouseX;
-			var newY:Number = targetCoords.y + target.mouseY;
-			if (newX < toolTipsContainer.stage.stageWidth * 0.5)
-				newX += DISTANCE;
-			else
-				newX -= toolTip.width + DISTANCE;
-			
-			toolTip.move(newX, newY);
+			if (!current) return;
+			var c:ToolTipData = current;
+			var targetCoords:Point = c.target.localToGlobal(ZERO_POINT);
+			var newX:Number = targetCoords.x + c.target.mouseX;
+			var newY:Number = targetCoords.y + c.target.mouseY;
+			c.toolTip.move(newX, newY);
 		}
 		
-		static public function addStaticToolTip(target:DisplayObject, text:String):void 
+		//--------------------------------------------------------------------------
+		//
+		//  Static API
+		//
+		//--------------------------------------------------------------------------
+		
+		static public function addTextToolTip(target:DisplayObject, text:String):void 
 		{
-			var tooltipData:ToolTipData = new ToolTipData(target, new TextToolTip(text));
-			TooltipManager.addToolTip(tooltipData);
+			var tooltipData:ToolTipData = new ToolTipData(target, new TextToolTip(text, 0, textFormat));
+			add(tooltipData);
 		}
 		
-		static public function addStaticXMLToolTip(target:DisplayObject, xml:XML):void 
+		static public function addTextMultilineToolTip(target:DisplayObject, text:String, width:Number = 300):void 
 		{
-			var tooltipData:ToolTipData = new ToolTipData(target, new XMLToolTip(xml, 200));
-			TooltipManager.addToolTip(tooltipData);
-		}
-		
-		static public function addStaticXMLToolTip2(target:DisplayObject, xml:XML):void
-		{
-			var tooltipData:ToolTipData = new ToolTipData(target, new XMLToolTip(xml, 400, 0xfcdb00, 0.7, 0x000000));
-			TooltipManager.addToolTip(tooltipData);
-		}
-		
-		static public function addStaticMultilineToolTip(target:DisplayObject, text:String, width:Number = 300):void 
-		{
-			var tooltipData:ToolTipData = new ToolTipData(target, new TextToolTip(text, width));
-			TooltipManager.addToolTip(tooltipData);
+			var tooltipData:ToolTipData = new ToolTipData(target, new TextToolTip(text, width, textFormat));
+			add(tooltipData);
 		}		
 		
-		static public function addToolTip(data:ToolTipData):void 
+		static public function add(data:ToolTipData):void 
 		{
-			var onOver:Function = function(e:Event):void {
-				////trace("onOut", e.target)
-				TooltipManager.showTooltip(data.target, data.toolTip);
+			data.onOver = function(e:MouseEvent):void {
+				Actuate.timer(DELAY).onComplete(show, data, e.target.stage);
 			}
-			
-			var onOut:Function = function(e:Event):void {
-				////trace("onOut", e.target)
-				if (e.target is XMLToolTip)
-					return;				
-				TooltipManager.hideTooltip();
-			}
-			
-			//data.target.addEventListener(MouseEvent.MOUSE_OVER, onOver);
-			data.target.addEventListener(MouseEvent.CLICK, onOver);
-			//data.target.addEventListener(MouseEvent.MOUSE_OUT, onOut);			
-			data.target.stage.addEventListener(MouseEvent.MOUSE_DOWN, onOut);			
+			data.onOut 	= function(e:MouseEvent):void { hideCurrent(); }
+			data.target.addEventListener(MouseEvent.ROLL_OVER, data.onOver);
+			data.target.addEventListener(MouseEvent.ROLL_OUT, data.onOut);			
 		}
 		
-		static public function removeToolTip(data:ToolTipData):void 
+		static public function remove(data:ToolTipData):void 
 		{
-			data.target.removeEventListener(MouseEvent.MOUSE_OVER, data.onOver);
-			data.target.removeEventListener(MouseEvent.MOUSE_OUT, data.onOut);
+			data.target.removeEventListener(MouseEvent.ROLL_OVER, data.onOver);
+			data.target.removeEventListener(MouseEvent.ROLL_OUT, data.onOut);
 			data.toolTip = null
-		}		
-		
-		static public function showTooltip(target:DisplayObject, toolTip:ComponentAbstract):void 
-		{
-			TooltipManager.currentTarget = target;
-			if (TooltipManager.currentToolTip)
-				TooltipManager.hideTooltip();
-			var targetCoords:Point = target.localToGlobal(ZERO_POINT);
-			TooltipManager.currentToolTip = toolTip;
-			toolTip.show(toolTipsContainer);
-			//toolTip.move(targetCoords.x, targetCoords.y);
-			toolTip.move(650, 200);
 		}
 		
-		static public function hideTooltip():void 
+		static public function hideCurrent():void 
 		{
-			if (!TooltipManager.currentToolTip)
-				return;
-			TooltipManager.currentToolTip.hide();
-			TooltipManager.currentToolTip = null;
+			if (!current) return;
+			current.toolTip.hide();
+			current = null;
 		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Protected methods
+		//
+		//--------------------------------------------------------------------------
+		
+		static protected function show(data:ToolTipData, stage:Stage):void 
+		{
+			var targetContainer:DisplayObjectContainer = data.target.parent;
+			var mouseCoord:Point = new Point(stage.mouseX, stage.mouseY);
+			//var mouseLocal:Point = targetContainer.globalToLocal(mouseCoord);
+			var isOver:Boolean = data.target.hitTestPoint(mouseCoord.x, mouseCoord.y);
+			//trace("3:show", data.target, "|", isOver, "|", mouseCoord, "|", mouseLocal);
+			if (!isOver) return;
+			if (current) hideCurrent();
+			current = data;
+			var targetCoords:Point = data.target.localToGlobal(ZERO_POINT);
+			data.toolTip.show(container);
+			data.toolTip.alpha = 0;
+			AnimationUtil.fadeIn(data.toolTip, DELAY, Quad.easeIn)
+			data.toolTip.move(targetCoords.x, targetCoords.y);
+		}
+		
 	}
 }

@@ -24,11 +24,19 @@ package exey.moss.utils
 		/**random in range*/
 		static public function random(from:Number, to:Number, round:Boolean = false):Number
 		{
-			if (round == true) {
-			 return Math.round(Math.random() * ((to+.5) - (from-.5)) + (from-.5));
-			} else {
-			 return Math.random() * (to - from) + from;
-			}
+			if (round == true) return Math.round(Math.random() * ((to+.5) - (from-.5)) + (from-.5));
+			else return Math.random() * (to - from) + from;
+		}
+		
+		static public function randomUintSet(max:Number, num:Number, shuffled:Boolean = false):Vector.<uint>
+		{
+			if (!max || !num) return null;
+			var lookup:Vector.<uint> = new Vector.<uint>(max+1);
+			for (var i:uint = 0; i < max+1; i++) lookup[i] = i;
+			var result:Vector.<uint> = new Vector.<uint>(num);
+			for (var j:int = 0; j < num; j++) result[j] = lookup.splice(random(0, lookup.length), 1)[0];
+			if (shuffled) {result.sort(function():Boolean {return Math.floor(Math.random() * 2) ? true : false})}
+			return result;
 		}
 
 		/**angle betwenn 2 points*/

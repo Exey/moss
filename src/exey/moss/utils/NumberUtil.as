@@ -22,9 +22,23 @@ package exey.moss.utils
 				return value.toFixed(fractionDigits);
 		}
 		
+		static public function formatLength(value:Number, places:uint):String
+		{
+			var result:String = value.toString();
+			while ( result.length < places ) {
+				result = '0' + result;
+			}
+			return result;
+		}
+		
 		static public function randRange(start:Number, end:Number) : Number
 		{
 			return Math.floor(start +(Math.random() * (end - start)));
+		}
+		
+		static public function fixed(n:Number, fixed:uint = 0):Number 
+		{
+			return parseFloat(n.toFixed(fixed))
 		}
 	}
 

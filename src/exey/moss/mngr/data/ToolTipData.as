@@ -3,7 +3,7 @@ package exey.moss.mngr.data
 	import exey.moss.gui.abstract.ComponentAbstract;
 	import flash.display.DisplayObject;
 	/**
-	 * ...
+	 * Data for ToolTipManager and BubbleManager
 	 * @author Exey Panteleev
 	 */
 	public class ToolTipData

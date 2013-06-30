@@ -2,11 +2,12 @@ package exey.moss.mngr
 {
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Quad;
+	import exey.moss.debug.deb;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	/**
-	 * ...
+	 * Sound manager
 	 * @author Exey Panteleev
 	 */
 	public class SoundManager
@@ -17,15 +18,14 @@ package exey.moss.mngr
 		static public var isAmbient:Boolean = true;
 		static public var isSounds:Boolean = true;
 		
-		public function SoundManager() 
+		public function SoundManager()
 		{
 			sounds = new Vector.<SoundData>();
 		}
 		
 		static public function addSound(soundName:String, sound:Sound):Boolean 
 		{
-			for (var i:int = 0; i <sounds.length; i++)
-			{
+			for (var i:int = 0; i <sounds.length; i++) {
 				if (sounds[i].name == soundName) return false;
 			}
 			var soundData:SoundData = new SoundData(soundName, sound)
@@ -35,10 +35,8 @@ package exey.moss.mngr
 		
 		static public function removeSound(soundName:String):void
 		{
-			for (var i:int = 0; i <sounds.length; i++)
-			{
-				if (sounds[i].name == soundName)
-				{
+			for (var i:int = 0; i <sounds.length; i++) {
+				if (sounds[i].name == soundName) {
 					sounds[i] = null;
 					sounds.splice(i, 1);
 				}
@@ -47,41 +45,36 @@ package exey.moss.mngr
 		
 		static public function playSound(soundName:String, volume:Number = 1, startTime:Number = 0, loops:int = 0):void
 		{
-			if (isSounds == false || !sounds)
-			{
+			if (isSounds == false || !sounds) {
 				trace("3: CAN'T PLAY "+soundName);
 				return;
 			}
 			var soundData:SoundData; 
-			for (var i:int = 0; i < sounds.length; i++)
-			{
-				if (sounds[i].name == soundName) 
-					soundData = sounds[i];					
+			for (var i:int = 0; i < sounds.length; i++) {
+				if (sounds[i].name == soundName)
+					soundData = sounds[i];
 			}
 			if (soundData)
 				playBySoundData(soundData, volume, startTime, loops)
 		}
 		
-		static public function stopSound(soundName:String):void
+		static public function stopSound(soundName:String, position:Number = NaN):void
 		{
 			var soundData:SoundData; 
-			for (var i:int = 0; i < sounds.length; i++)
-			{
+			for (var i:int = 0; i < sounds.length; i++) {
 				if (sounds[i].name == soundName) 
 					soundData = sounds[i];					
 			}
 			if (soundData)
-				stopBySoundData(soundData)
+				stopBySoundData(soundData, position)
 		}
 		
 		static public function stopAllSounds(stopAmbient:Boolean = false, ambientName:String = ""):void
 		{
-			for (var i:int = 0; i < sounds.length; i++)
-			{ 
+			for (var i:int = 0; i < sounds.length; i++) { 
 				if (!stopAmbient && sounds[i].name == ambientName)
 					continue;
-				stopBySoundData(sounds[i]);
-				
+				stopBySoundData(sounds[i]);				
 			}
 		}
 		
@@ -89,38 +82,25 @@ package exey.moss.mngr
 		{			
 			var startTime:Number = 0;
 			var soundData:SoundData; 
-			for (var i:int = 0; i < sounds.length; i++)
-			{
+			for (var i:int = 0; i < sounds.length; i++) {
 				if (sounds[i].name == soundName) 
 					soundData = sounds[i];					
 			}
-			if (soundData)
-			{
-				if (ambientSoundData)
-				{
+			if (soundData) {
+				if (ambientSoundData) {
 					stopAmbient();
 					ambientSoundData = null;
 				}				
 				ambientSoundData = soundData;
-			}
-			else
-			{
+			} else {
 				startTime = ambientSoundData.startTime;
 			}
-			if (isAmbient == false)
-			{
-				return;
-			}
-			
-			if (ambientSoundData)
-			{				
-				if (fade)
-				{
+			if (isAmbient == false) return;			
+			if (ambientSoundData) {				
+				if (fade) {
 					playBySoundData(ambientSoundData, 0, startTime, 999999);
 					fadeSound(ambientSoundData, volume);
-				}
-				else
-				{
+				} else {
 					playBySoundData(ambientSoundData, volume, startTime, 999999);
 				}
 			}
@@ -128,10 +108,8 @@ package exey.moss.mngr
 		
 		static public function stopAmbient(fade:Boolean = false):void 
 		{
-			if (fade)
-				fadeSound(ambientSoundData, 0, 1, stopAmbient);
-			else
-				stopBySoundData(ambientSoundData);
+			if (fade) fadeSound(ambientSoundData, 0, 1, stopAmbient);
+			else stopBySoundData(ambientSoundData);
 		}
 		
 		static public function fadeSound(soundData:SoundData, targetVolume:Number = 0, fadeDuration:Number = 1, onComplete:Function = null):void
@@ -145,24 +123,30 @@ package exey.moss.mngr
 			soundData.volume = volume;
 			soundData.startTime = startTime;
 			soundData.loops = loops;
-			
-			if (soundData.paused)
-			{
+			if (soundData.paused) {
 				soundData.channel = soundData.sound.play(soundData.position, soundData.loops, new SoundTransform(soundData.volume));
-			}
-			else
-			{
+			} else {
 				soundData.channel = soundData.sound.play(startTime, soundData.loops, new SoundTransform(soundData.volume));
 			}
 			soundData.paused = false;
 		}
 		
-		static private function stopBySoundData(soundData:SoundData):void 
+		static private function stopBySoundData(soundData:SoundData, position:Number = NaN):void 
 		{
 			soundData.paused = true;
 			if(soundData.channel)
 				soundData.channel.stop();
-			soundData.position = soundData.channel.position;
+			soundData.position = isNaN(position) ? soundData.channel.position : position;
+		}
+		
+		static public function getSoundChnanel(soundName:String):SoundChannel 
+		{
+			for (var i:int = 0; i <sounds.length; i++) {
+				if (sounds[i].name == soundName) {
+					return sounds[i].channel;
+				}
+			}
+			return null;
 		}
 	}
 }

@@ -1,8 +1,8 @@
 package exey.moss.utils 
 {
 	/**
-	 * ...
-	 * @author 
+	 * Collection of useful regexpes
+	 * @author Exey Panteleev
 	 */
 	public class RegExpUtil
 	{

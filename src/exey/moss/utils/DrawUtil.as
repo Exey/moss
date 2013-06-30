@@ -1,5 +1,6 @@
 package exey.moss.utils 
 {
+	import flash.display.CapsStyle;
 	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.display.SpreadMethod;
@@ -17,6 +18,19 @@ package exey.moss.utils
 			m.createGradientBox( width, height, (Math.PI/180)*90, 0, 0 );
 			graphics.beginGradientFill( GradientType.LINEAR, colors, [ 1, 1 ], [ 0, 255 ], m, SpreadMethod.PAD);
 			graphics.drawRect( startX, startY, width, height );
+		}
+		
+		static public function histogram(g:Graphics, w:Number, h:Number, values:Array, backgroundColor:uint = 0xFFFFFF, maxValue:Number = NaN):void 
+		{
+			g.clear();
+			DrawUtil.rect(g, 0, 0, w, h, backgroundColor);
+			g.lineStyle(1, 0, 1, true);
+			for (var i:int = 0; i < values.length; i++) {
+				g.moveTo(i, h);
+				if(isNaN(maxValue))	g.lineTo(i, h-values[i]);
+				else g.lineTo(i, Math.max(0.0, h-values[i] * h/maxValue));
+			}
+			g.lineStyle();
 		}
 		
 		static public function plate(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, alpha:Number = 1):void
@@ -37,9 +51,17 @@ package exey.moss.utils
 			graphics.drawRoundRect(startX, startY, width, height, ellipseWidth)
 		}		
 		
-		static public function rect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, alpha:Number = 1):void {
-			graphics.beginFill(color, alpha)
-			graphics.drawRect(startX, startY, width, height)
+		static public function rect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, alpha:Number = 1):void
+		{
+			graphics.beginFill(color, alpha);
+			graphics.drawRect(startX, startY, width, height);
+			graphics.endFill();
+		}
+		
+		static public function rectWithShadow(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, alpha:Number = 1, distanceX:Number = 2, distanceY:Number = 2, shadowColor:uint = 0x808080):void 
+		{
+			DrawUtil.rect(graphics, startX+distanceX, startY+distanceY, width, height, shadowColor, alpha); // shadow
+			DrawUtil.rect(graphics, startX, startY, width, height, color, alpha);
 		}
 		
 		static public function border(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, borderColor:uint, borderThickness:Number, borderApha:Number = 1, pixelHinting:Boolean = false):void {
@@ -52,6 +74,7 @@ package exey.moss.utils
 			graphics.lineStyle(borderThickness, borderColor, borderAlpha, pixelHinting);
 			graphics.beginFill(color, alpha);
 			graphics.drawRect(startX, startY, width, height)
+			graphics.endFill();
 		}
 		
 		static public function borderedRoundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, ellipseWidth:Number = 20, alpha:Number = 1, borderAlpha:Number = 1, pixelHinting:Boolean = false):void
@@ -60,7 +83,32 @@ package exey.moss.utils
 			graphics.beginFill(color, alpha)
 			//graphics.drawRect(startX, startY, width, height)
 			graphics.drawRoundRect(startX, startY, width, height, ellipseWidth)
-		}			
+		}
+		
+		static public function gradientRoundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array, ellipseWidth:Number = 20, alpha:Number = 1):void
+		{
+			var matrix:Matrix = new Matrix();
+			matrix.createGradientBox(width, height, -Math.PI*0.5, 0, -height*0.25);
+			graphics.beginGradientFill("linear", colors, [ 1, 1 ], [ 0, 255 ], matrix, "pad", "RGB", 1);
+			graphics.drawRoundRect(startX, startY,  width, height, ellipseWidth, ellipseWidth);
+			graphics.endFill();
+		}
+		
+		static public function gradientRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array, alpha:Number = 1):void
+		{
+			var matrix:Matrix = new Matrix();
+			matrix.createGradientBox(width, height, -Math.PI*0.5, 0, -height*0.25);
+			graphics.beginGradientFill("linear", colors, [ 1, 1 ], [ 0, 255 ], matrix, "pad", "RGB", 1);
+			graphics.drawRect(startX, startY,  width, height);
+			graphics.endFill();
+		}
+		
+		static public function startGradientFill(graphics:Graphics, colors:Array, width:Number, height:Number):void 
+		{
+			var matrix:Matrix = new Matrix();
+			matrix.createGradientBox(width, height, -Math.PI*0.5, 0, -height*0.25);
+			graphics.beginGradientFill("linear", colors, [ 1, 1 ], [ 0, 255 ], matrix, "pad", "RGB", 1);
+		}
 		
 		static public function ellipse(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint):void
 		{
@@ -86,6 +134,39 @@ package exey.moss.utils
 			graphics.lineTo(startX+5, 	startY+10);
 		}
 		
+		static public function cross45(graphics:Graphics, color:uint = 0x966234, startX:Number = 0, startY:Number = 0, lineThickness:Number = 2, crossSize:Number = 10):void {
+			graphics.lineStyle(lineThickness, color);
+			graphics.moveTo(startX+crossSize*0.5, 	startY+crossSize*0.5);
+			graphics.lineTo(startX+crossSize, 		startY+crossSize);
+			graphics.moveTo(startX+crossSize, 		startY+crossSize*0.5);
+			graphics.lineTo(startX+crossSize*0.5, 	startY+crossSize);
+			graphics.lineStyle();
+		}
+		
+		static public function soundIcon(graphics:Graphics, speakerWidth:Number = 20, height:Number = 40, color:uint = 0xFF0000, firstArcThickness:Number = 3, secondArcThickness:Number = 3):void 
+		{
+			var g:Graphics = graphics
+			g.beginFill(color);
+			g.moveTo(0, height*0.25);
+			g.lineTo(speakerWidth*0.5, height*0.25);
+			g.lineTo(speakerWidth, 0);
+			g.lineTo(speakerWidth, height);
+			g.lineTo(speakerWidth*0.5, height*0.75);
+			g.lineTo(0, height*0.75);
+			g.moveTo(0, height*0.25);
+			g.endFill();
+			if (!isNaN(firstArcThickness)) {
+				g.lineStyle(firstArcThickness, color, 1, true);
+				g.moveTo(speakerWidth*1.2, height*0.25);
+				g.curveTo(speakerWidth*1.5, height*0.5, speakerWidth*1.2, height*0.75)
+			}
+			if (!isNaN(firstArcThickness)) {
+				g.lineStyle(secondArcThickness, color, 1, true);
+				g.moveTo(speakerWidth*1.4, height*0.1);
+				g.curveTo(speakerWidth*2, height*0.5, speakerWidth*1.4, height*0.9)
+			}
+		}
+		
 		static public function rhombus(graphics:Graphics, color:uint, width:Number, height:Number):void 
 		{
 			graphics.beginFill(color, 0.5)
@@ -107,9 +188,9 @@ package exey.moss.utils
 		 * @param y:Number - The y centre of the circumscribed circle.
 		 * @param ps:Number - The phase shift or angular offset of the polygons vertices.
 		 */
-		static public function star(graphics:Graphics, p:Number, er:Number, ir:Number, x:Number, y:Number, color:uint, borderColor:uint, ps:Number = undefined):void
+		static public function star(graphics:Graphics, p:Number, er:Number, ir:Number, x:Number, y:Number, color:uint, borderColor:uint, ps:Number = undefined, borderThickness:Number = 2, borderAlpha:Number = 1):void
 		{
-			graphics.lineStyle(2, borderColor, 1, true);
+			graphics.lineStyle(borderThickness, borderColor, borderAlpha, true);
 			graphics.beginFill(color);
 			if (!ps) {
 				if (p % 2) {
@@ -128,7 +209,8 @@ package exey.moss.utils
 				graphics[t ? "lineTo" : "moveTo"](x + Math.cos(ts) * er, y + Math.sin(ts) * er);
 				graphics.lineTo(x + Math.cos(ts + j) * ir, y + Math.sin(ts + j) * ir);
 			}
-			graphics.lineTo(x + Math.cos(ps) * er, y + Math.sin(-ps) * er);
+			graphics.lineTo(x + Math.cos(ps) * er, y + Math.sin( -ps) * er);
+			graphics.lineStyle();
 		}
 		
 		static public function rightArrow(graphics:Graphics, color:uint, width:Number, height:Number, shiftX:Number = 0, shiftY:Number = 0):void
@@ -153,14 +235,14 @@ package exey.moss.utils
 			g.endFill();
 		}
 		
-		static public function line(graphics:Graphics, x1:int, y1:int, x2:int, y2:int, borderColor:uint, borderThickness:Number, borderAlpha:Number = 1, pixelHinting:Boolean = false):void 
+		static public function line(graphics:Graphics, x1:int, y1:int, x2:int, y2:int, borderColor:uint, borderThickness:Number, borderAlpha:Number = 1, pixelHinting:Boolean = false, caps:String = "none"):void 
 		{
-			graphics.lineStyle(borderThickness, borderColor, borderAlpha, pixelHinting);
+			graphics.lineStyle(borderThickness, borderColor, borderAlpha, pixelHinting, "normal", caps);
 			graphics.moveTo(x1, y1);
 			graphics.lineTo(x2, y2);
 			graphics.lineStyle();
 			//graphics.moveTo(100, 100); 
-			//graphics.lineTo(200, 200);
+			//graphics.lineTo(200, 200);			
 		}
 		
 		/**
@@ -189,6 +271,42 @@ package exey.moss.utils
 				g.curveTo(p4.x, p4.y, p1.x, p1.y);
 				g.endFill();
 			}
+		}
+		
+		static public function crosshair(g:Graphics, x:Number, y:Number, w:Number, h:Number, color:uint, lineThickness:Number = 1, lineAlpha:Number = 0.66):void 
+		{
+			var mult:Number = 0.33;
+			line(g, x+w*0.5, y, x+w*0.5, y+h*mult, color, lineThickness, lineAlpha);
+			line(g, x, y+h*0.5, x+w*mult, y+h*0.5, color, lineThickness, lineAlpha);
+			line(g, x+w*0.5, y+h*(1-mult), x+w*0.5, y+h*(1-mult)+h*mult, color, lineThickness, lineAlpha);
+			line(g, x+w*(1-mult), y+h*0.5, x+w*(1-mult)+w*mult, y+h*0.5, color, lineThickness, lineAlpha);
+		}
+		
+		static public function play(g:Graphics, fillColor:uint, size:Number):void 
+		{
+			g.beginFill(fillColor);	
+			g.moveTo(0, 0);
+			g.lineTo(0, size);
+			g.lineTo(size*0.9, size*0.5);
+			g.lineTo(0, 0);
+		}
+		
+		/**
+		 *   /──────────────┐   ┌──────────────\
+		 *  /             1 │   │ -1            \
+		 *  \               │   │               /
+		 *   \──────────────┘   └──────────────/
+		 */
+		static public function arrowRect(graphics:Graphics, width:Number, height:Number, dir:int = 1, arrowPercent:Number = 0.25):void 
+		{
+			var w:Number = dir*width;
+			var h:Number = dir*height;
+			graphics.moveTo(w * 0.5, 	-h * 0.5);
+			graphics.lineTo(w * 0.5,	h * 0.5);
+			graphics.lineTo(-w * (0.5 - arrowPercent), 	h * 0.5);
+			graphics.lineTo(-w * 0.5, 	0);  // arrow spout
+			graphics.lineTo(-w * (0.5 - arrowPercent), 	-h * 0.5);
+			graphics.lineTo(w * 0.5, 	-h * 0.5);
 		}
 		
 	}

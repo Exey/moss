@@ -5,6 +5,7 @@ package exey.moss.gui.comps.control
 	import exey.moss.gui.comps.text.TextFieldLabel;
 	import exey.moss.utils.AlignUtil;
 	import exey.moss.utils.DrawUtil;
+	import exey.moss.utils.FontUtil;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -28,37 +29,34 @@ package exey.moss.gui.comps.control
 		
 		private var textField:TextField;
 		
-		public function AlertMessage(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, text:String = "", color:uint = AlertMessage.BLUE, messageWidth:Number = 600)
+		public function AlertMessage(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, text:String = "", color:uint = AlertMessage.BLUE, messageWidth:Number = 600, textFormat:TextFormat = null)
 		{
 			this.messageWidth = messageWidth;
-			initialize(text, color);
+			initialize(text, color, textFormat);
 			this.cacheAsBitmap = true;
 			super(parent, xpos, ypos);
 		}
 		
-		private function initialize(text:String, color:uint):void
+		private function initialize(text:String, color:uint, textFormat:TextFormat):void
 		{
-			//var skin:Sprite = new Sprite();
-			//DrawUtil.rect(skin.graphics, 0, 0, messageWidth, 100, 0xFEF5C2, 1)
-			//this.addChild(skin);
-			var format:TextFormat
+			var skin:Sprite = new Sprite();
+			DrawUtil.rect(skin.graphics, 0, 0, messageWidth, 100, 0x000000, 0.2)
+			this.addChild(skin);
+			
 			var multiline:Boolean = false;
 			var wordWrap:Boolean = false;
 			var fontWidth:Number = 600;
-			if (text.length < 60) {
-				format = new TextFormat( "Arial", 28, 0x000000, "bold" )
-			}
-			else 
-			{
-				if (text.length > 300) {
-					format = new TextFormat( "Arial", 12, 0x000000, "bold" );
-				} else {
-					format = new TextFormat( "Arial", 16, 0x000000, "bold" );
-				}
+			var isEmbed:Boolean = false
+			if (!textFormat) textFormat = new TextFormat( "Arial", 28, 0x000000, "bold" )
+			else			 isEmbed = FontUtil.isEmbed(textFormat.font)
+			if (text.length < 60) { textFormat.size = 28 }
+			else {
+				if (text.length > 300)  textFormat.size = 12
+				else					textFormat.size = 16
 				multiline = true;
 				wordWrap = true;			
 			}
-			textField = new TextFieldLabel(this, 10, 20, format, text, false, true);
+			textField = new TextFieldLabel(this, 10, 20, textFormat, text, isEmbed, true);
 			textField.multiline = multiline;
 			textField.wordWrap = wordWrap;
 			textField.width = fontWidth;

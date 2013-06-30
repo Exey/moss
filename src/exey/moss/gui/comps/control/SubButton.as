@@ -19,6 +19,7 @@ package exey.moss.gui.comps.control {
 		static private const GROW_RATIO:Number = 1.1;
 		private var _tf:TextField;
 		private var _label:String;
+		public function get text():String {return _tf.text}
 		
 		override public function set selected(value:Boolean):void 
 		{	

@@ -1,5 +1,6 @@
 package exey.moss.gui.abstract
 {
+	import exey.moss.utils.AnimationUtil;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.DisplayObjectContainer;
@@ -11,6 +12,9 @@ package exey.moss.gui.abstract
 	public class ComponentAbstract extends Sprite
 	{
 		protected var basicSkin:DisplayObject;
+		
+		public function set scale(value:Number):void {this.scaleX = this.scaleY = value}
+		
 		/**
 		 * Constructor
 		 * @param parent The parent DisplayObjectContainer on which to add this Component.

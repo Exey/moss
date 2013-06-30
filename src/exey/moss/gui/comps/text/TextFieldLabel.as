@@ -5,7 +5,7 @@ package exey.moss.gui.comps.text {
 	import flash.text.TextFormat;
 	
 	/**
-	 * ...
+	 * Extended TextField for comfortable use
 	 * @author Exey Panteleev
 	 */
 	public class TextFieldLabel extends TextField {

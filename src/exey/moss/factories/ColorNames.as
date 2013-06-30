@@ -1,5 +1,5 @@
 package exey.moss.factories{
-	import exey.moss.utils.ColorUtils;
+	import exey.moss.utils.ColorUtil;
 	/**
 	 * 1567 names of colors
 	 * http://chir.ag/projects/name-that-color/

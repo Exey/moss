@@ -1,6 +1,5 @@
 package exey.moss.data 
 {
-	import exey.moss.debug.stackTrace;
 	import org.osflash.signals.Signal;
 	/**
 	 * Non-atomic whole request/response data
@@ -8,7 +7,6 @@ package exey.moss.data
 	 */
 	public class WholeData extends Data 
 	{
-		
 		public var wholeUpdate:Signal = new Signal();
 		public var wholeError:Signal = new Signal();		
 		
@@ -38,7 +36,7 @@ package exey.moss.data
 				v = delayedSignalVars[i];
 				v.signal.dispatch((v as Object).value);
 			}
-			//stackTrace(listVars())
+			//deb(listVars())
 		}
 		
 		/**
@@ -62,7 +60,24 @@ package exey.moss.data
 				v = delayedSignalVars[i];
 				v.signal.dispatch((v as Object).value);
 			}
-			//stackTrace(listVars())
+			//deb(listVars())
+		}
+		
+		/**
+		 * 
+		 * @param	...rest
+		 */
+		public function updateGroup(...rest):void {
+			var vars:Array = []
+			for (var i:int = 0; i < rest.length; i++) {
+				vars.push(updateVar(rest[i][0], rest[i][1], false));
+			}
+			var v:IVar;
+			for (var j:int = 0; j < vars.length; j++) {
+				v = vars[j];
+				v.signal.dispatch((v as Object).value)
+			}
+			wholeUpdate.dispatch();
 		}
 		
 		public function dispose():void

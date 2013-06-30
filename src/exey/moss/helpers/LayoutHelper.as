@@ -1,6 +1,5 @@
 package exey.moss.helpers 
 {
-	import flash.display.DisplayObject;
 	/**
 	 * ...
 	 * @author Exey Panteleev
@@ -8,14 +7,14 @@ package exey.moss.helpers
 	public class LayoutHelper 
 	{
 		
-		static public function grid(elements:Array, tileSize:Number, cols:uint, gapX:Number, gapY:Number, startX:Number = 0, startY:Number = 0):void 
+		static public function grid(elements:Array, tileSizeX:Number, tileSizeY:Number, cols:uint, gapX:Number, gapY:Number = 0, startX:Number = 0, startY:Number = 0):void 
 		{
-			var e:DisplayObject
+			var e:Object
 			for (var i:int = 0; i < elements.length; i++) 
 			{
 				e = elements[i]
-				e.x = startX + (i % cols) * (tileSize + gapX);
-				e.y = startY + int(i/cols) * (tileSize + gapY);
+				e.x = startX + (i % cols) * (tileSizeX + gapX);
+				e.y = startY + int(i/cols) * (tileSizeY + gapY);
 			}
 		}
 	}

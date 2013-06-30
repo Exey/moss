@@ -49,7 +49,7 @@ package exey.moss.gui.comps.tilelist
 		public function addIconByProperty(bitmap:Bitmap, propertyName:String, propertyValue:String):void {
 			var shopTileListItem:Object = getItemByProperty(propertyName, propertyValue);
 			//trace("1:ADD ICON", bitmap, propertyValue, shopTileListItem)
-			if (shopTileListItem)
+			if (shopTileListItem && bitmap)
 				shopTileListItem.addIcon(bitmap);
 		}
 		

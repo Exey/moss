@@ -1,10 +1,8 @@
 package exey.moss.mngr
 {
 	import com.eclecticdesignstudio.motion.Actuate;
-	import exey.moss.gui.comps.events.WindowEvent;
 	import exey.moss.gui.comps.window.CenteredWindowAbstract;
 	import exey.moss.gui.comps.window.Window;
-	import exey.moss.debug.stackTrace;
 	import flash.display.DisplayObjectContainer;
 	/**
 	 * ...
@@ -12,8 +10,8 @@ package exey.moss.mngr
 	 */
 	public class WindowManager
 	{
-		static private var _currentBigWindow:Window;
-		static private var _currentSubWindow:Window;
+		static private var _currentBigWindow:CenteredWindowAbstract;
+		static private var _currentSubWindow:CenteredWindowAbstract;
 		
 		static private var _bigWindowQueue:Array = [];
 		static private var _subWindowQueue:Array = [];
@@ -31,18 +29,16 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function showWindow(window:Window, closeHandler:Function):void
+		static private function showWindow(window:CenteredWindowAbstract, closeHandler:Function):void
 		{
-			window.addEventListener(WindowEvent.CLOSE, closeHandler);
-			stackTrace(window.x, window.y);
+			window.closeSignal.add(closeHandler);
 			if (!window.parent)
 				container.addChild(window);
 			window.animateIn();
 		}
 		
-		static private function destroyWindow(window:Window, closeHandler:Function):void
+		static private function destroyWindow(window:CenteredWindowAbstract, closeHandler:Function):void
 		{
-			window.removeEventListener(WindowEvent.CLOSE, closeHandler);
 			window.destroy();
 			window = null;
 		}
@@ -53,10 +49,9 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function onCloseBigWindow(e:WindowEvent):void
+		static private function onCloseBigWindow(win:CenteredWindowAbstract):void
 		{
 			if (!_currentBigWindow) return;
-			_currentBigWindow.removeEventListener(WindowEvent.CLOSE, onCloseBigWindow);
 			_currentBigWindow.animateOut();
 			if (_bigWindowQueue.length > 0)
 				Actuate.timer(CenteredWindowAbstract.ANIMATION_DURATION).onComplete(showBigWindow, _bigWindowQueue.splice(_bigWindowQueue.length - 1, 1)[0]);
@@ -68,7 +63,7 @@ package exey.moss.mngr
 			destroyWindow(_currentBigWindow, onCloseBigWindow);
 		}
 		
-		static public function showBigWindow(window:Window):void
+		static public function showBigWindow(window:CenteredWindowAbstract):void
 		{
 			//destroyBigWindow();
 			if (_currentBigWindow && _currentBigWindow.parent)
@@ -86,11 +81,10 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function onCloseSubWindow(e:WindowEvent):void
+		static private function onCloseSubWindow(win:CenteredWindowAbstract):void
 		{
 			////trace("onCloseSubWindow", _currentSubWindow, _subWindowQueue.length);
 			if (!_currentSubWindow) return;
-			_currentSubWindow.removeEventListener(WindowEvent.CLOSE, onCloseSubWindow);
 			_currentSubWindow.animateOut();
 			if (_subWindowQueue.length > 0)
 				Actuate.timer(CenteredWindowAbstract.ANIMATION_DURATION+0.05).onComplete(showSubWindow, _subWindowQueue.splice(_subWindowQueue.length - 1, 1)[0]);
@@ -102,7 +96,7 @@ package exey.moss.mngr
 			destroyWindow(_currentSubWindow, onCloseSubWindow);
 		}
 		
-		static public function showSubWindow(window:Window):void
+		static public function showSubWindow(window:CenteredWindowAbstract):void
 		{
 			////trace("showSubWindow", _currentSubWindow, _subWindowQueue.length)
 			if (_currentSubWindow && _currentSubWindow.parent)
@@ -115,18 +109,17 @@ package exey.moss.mngr
 			showWindow(_currentSubWindow, onCloseSubWindow);
 		}
 		
-		static public function showWindowInCustomContainer(window:Window, container:DisplayObjectContainer):void
+		static public function showWindowInCustomContainer(window:CenteredWindowAbstract, container:DisplayObjectContainer):void
 		{
-			window.addEventListener(WindowEvent.CLOSE, onCloseWindowInCustomContainer);
+			window.closeSignal.addOnce(onCloseWindowInCustomContainer);
 			if (!window.parent)
 				container.addChild(window);
 			window.animateIn();
 		}
 		
-		static private function onCloseWindowInCustomContainer(e:WindowEvent):void
+		static private function onCloseWindowInCustomContainer(win:CenteredWindowAbstract):void
 		{
-			e.target.removeEventListener(WindowEvent.CLOSE, onCloseWindowInCustomContainer);
-			e.target.animateOut();
+			win.animateOut();
 		}
 		
 		//--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
-package exey.moss.ctrl {
+package exey.moss.starling.ctrl {
 	
 	import exey.moss.data.DataBaseProto;
-	import exey.moss.gui.comps.container.StarlingContainer;
+	import exey.moss.starling.gui.comps.container.Container;
 	import exey.moss.mngr.KeyboardManager;
 	import exey.moss.mngr.WindowManager;
 	import starling.display.DisplayObjectContainer;
@@ -9,7 +9,7 @@ package exey.moss.ctrl {
 	 * ...
 	 * @author ...
 	 */
-	public class AbstractStarlingGameController 
+	public class AbstractGameController 
 	{
 		
 		//--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ package exey.moss.ctrl {
 		//
 		//--------------------------------------------------------------------------
 		
-		public function AbstractStarlingGameController()
+		public function AbstractGameController()
 		{
 
 		}
@@ -35,11 +35,11 @@ package exey.moss.ctrl {
 		// main container, usually root sprite
 		public var container:DisplayObjectContainer;
 		// layers
-		public var topLayer:StarlingContainer;
-		public var tooltipLayer:StarlingContainer;
-		public var windowLayer:StarlingContainer;
-		public var hudLayer:StarlingContainer;
-		public var viewLayer:StarlingContainer;		
+		public var topLayer:Container;
+		public var tooltipLayer:Container;
+		public var windowLayer:Container;
+		public var hudLayer:Container;
+		public var viewLayer:Container;		
 		
 		//--------------------------------------------------------------------------
 		//
@@ -48,11 +48,11 @@ package exey.moss.ctrl {
 		//--------------------------------------------------------------------------
 		
 		protected function initLayers(container:DisplayObjectContainer, w:Number, h:Number):void {
-			viewLayer 		= new StarlingContainer(container, w, h);
-			hudLayer 		= new StarlingContainer(container, w, h);
-			windowLayer 	= new StarlingContainer(container, w, h);
-			tooltipLayer 	= new StarlingContainer(container, w, h);
-			topLayer 		= new StarlingContainer(container, w, h);
+			viewLayer 		= new Container(container, w, h);
+			hudLayer 		= new Container(container, w, h);
+			windowLayer 	= new Container(container, w, h);
+			tooltipLayer 	= new Container(container, w, h);
+			topLayer 		= new Container(container, w, h);
 		}
 		
 		protected function initManagers():void {

@@ -1,15 +1,15 @@
 package exey.moss.gui.comps.tilelist
 {
 	import exey.moss.gui.abstract.ComponentAbstract;
-	import exey.moss.debug.stackTrace;
+	import exey.moss.debug.deb;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	
 	/**
-	 * ...
+	 * TileList
 	 * @author Exey Panteleev
 	 */
-	public class TileList extends ComponentAbstract 
+	public class TileList extends ComponentAbstract
 	{	
 		protected var _data:Array;
 		protected var _pageNum:uint = 0;
@@ -34,6 +34,16 @@ package exey.moss.gui.comps.tilelist
 		public function set pageNum(value:uint):void  {_pageNum = value;}
 		public function get pageNum():uint { return _pageNum; }
 		
+		public function get columns():uint 
+		{
+			return _columns;
+		}
+		
+		public function set columns(value:uint):void 
+		{
+			_columns = value;
+		}
+		
 		
 		public function TileList(parent:DisplayObjectContainer, xpos:Number, ypos:Number, columns:uint = 3, gap:Number = 20)
 		{
@@ -45,7 +55,7 @@ package exey.moss.gui.comps.tilelist
 		
 		public function initialize(data:Array, itemClass:Class):void
 		{
-			//stackTrace(data);
+			//deb(data);
 			_data = data;
 			_itemClass = itemClass;
 			showFrom(0)
@@ -63,13 +73,13 @@ package exey.moss.gui.comps.tilelist
 			var item:ITileListItem;
 			var currX:Number
 			var currY:Number
-			var length:uint = value+_step
+			var length:uint = value + _step;
+			deb("length", length);
 			for (i = value; i < length; i++) {
 				currentData = _data[i];
-				
 				if (!currentData) break;
 				item = new _itemClass();
-				currX = (_horizontalGap + item.itemWidth) * ((i - value) % _columns);				
+				currX = (_horizontalGap + item.itemWidth) * ((i - value) % _columns);		
 				currY = (_verticalGap + item.itemHeight) * Math.floor((i - value) / _columns);				
 				DisplayObject(item).x = currX;
 				DisplayObject(item).y = currY;
@@ -102,8 +112,7 @@ package exey.moss.gui.comps.tilelist
 		
 		public function getItemByProperty(propertyName:String, value:*):ITileListItem
 		{
-			for (var i:int = 0; i < _currentItems.length; i++) 
-			{
+			for (var i:int = 0; i < _currentItems.length; i++) {
 				//trace("::::::::", propertyName, value, _currentItems[i][propertyName])
 				if (_currentItems[i][propertyName] && _currentItems[i][propertyName] == value)
 					return _currentItems[i]
@@ -114,11 +123,8 @@ package exey.moss.gui.comps.tilelist
 		public function removeItemByProperty(propertyName:String, value:*):void 
 		{
 			var item:ITileListItem = getItemByProperty(propertyName, value);
-			if (item)
-			{
-				
-				for (var i:int = 0; i < _data.length; i++) 
-				{
+			if (item) {
+				for (var i:int = 0; i < _data.length; i++) {
 					if (item.data == _data[i])
 						_data.splice(i, 1);					
 				}

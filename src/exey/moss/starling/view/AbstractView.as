@@ -1,13 +1,14 @@
-package exey.moss.view 
+package exey.moss.starling.view 
 {
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Quad;
+	import exey.moss.view.IView;
 	import starling.display.Sprite;
 	/**
 	 * ...
-	 * @author ...
+	 * @author Exey Panteleev
 	 */
-	public class AbstractStarlingView extends Sprite implements IView
+	public class AbstractView extends Sprite implements IView
 	{
 		
 		//--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ package exey.moss.view
 		//
 		//--------------------------------------------------------------------------
 		
-		public function AbstractStarlingView()
+		public function AbstractView()
 		{
 			
 		}

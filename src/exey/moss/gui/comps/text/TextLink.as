@@ -7,7 +7,7 @@ package exey.moss.gui.comps.text
 	import flash.text.TextFormat;
 	
 	/**
-	 * ...
+	 * TextFieldLabel with hyperLink
 	 * @author Exey Panteleev
 	 */
 	public class TextLink extends TextFieldLabel 

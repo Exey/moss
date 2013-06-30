@@ -1,5 +1,6 @@
 package exey.moss.render3d.alternativa3d 
 {
+	import alternativa.engine3d.materials.FillMaterial;
 	import alternativa.engine3d.materials.TextureMaterial;
 	import alternativa.engine3d.primitives.Plane;
 	import alternativa.engine3d.resources.BitmapTextureResource;
@@ -20,7 +21,8 @@ package exey.moss.render3d.alternativa3d
 		
 		public function TileAlt3D(bitmapData:BitmapData, size:Number) 
 		{
-			_object3D = new Plane(size, size)
+			_object3D = new Plane(256, 256);
+			_object3D.name = "tile";
 			resource = new BitmapTextureResource(bitmapData);
 			var material:TextureMaterial = new TextureMaterial(resource);
 			_object3D.setMaterialToAllSurfaces(material);

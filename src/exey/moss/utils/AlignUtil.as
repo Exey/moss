@@ -1,5 +1,6 @@
 package exey.moss.utils
 {
+	import exey.moss.gui.abstract.ComponentAbstract;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	/**
@@ -13,7 +14,7 @@ package exey.moss.utils
 			obj.y = (container.height - obj.height) * 0.5+2;
 		}
 		
-		static public function toHorizontalCenter( obj:DisplayObject, container:DisplayObjectContainer =  null ):void {
+		static public function toHorizontalCenter( obj:Object, container:Object =  null ):void {
 			if (container == null) {
 				obj.x = -obj.width * 0.5;
 			}else {
@@ -27,7 +28,7 @@ package exey.moss.utils
 			obj.y = (containerHeight - obj.height) * 0.5 + offsetY;
 		}
 		
-		static public function toCenter( obj:DisplayObject, container:DisplayObjectContainer =  null, offsetX:Number = 0, offsetY:Number = 0):void {
+		static public function toCenter( obj:Object, container:Object =  null, offsetX:Number = 0, offsetY:Number = 0):void {
 			if (container == null) {
 				obj.x = -obj.width * 0.5 + offsetX;
 				obj.y = -obj.height * 0.5 + offsetY;
@@ -35,10 +36,16 @@ package exey.moss.utils
 				obj.x = (container.width - obj.width) * 0.5 + offsetX;
 				obj.y = (container.height - obj.height) * 0.5 + offsetY;
 			}
-			//stackTrace(obj.x, obj.y);
+			//deb(obj.x, obj.y);
 		}
 		
-		static public function toTopLeft( obj:DisplayObject, container:DisplayObjectContainer ):void {
+		static public function toRight(obj:DisplayObject, containerWidth:Number, shift:Number = 0):void 
+		{
+			obj.x = containerWidth - obj.width+shift;
+		}
+		
+		static public function toTopLeft( obj:DisplayObject, container:DisplayObjectContainer ):void
+		{
 			obj.x = container.x;
 			obj.y = container.y;
 		}
@@ -48,22 +55,26 @@ package exey.moss.utils
 			obj.y = container.y;
 		}
 		
-		static public function toTopRight( obj:DisplayObject, container:DisplayObjectContainer ):void {
+		static public function toTopRight( obj:DisplayObject, container:DisplayObjectContainer ):void
+		{
 			obj.x = container.width - obj.width;
 			obj.y = container.y;
 		}
 		
-		static public function toBottomRight( obj:DisplayObject, container:DisplayObjectContainer ):void {
+		static public function toBottomRight( obj:DisplayObject, container:DisplayObjectContainer ):void
+		{
 			obj.x = container.width - obj.width;
 			obj.y = container.height - obj.height;
 		}
 		
-		static public function toBottomCenter( obj:DisplayObject, container:DisplayObjectContainer ):void {
-			obj.x = (container.width - obj.width) * 0.5;
-			obj.y = container.height - obj.height;
+		static public function toBottomCenter( obj:DisplayObject, container:DisplayObjectContainer, offsetX:Number = 0, offsetY:Number = 0):void
+		{
+			obj.x = (container.width - obj.width) * 0.5 + offsetX;
+			obj.y = container.height - obj.height + offsetY;
 		}
 		
-		static public function toBottomLeft( obj:DisplayObject, container:DisplayObjectContainer ):void {
+		static public function toBottomLeft( obj:DisplayObject, container:DisplayObjectContainer ):void
+		{
 			obj.x = container.x;
 			obj.y = container.height - obj.height;
 		}
@@ -75,6 +86,15 @@ package exey.moss.utils
 				obj.y = y;
 		}
 		
+		static public function toVerticalCenter(obj:DisplayObject, containerHeight:Number, offsetY:Number = 0):void 
+		{
+			obj.y = (containerHeight - obj.height)*0.5+offsetY;
+		}
+		
+		static public function toBottom(obj:DisplayObject, containerHeight:Number, offsetY:Number = 0):void 
+		{
+			obj.y = containerHeight - obj.height+offsetY;
+		}
+		
 	}
-
 }

@@ -1,4 +1,4 @@
-package exey.moss.ctrl 
+package exey.moss.starling.ctrl 
 {
 	import exey.moss.data.DataBaseProto;
 	import starling.display.DisplayObjectContainer;
@@ -6,7 +6,7 @@ package exey.moss.ctrl
 	 * ...
 	 * @author ...
 	 */
-	public class AbstractStarlingViewController 
+	public class AbstractViewController 
 	{
 		
 		//--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ package exey.moss.ctrl
 		//
 		//--------------------------------------------------------------------------
 		
-		public function AbstractStarlingViewController(container:DisplayObjectContainer, dataBase:DataBaseProto)
+		public function AbstractViewController(container:DisplayObjectContainer, dataBase:DataBaseProto)
 		{
 			this.container = container;
 			_database = dataBase;

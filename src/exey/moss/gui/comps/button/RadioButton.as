@@ -20,11 +20,13 @@ package exey.moss.gui.comps.button
 		protected const BACKGROUND_COLOR:uint = 0xFFFFFF;
 		protected const DOT_COLOR:uint = 0x0000FF;
 		
-		protected var scale:Number;
+		protected var _scale:Number;
+		override public function set scale(value:Number):void { _scale = value; }
+		public function get scale():Number { return _scale; }
+		
 		protected var _selected:Boolean;
 		public function get selected():Boolean { return _selected; }
-		public function set selected(value:Boolean):void 
-		{
+		public function set selected(value:Boolean):void  {
 			_selected = value;
 			if (_selected)
 				dot.visible = true;
@@ -37,33 +39,44 @@ package exey.moss.gui.comps.button
 		
 		public var selectSignal:Signal;
 		
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------		
 		public function RadioButton(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, label:String = "", scale:Number = 1) 
 		{
-			scale = scale;
+			_scale = scale;
 			super(parent, xpos, ypos);
 			this.buttonMode = true
-			initialize(label);
-		}
-		
-		protected function initialize(label:String):void
-		{
 			draw();
-			textLabel = new TextFieldLabel(this, 24+4, -2, new TextFormat( "Arial", 18, 0x000000, "bold" ), label, false);
+			if (label == "") addLabel(label);
 			selectSignal = new Signal();
 			selected = false;
 			this.addEventListener(MouseEvent.CLICK, onClick);
 		}
 		
-		protected function onClick(e:MouseEvent):void 
+		//--------------------------------------------------------------------------
+		//
+		//  Event handlers
+		//
+		//--------------------------------------------------------------------------			
+		
+		protected function addLabel(label:String, color:uint = 0x000000):void 
+		{
+			textLabel = new TextFieldLabel(this, 24+4, -2, new TextFormat( "Arial", 18, color, "bold" ), label, false);
+		}		
+		
+		protected function onClick(e:MouseEvent):void
 		{
 			if (selected) selected = false;
 			else selected = true;
-			selectSignal.dispatch();			
+			selectSignal.dispatch();
 		}
 		
 		override public function draw():void
 		{
-			var radius:Number = DEFAULT_RADIUS * scale;
+			var radius:Number = DEFAULT_RADIUS*scale;
 			this.graphics.lineStyle(BORDER_THICKNESS*scale, BORDER_COLOR);
 			this.graphics.beginFill(BACKGROUND_COLOR);
 			this.graphics.drawCircle(radius, radius, radius);

@@ -4,10 +4,22 @@ package exey.moss.utils
  * ...
  * @author Exey Panteleev
  */
-	public class ArrayUtil {
+	public class ArrayUtil {		
+		
+		static public function maxValue(a:Array):Number
+		{
+			var maxValue:int;
+            for (var s:* in a) {
+                if (a[s]>maxValue) {
+                    maxValue = a[s];
+                }
+            }
+			return maxValue
+		}
 		
 		/** Returns an index of nearest element of array to value*/
-		static public function nearest(arr:Array, value:Number):Number {
+		static public function nearest(arr:Array, value:Number):Number
+		{
 			if (arr.length <= 1) { return 0; }
 			// must be null as zero would mean an exact match
 			var near:Number = NaN;
@@ -31,7 +43,8 @@ package exey.moss.utils
 		 * @param	value The specified value
 		 * @return The number of elements having that propertyValue
 		 */
-		static public function countByProperty(arr:Array, property:String, value:*):uint {
+		static public function countByProperty(arr:Array, property:String, value:*):uint
+		{
 			var result:uint = 0
 			for (var i:int = 0; i < arr.length; i++) {
 				if (arr[i][property] == value)
@@ -45,7 +58,8 @@ package exey.moss.utils
 		 * elements with the same value of property are counted as one
 		 * @param	arr
 		 */
-		static public function countNonIdenticalProperties(arr:Array, property:String, isSorted:Boolean = false):uint {
+		static public function countNonIdenticalProperties(arr:Array, property:String, isSorted:Boolean = false):uint
+		{
 			//TODO arr.sort(sortByProperty)
 			var result:uint = 0
 			var previousValue:String = ""
@@ -58,14 +72,16 @@ package exey.moss.utils
 			return result;
 		}
 		
-		static public function sortByProperty():void {
+		static public function sortByProperty():void
+		{
 			
 		}
 		
 		/**
 		 * Convert Object to Array
 		 */
-		static public function objectToArray(object:Object):Array {
+		static public function objectToArray(object:Object):Array
+		{
 			var array:Array = [];
 			for (var name:String in object) { array.push(name) }
 			array.sort();
@@ -102,7 +118,8 @@ package exey.moss.utils
 		/**
 		 * change 0/1 in hash to words
 		 */
-		static public function booleans2Word(array:Array, row:String, trueWord:String, falseWord:String):Array {
+		static public function booleans2Word(array:Array, row:String, trueWord:String, falseWord:String):Array
+		{
 			var result:Array = [];
 			for each(var obj:Object in array) {
 				if (obj[row] == 1)
@@ -136,13 +153,17 @@ package exey.moss.utils
 			return false;
 		}
 		
-		static public function numberValuesSum(array:Array):Number
+		static public function exctractMaxValues(num:uint, source:Array):Array
+		{
+			var cloned:Array = source.concat()
+			cloned.sort(Array.DESCENDING);
+			return cloned.splice(0, Math.min(num, source.length));
+		}
+		
+		static public function sumValues(array:Array):Number
 		{
 			var result:Number = 0;
-			for (var i:int = 0; i < array.length; i++)
-			{
-				result += array[i];
-			}
+			for (var i:int = 0; i < array.length; i++) result += array[i];
 			return result;
 		}
 		
@@ -194,6 +215,26 @@ package exey.moss.utils
 				if (item[colIndex] == colValue) break;
 			}
 			return item
+		}
+		
+		static public function fromProperty(source:Array, propertyName:String):Array 
+		{
+			var result:Array = [];
+			for (var i:int = 0; i < source.length; i++) {
+				result[i] = source[i][propertyName];
+			}
+			return result;
+		}
+		
+		static public function fromVector(v:Object):Array
+		{
+			var len:int = v.length;
+			var ret:Array = new Array(len);
+			for (var i:int = 0; i < len; ++i)
+			{
+				ret[i] = v[i];
+			}
+			return ret;
 		}
 	}
 }
