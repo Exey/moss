@@ -9,8 +9,10 @@ package exey.moss.utils
 	{
 		
 		static public function consoleLog(...rest):void 
-		{			
-			ExternalInterface.call( "console.log" , rest.join(" "));
+		{
+			if(ExternalInterface.available)
+				ExternalInterface.call( "console.log" , rest.join(" "));
+			else trace("3: CAN'T LOG NO ExternalInterface")
 		}
 		
 		static public function getCookie():*

@@ -12,6 +12,8 @@ package exey.moss.mngr
 	 */
 	public class AlertManager
 	{	
+		static public var ALERT_Y:Number = 200;
+		
 		static private var alertContainer:DisplayObjectContainer;
 		static private var alertMessage:AlertMessage;
 		
@@ -41,7 +43,7 @@ package exey.moss.mngr
 			if (alertMessage) alertMessage.hide();
 			if (animate) {
 				alertMessage = new AlertMessage(alertContainer, messagePosX, messagePosY, text, color, messageWidth, textFormat);
-				AnimationUtil.slideY(alertMessage, 1, Cubic.easeOut, 200);
+				AnimationUtil.slideY(alertMessage, 1, Cubic.easeOut, ALERT_Y);
 			} else {
 				alertMessage = new AlertMessage(alertContainer, messagePosX, messagePosY, text, color, messageWidth, textFormat);
 			}

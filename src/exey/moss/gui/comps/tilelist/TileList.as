@@ -74,7 +74,7 @@ package exey.moss.gui.comps.tilelist
 			var currX:Number
 			var currY:Number
 			var length:uint = value + _step;
-			deb("length", length);
+			//deb("length", length);
 			for (i = value; i < length; i++) {
 				currentData = _data[i];
 				if (!currentData) break;

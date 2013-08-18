@@ -9,6 +9,7 @@ package exey.moss.starling.gui.comps.control
 	import flash.text.TextFormat;
 	import org.osflash.signals.Signal;
 	import starling.display.DisplayObjectContainer;
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	
@@ -41,7 +42,7 @@ package exey.moss.starling.gui.comps.control
 		public function set value(value:Number):void {
 			_value = value;
 			if (_showEndValue) { textField.text = _value + "/" + _endValue + additionalText; }
-			else 			   { textField.text = _value.toFixed(1) + additionalText;			  }
+			else 			   { textField.text = _value.toFixed(1) + additionalText; }
 			AlignUtil.toHorizontalCenter(textField, this);
 			
 			currentPercent = (value-startValue) / (endValue-startValue);
@@ -75,7 +76,7 @@ package exey.moss.starling.gui.comps.control
 		{
 			addChild(shapeLayer);
 			if (textFormat) {				
-				textField = new TextFieldLabel(this, 0, 0, textFormat, "");
+				textField = new TextFieldLabel(this, 0, 0, textFormat, "", barWidth, barHeight);
 				//textField.embedFonts = embedFonts;
 			} else {
 				textField = new TextFieldLabel(this, 0, 0, new TextFormat( "Arial", 14, 0xFFFFFF, "bold" ), "");
@@ -89,7 +90,10 @@ package exey.moss.starling.gui.comps.control
 		
 		override public function draw():void 
 		{
-			while (shapeLayer.numChildren) shapeLayer.removeChildAt(0);
+			while (shapeLayer.numChildren) {
+				(shapeLayer.getChildAt(0) as Image).dispose()
+				shapeLayer.removeChildAt(0);
+			}
 			
 			var shape:Shape = new Shape();
 			//graphics.clear();

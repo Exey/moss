@@ -98,7 +98,9 @@ package exey.moss.mngr
 			for (i = 0; i < KeyboardManager.bindings.length; i++) 
 			{
 				if (e.keyCode == KeyboardManager.bindings[i][0])
-					KeyboardManager.bindings[i][1].call();
+					if (!KeyboardManager.bindings[i][2] || KeyboardManager.isCtrl)
+						if(!KeyboardManager.bindings[i][3] || KeyboardManager.isShift)
+							KeyboardManager.bindings[i][1].call();
 			}	
 			}else {
 				// KEY_UP
@@ -111,9 +113,9 @@ package exey.moss.mngr
 			}
 		}
 		
-		static public function bind(keyCode:uint, handler:Function):void 
+		static public function bind(keyCode:uint, handler:Function, isCtrl:Boolean = false, isShift:Boolean = false):void 
 		{
-			KeyboardManager.bindings.push([keyCode, handler])
+			KeyboardManager.bindings.push([keyCode, handler, isCtrl, isShift])
 		}		
 	}
 }

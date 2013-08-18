@@ -5,6 +5,7 @@ package exey.moss.utils
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
@@ -64,11 +65,29 @@ package exey.moss.utils
 			loader.load(new URLRequest(url));
 		}
 		
+		static public function loadWithLoader(url:String, handler:Function):void 
+		{
+			var loader:Loader = new Loader();			
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event = null):void {
+				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, arguments.callee);
+				handler.apply(null, [e.target.content]);
+			});
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent = null):void {
+				trace("3:LOADER ERROR ", e.target.url, e)
+			});
+			loader.load(new URLRequest(url), new LoaderContext(true));
+		}		
+		
 		static public function loadBytesToCurrentDomain(bytes:ByteArray, eventHandler:Function):void 
 		{
 			var skinLoader:Loader = new Loader();
 			skinLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, eventHandler);
 			skinLoader.loadBytes(bytes, new LoaderContext(false, ApplicationDomain.currentDomain));
+		}
+		
+		static public function loadBitmap(url:String, handler:Function):void 
+		{
+			loadWithLoader(url, handler);
 		}
 		
 		/*

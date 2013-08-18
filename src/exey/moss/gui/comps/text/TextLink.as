@@ -14,7 +14,7 @@ package exey.moss.gui.comps.text
 	{
 		private var url:String;
 		
-		public function TextLink(url:String, parent:DisplayObjectContainer, xpos:Number, ypos:Number, textFormat:TextFormat, text:String="", embedFonts:Boolean=false, mouseEnabled:Boolean=false) 
+		public function TextLink():void
 		{
 			super(parent, xpos, ypos, textFormat, text, embedFonts, mouseEnabled);
 			this.url = url;

@@ -2,29 +2,30 @@ package exey.moss.mngr
 {
 	import exey.moss.mngr.data.AssetData;
 	import exey.moss.utils.ObjectUtil;
+	import exey.moss.utils.SignalUtil;
 	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.utils.Dictionary;
+	import org.osflash.signals.Signal;
 	/**
 	 * The load manager for multiple loaders.
 	 * It doesn't handle progress event but caches each loaded content which is shared between clients
 	 * Content should be allowed by flash player security
 	 * @author Exey Panteleev
 	 */
-	public class AssetManager
-	{
-
+	public class AssetManager {
+		
+		static public const error:Signal = new Signal();
+		
 		//--------------------------------------------------------------------------
 		//
 		//  Constructor
 		//
 		//--------------------------------------------------------------------------
 		
-		public function AssetManager()
-		{
-			
-		}
+		public function AssetManager() { throw("Instantiation is not available for AssetManager") }
 		
 		//--------------------------------------------------------------------------
 		//
@@ -212,6 +213,7 @@ package exey.moss.mngr
 		static private function errorLoadHandler(e:IOErrorEvent):void
 		{
 			trace("3: AssetManager ERROR LOAD", e.text)
+			error.dispatch(e.text);
 			handleResult(e.target as AnyResourceLoader);
 		}
 
@@ -310,6 +312,8 @@ internal final class AssetManagerGroup extends EventDispatcher
 
 internal final class AnyResourceLoader extends EventDispatcher
 {
+	private const TEXT_EXTENSIONS:Array = ["json", "js", "xml", "tmx", "dae", "css", "md5mesh", "md5anim"];
+	
 	public var request:URLRequest;
 	public var content:*;
 	private var loader:Object;
@@ -323,8 +327,8 @@ internal final class AnyResourceLoader extends EventDispatcher
 	{
 		trace("1:LOAD", url);
 		request = new URLRequest(url)
-		var ext:String = url.substr(url.lastIndexOf('.') + 1, url.length).toLowerCase();
-		if (ext == "json" || ext == "js" || ext == "xml" || ext == "tmx" || ext == "dae" || ext == "css") {
+		var ext:String = url.substr(url.lastIndexOf('.') + 1, url.length).toLowerCase();		
+		if (TEXT_EXTENSIONS.indexOf(ext) > -1) {
 			loader = new URLLoader();
 			loader.load(request);
 			loader.addEventListener(Event.COMPLETE, loader_complete);

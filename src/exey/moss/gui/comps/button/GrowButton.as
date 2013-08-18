@@ -1,5 +1,6 @@
 package exey.moss.gui.comps.button 
 {
+	import exey.moss.utils.EventUtil;
 	import exey.moss.utils.LoaderUtil;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -21,6 +22,13 @@ package exey.moss.gui.comps.button
 			_selected = value;
 			if (_selected) this.skin.filters = [new GlowFilter()];
 			else this.skin.filters = [];
+		}
+		
+		override public function set enabled(value:Boolean):void {
+			super.enabled = value;
+			EventUtil.onNextFrame(this, function():void {
+				if (!_enabled) growDown();
+			})
 		}
 		
 		//--------------------------------------------------------------------------

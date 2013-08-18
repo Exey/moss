@@ -14,7 +14,7 @@ package exey.moss.utils
 	 */
 	public class EventUtil 
 	{
-		static public function onStage(container:DisplayObjectContainer, handler:Function):void 
+		static public function onStage(container:Object, handler:Function):void 
 		{
 			if (container.stage) {
 				handler();
@@ -66,6 +66,14 @@ package exey.moss.utils
 		static public function uncaughtErrors(loaderInfo:LoaderInfo, uncaughtErrorHandler:Function):void 
 		{
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);			
+		}
+		
+		static public function onNextFrame(container:EventDispatcher, handler:Function):void 
+		{
+			container.addEventListener(Event.ENTER_FRAME, function(e:Event = null):void {
+				container.removeEventListener(Event.ENTER_FRAME, arguments.callee);
+				handler();
+			})
 		}
 		
 	}

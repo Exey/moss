@@ -8,6 +8,7 @@ package exey.moss.utils
 	{
 		static public const EXTRACT_FILENAME:RegExp = /(\w|[-.])+$/;
 		
+		static public function filenameFromUrl(url:String):String { return url.match(RegExpUtil.EXTRACT_FILENAME)[0]; }
 		
 	}
 }

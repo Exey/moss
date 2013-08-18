@@ -40,7 +40,7 @@ package exey.moss.gui.comps.control
 		private function initialize(text:String, color:uint, textFormat:TextFormat):void
 		{
 			var skin:Sprite = new Sprite();
-			DrawUtil.rect(skin.graphics, 0, 0, messageWidth, 100, 0x000000, 0.2)
+			DrawUtil.rect(skin.graphics, 0, 0, messageWidth, 100, color, 1)
 			this.addChild(skin);
 			
 			var multiline:Boolean = false;
@@ -64,8 +64,8 @@ package exey.moss.gui.comps.control
 			
 			var closeButton:Sprite = GuiFactory.closeButton();
 			closeButton.addEventListener(MouseEvent.CLICK, onClose);
-			closeButton.x = messageWidth- 60;
-			closeButton.y = 25;
+			closeButton.x = messageWidth - 30;
+			closeButton.y = 5;
 			closeButton.scaleX = closeButton.scaleY = 1.5;
 			closeButton.buttonMode = true;
 			addChild(closeButton);

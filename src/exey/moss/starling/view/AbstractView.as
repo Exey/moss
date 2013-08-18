@@ -10,7 +10,6 @@ package exey.moss.starling.view
 	 */
 	public class AbstractView extends Sprite implements IView
 	{
-		
 		//--------------------------------------------------------------------------
 		//
 		//  Constructor

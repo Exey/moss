@@ -71,7 +71,7 @@ package exey.moss.utils
 				//var js:String = "share('"+param+"');";
 				//trace(js);
 				navigateToURL(new URLRequest(param), "_blank")
-				//ExternalInterface.call(js); // TODO create popup with JS			
+				 //ExternalInterface.call(js); // TODO create popup with JS			
 			}
 		
 	}

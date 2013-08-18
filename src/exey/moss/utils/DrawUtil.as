@@ -20,15 +20,15 @@ package exey.moss.utils
 			graphics.drawRect( startX, startY, width, height );
 		}
 		
-		static public function histogram(g:Graphics, w:Number, h:Number, values:Array, backgroundColor:uint = 0xFFFFFF, maxValue:Number = NaN):void 
+		static public function histogram(g:Graphics, startX:Number, startY:Number, w:Number, h:Number, values:Array, backgroundColor:uint = 0xFFFFFF, maxValue:Number = NaN, clearGraphics:Boolean = true):void 
 		{
-			g.clear();
-			DrawUtil.rect(g, 0, 0, w, h, backgroundColor);
+			if(clearGraphics) g.clear();
+			DrawUtil.rect(g, startX, startY, w, h, backgroundColor);
 			g.lineStyle(1, 0, 1, true);
 			for (var i:int = 0; i < values.length; i++) {
-				g.moveTo(i, h);
-				if(isNaN(maxValue))	g.lineTo(i, h-values[i]);
-				else g.lineTo(i, Math.max(0.0, h-values[i] * h/maxValue));
+				g.moveTo(startX+i, startY+h);
+				if(isNaN(maxValue))	g.lineTo(startX+i, startY+h-values[i]);
+				else g.lineTo(startX+i, startY+Math.max(0.0, h-values[i] * h/maxValue));
 			}
 			g.lineStyle();
 		}
@@ -94,11 +94,13 @@ package exey.moss.utils
 			graphics.endFill();
 		}
 		
-		static public function gradientRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array, alpha:Number = 1):void
+		static public function gradientRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array, alpha:Number = 1, alphas:Array = null, ratios:Array = null):void
 		{
+			if (!alphas) alphas = [1, 1];
+			if (!ratios) ratios = [0, 255];
 			var matrix:Matrix = new Matrix();
 			matrix.createGradientBox(width, height, -Math.PI*0.5, 0, -height*0.25);
-			graphics.beginGradientFill("linear", colors, [ 1, 1 ], [ 0, 255 ], matrix, "pad", "RGB", 1);
+			graphics.beginGradientFill("linear", colors, alphas, ratios, matrix, "pad", "RGB", 1);
 			graphics.drawRect(startX, startY,  width, height);
 			graphics.endFill();
 		}

@@ -1,24 +1,24 @@
 package exey.moss.mngr
 {
 	import com.eclecticdesignstudio.motion.Actuate;
-	import exey.moss.gui.comps.window.CenteredWindowAbstract;
-	import exey.moss.gui.comps.window.Window;
-	import flash.display.DisplayObjectContainer;
+	import exey.moss.gui.comps.window.ICenteredWindowAbstract;
 	/**
 	 * ...
 	 * @author Exey Panteleev
 	 */
 	public class WindowManager
 	{
-		static private var _currentBigWindow:CenteredWindowAbstract;
-		static private var _currentSubWindow:CenteredWindowAbstract;
+		static public const ANIMATION_DURATION:Number = 0.33;
+		
+		static private var _currentBigWindow:ICenteredWindowAbstract;
+		static private var _currentSubWindow:ICenteredWindowAbstract;
 		
 		static private var _bigWindowQueue:Array = [];
 		static private var _subWindowQueue:Array = [];
 		
-		static public var container:DisplayObjectContainer;
+		static public var container:Object;
 		
-		public function WindowManager(container:DisplayObjectContainer)
+		public function WindowManager(container:Object)
 		{
 			WindowManager.container = container;
 		}
@@ -29,15 +29,14 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function showWindow(window:CenteredWindowAbstract, closeHandler:Function):void
+		static private function showWindow(window:ICenteredWindowAbstract, closeHandler:Function):void
 		{
 			window.closeSignal.add(closeHandler);
-			if (!window.parent)
-				container.addChild(window);
+			addIfNoParent(window);
 			window.animateIn();
 		}
 		
-		static private function destroyWindow(window:CenteredWindowAbstract, closeHandler:Function):void
+		static private function destroyWindow(window:ICenteredWindowAbstract, closeHandler:Function):void
 		{
 			window.destroy();
 			window = null;
@@ -49,12 +48,12 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function onCloseBigWindow(win:CenteredWindowAbstract):void
+		static private function onCloseBigWindow(win:ICenteredWindowAbstract):void
 		{
 			if (!_currentBigWindow) return;
 			_currentBigWindow.animateOut();
 			if (_bigWindowQueue.length > 0)
-				Actuate.timer(CenteredWindowAbstract.ANIMATION_DURATION).onComplete(showBigWindow, _bigWindowQueue.splice(_bigWindowQueue.length - 1, 1)[0]);
+				Actuate.timer(WindowManager.ANIMATION_DURATION).onComplete(showBigWindow, _bigWindowQueue.splice(_bigWindowQueue.length - 1, 1)[0]);
 		}
 		
 		static public function destroyBigWindow():void
@@ -63,10 +62,10 @@ package exey.moss.mngr
 			destroyWindow(_currentBigWindow, onCloseBigWindow);
 		}
 		
-		static public function showBigWindow(window:CenteredWindowAbstract):void
+		static public function showBigWindow(window:ICenteredWindowAbstract):void
 		{
 			//destroyBigWindow();
-			if (_currentBigWindow && _currentBigWindow.parent)
+			if (_currentBigWindow && (_currentBigWindow as Object).parent)
 			{
 				_bigWindowQueue.push(window);
 				return;
@@ -81,13 +80,13 @@ package exey.moss.mngr
 		//
 		//--------------------------------------------------------------------------
 		
-		static private function onCloseSubWindow(win:CenteredWindowAbstract):void
+		static private function onCloseSubWindow(win:ICenteredWindowAbstract):void
 		{
 			////trace("onCloseSubWindow", _currentSubWindow, _subWindowQueue.length);
 			if (!_currentSubWindow) return;
 			_currentSubWindow.animateOut();
 			if (_subWindowQueue.length > 0)
-				Actuate.timer(CenteredWindowAbstract.ANIMATION_DURATION+0.05).onComplete(showSubWindow, _subWindowQueue.splice(_subWindowQueue.length - 1, 1)[0]);
+				Actuate.timer(WindowManager.ANIMATION_DURATION+0.05).onComplete(showSubWindow, _subWindowQueue.splice(_subWindowQueue.length - 1, 1)[0]);
 		}
 		
 		static public function destroySubWindow():void
@@ -96,10 +95,10 @@ package exey.moss.mngr
 			destroyWindow(_currentSubWindow, onCloseSubWindow);
 		}
 		
-		static public function showSubWindow(window:CenteredWindowAbstract):void
+		static public function showSubWindow(window:ICenteredWindowAbstract):void
 		{
 			////trace("showSubWindow", _currentSubWindow, _subWindowQueue.length)
-			if (_currentSubWindow && _currentSubWindow.parent)
+			if (_currentSubWindow && (_currentSubWindow as Object).parent)
 			{
 				_subWindowQueue.push(window);
 				return;
@@ -109,17 +108,22 @@ package exey.moss.mngr
 			showWindow(_currentSubWindow, onCloseSubWindow);
 		}
 		
-		static public function showWindowInCustomContainer(window:CenteredWindowAbstract, container:DisplayObjectContainer):void
+		static public function showWindowInCustomContainer(window:ICenteredWindowAbstract, container:Object):void
 		{
 			window.closeSignal.addOnce(onCloseWindowInCustomContainer);
-			if (!window.parent)
-				container.addChild(window);
+			addIfNoParent(window);
 			window.animateIn();
 		}
 		
-		static private function onCloseWindowInCustomContainer(win:CenteredWindowAbstract):void
+		static private function onCloseWindowInCustomContainer(win:ICenteredWindowAbstract):void
 		{
 			win.animateOut();
+		}
+		
+		static private function addIfNoParent(window:Object):void 
+		{
+			if (!window.parent)
+				container.addChild(window);
 		}
 		
 		//--------------------------------------------------------------------------

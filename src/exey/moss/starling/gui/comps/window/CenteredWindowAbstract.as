@@ -1,13 +1,14 @@
-package exey.moss.gui.comps.window {
+﻿package exey.moss.starling.gui.comps.window 
+{
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Cubic;
+	import exey.moss.gui.comps.window.ICenteredWindowAbstract;
 	import exey.moss.mngr.WindowManager;
 	import exey.moss.utils.AnimationUtil;
-	import flash.display.Sprite;
 	import org.osflash.signals.Signal;
-	
+	import starling.display.Sprite;
 	/**
-	 * Centered Window
+	 * ...
 	 * @author Exey Panteleev
 	 */
 	public class CenteredWindowAbstract extends Sprite implements ICenteredWindowAbstract 
@@ -24,7 +25,8 @@ package exey.moss.gui.comps.window {
 		
 		protected var _container:Sprite;
 		
-		public function CenteredWindowAbstract() {
+		public function CenteredWindowAbstract() 
+		{
 			
 		}
 		
@@ -44,9 +46,6 @@ package exey.moss.gui.comps.window {
 		{
 			this._height = height;
 			this._width = width;
-			_container.graphics.endFill();
-			_container.graphics.lineStyle();
-			_container.graphics.drawRect(0,0,_width, _height);
 			_container.x = -width * 0.5
 			_container.y = -height * 0.5
 			//deb(_container.x, _container.y);
@@ -76,5 +75,6 @@ package exey.moss.gui.comps.window {
 				parent.removeChild(this);
 			}
 		}
+		
 	}
 }

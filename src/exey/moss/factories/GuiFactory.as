@@ -27,7 +27,20 @@ package exey.moss.factories
 			return button;
 		}
 		
-		static public function gradientButton(width:Number, height:Number, cornerRadius:Number, fillColor:Array, fillAlpha:Number, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0, isGlare:Boolean=true):Sprite
+		static public function innerGlowButton(width:Number, height:Number, cornerRadius:Number, fillColor:Number, fillAlpha:Number = 1, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0, isGlare:Boolean=true, blurX:Number = 14, blurY:Number = 14):Sprite
+		{
+			var button:Sprite = new Sprite();
+			var matrix:Matrix = new Matrix();
+			matrix.createGradientBox(width, height, -Math.PI*0.5, 0, -height*0.25);
+			button.graphics.lineStyle(lineThickness, lineColor, lineAlpha);
+			//button.graphics.beginGradientFill("linear", fillColor, [ 1, 1 ], [ 0, 255 ], matrix, "pad", "RGB", 1);
+			button.graphics.beginFill(fillColor)
+			button.graphics.drawRoundRect(-width*0.5, -height*0.5, width, height, cornerRadius, cornerRadius);
+			button.filters = [ new GlowFilter(0x43676D, 0.8, blurX, blurY, 1.2, 1, true) ];
+			return button;
+		}	
+		
+		static public function gradientButton(width:Number, height:Number, cornerRadius:Number, fillColor:Array, fillAlpha:Number = 1, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0, isGlare:Boolean=true):Sprite
 		{
 			var button:Sprite = new Sprite();
 			var matrix:Matrix = new Matrix();
@@ -62,22 +75,24 @@ package exey.moss.factories
 			return button;
 		}
 		
-		static public function closeButton(color:uint = 0x966234, startX:Number = 0, startY:Number = 0, isBackground:Boolean = true, backgroundColor:uint = 0xe5c2a0, borderColor:uint = 0xb2966d, borderShadowColor:uint = 0x835613):Sprite 
+		static public function closeButton(color:uint = 0x966234, startX:Number = 0, startY:Number = 0, isBackground:Boolean = true, backgroundColor:uint = 0xe5c2a0, borderColor:uint = 0xb2966d, borderShadowColor:uint = 0x835613, sizeMultiplier:Number = 1):Sprite 
 		{
 			var button:Sprite = new Sprite();
 			if (isBackground) {
 				button.graphics.beginFill(backgroundColor);
-				button.graphics.lineStyle(1, borderShadowColor, .5);
-				button.graphics.drawCircle(startX+7.5, startY+7.5, 6.5);
+				button.graphics.lineStyle(1*sizeMultiplier, borderShadowColor, .5);
+				button.graphics.drawCircle(startX+7.5*sizeMultiplier, startY+7.5*sizeMultiplier, 6.5*sizeMultiplier);
 				button.graphics.endFill();
-				button.graphics.lineStyle(1, borderColor, 0.2);
-				button.graphics.drawCircle(startX+7.5, startY+7.5, 5.5);
+				button.graphics.lineStyle(1*sizeMultiplier, borderColor, 0.2);
+				button.graphics.drawCircle(startX+7.5*sizeMultiplier, startY+7.5*sizeMultiplier, 5.5*sizeMultiplier);
 			}
-			button.graphics.lineStyle(2, color);
-			button.graphics.moveTo(startX+5, 	startY+5);
-			button.graphics.lineTo(startX+10, 	startY+10);
-			button.graphics.moveTo(startX+10, 	startY+5);
-			button.graphics.lineTo(startX+5, 	startY+10);
+			button.graphics.lineStyle(2*sizeMultiplier, color);
+			button.graphics.moveTo(startX+5*sizeMultiplier, 	startY+5*sizeMultiplier);
+			button.graphics.lineTo(startX+10*sizeMultiplier, 	startY+10*sizeMultiplier);
+			button.graphics.moveTo(startX+10*sizeMultiplier, 	startY+5*sizeMultiplier);
+			button.graphics.lineTo(startX+5*sizeMultiplier, 	startY+10*sizeMultiplier);
+			button.graphics.lineStyle();
+			button.graphics.endFill();
 			return button;
 		}
 		

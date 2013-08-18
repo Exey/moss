@@ -8,8 +8,10 @@ package exey.moss.utils
 	import com.eclecticdesignstudio.motion.easing.IEasing;
 	import com.eclecticdesignstudio.motion.easing.Quad;
 	import exey.moss.debug.deb;
+	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Shape;
 	import flash.geom.Point;
 	/**
 	 * ...
@@ -17,9 +19,20 @@ package exey.moss.utils
 	 */
 	public class AnimationUtil{
 		
-		static public function flyIn(target:DisplayObject, time:Number, ease:IEasing, containerWidth:Number, containerHeight:Number):void
+		static public function glare(container:DisplayObjectContainer, width:Number, height:Number, rotation:Number, colors:Array, xEnd:Number = 300, duration:Number =2, delay:Number = 2):Shape 
 		{
-			target.cacheAsBitmap = true
+			var glare:Shape = new Shape();
+			DrawUtil.gradientRect(glare.graphics, 0, 0, width, height, colors, 1, [1, 1, 1], [0, 255, 255]);
+			glare.rotation = rotation;
+			glare.blendMode = BlendMode.LIGHTEN;
+			PlaceUtil.place(glare, container, 0, 0 )
+			Actuate.tween(glare, duration, { x: xEnd } ).delay(delay);
+			return glare
+		}
+		
+		static public function flyIn(target:Object, time:Number, ease:IEasing, containerWidth:Number, containerHeight:Number):void
+		{
+			if(target is DisplayObject) target.cacheAsBitmap = true
 			//deb(target.x, target.y)
 			target.x = target.x+containerWidth*0.5;
 			target.y = target.y+containerHeight*0.5;
@@ -29,9 +42,9 @@ package exey.moss.utils
 			Actuate.tween(target, time, { scaleX: 1, scaleY: 1 } ).ease(ease);
 		}
 		
-		static public function flyOut(target:DisplayObject, time:Number, ease:IEasing):void
+		static public function flyOut(target:Object, time:Number, ease:IEasing):void
 		{
-			target.cacheAsBitmap = true
+			if(target is DisplayObject) target.cacheAsBitmap = true
 			Actuate.tween(target, time, { scaleX: .025, scaleY: .025 } ).ease(ease);
 		}
 		
@@ -41,13 +54,13 @@ package exey.moss.utils
 			Actuate.tween(target, time, { scaleX: .025, scaleY: .025, x:destinationPoint.x, y:destinationPoint.y } ).ease(ease);
 		}
 		
-		static public function fadeIn(target:DisplayObject, time:Number, ease:IEasing, delay:Number = 0):void
+		static public function fadeIn(target:Object, time:Number, ease:IEasing, delay:Number = 0):void
 		{
 			target.alpha = 0
 			Actuate.tween(target, time, { alpha: 1}).ease(ease).delay(delay);
 		}
 		
-		static public function fadeOut(target:DisplayObject, time:Number, ease:IEasing, completeHandler:Function = null):void
+		static public function fadeOut(target:Object, time:Number, ease:IEasing, completeHandler:Function = null):void
 		{
 			Actuate.tween(target, time, { alpha: 0}).ease(ease).onComplete(completeHandler);
 		}

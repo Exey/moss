@@ -4,6 +4,7 @@ package exey.moss.utils
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.IBitmapDrawable;
+	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	/**
@@ -194,5 +195,10 @@ package exey.moss.utils
 
 			bmd.unlock();
 		}
+		
+		static public function tint(b:BitmapData, color:uint):void {
+			b.colorTransform(b.rect, new ColorTransform(color >> 16 & 0x0000FF / 255, color >> 8 & 0x0000FF / 255, color & 0x0000FF / 255));
+		}
+		
 	}
 }

@@ -22,6 +22,21 @@ package exey.moss.gui.comps.button
 			if(_skin) addChild(_skin);			
 		}
 		
+		protected var _enabled:Boolean
+		public function get enabled():Boolean { return _enabled; }
+		public function set enabled(value:Boolean):void {
+			_enabled = value;
+			if (!_enabled) {
+				this.mouseEnabled = false;
+				this.mouseChildren = false;
+				this.alpha = 0.5;
+			} else {
+				this.mouseEnabled = true;
+				this.mouseChildren = true;
+				this.alpha = 1;
+			}
+		}
+		
 		//--------------------------------------------------------------------------
 		//
 		//  Constructor

@@ -72,9 +72,10 @@ package exey.moss.utils
 			return result;
 		}
 		
-		static public function sortByProperty():void
+		static public function sortByProperty(arr:Array, propertyName:String):Array
 		{
-			
+			arr.sortOn(propertyName, Array.NUMERIC | Array.DESCENDING);
+			return arr;
 		}
 		
 		/**
@@ -236,5 +237,23 @@ package exey.moss.utils
 			}
 			return ret;
 		}
+		
+		static public function createWithLength(length:uint):Array 
+		{
+			var a:Array = [];
+			for (var i:int = 0; i < length; i++) {
+				a[i] = null
+			}
+			return a;
+		}
+		
+		static public function selectByProperty(source:Array, propertyName:String, propertyValue:*):* 
+		{
+			for (var i:int = 0; i < source.length; i++) 
+				if (source[i][propertyName] == propertyValue) 
+					return source[i];
+			return null;
+		}
+		
 	}
 }

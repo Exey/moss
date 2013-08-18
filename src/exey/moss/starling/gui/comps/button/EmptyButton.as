@@ -4,6 +4,8 @@ package exey.moss.starling.gui.comps.button
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
+	import org.osflash.signals.Signal;
+	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -24,6 +26,7 @@ package exey.moss.starling.gui.comps.button
 		protected var scaleWhenDown:Number;
 		protected var alphaWhenDisabled:Number;
 		protected var isDown:Boolean;
+		protected var isHover:Boolean;
 		protected var useHandCursor2:Boolean;
 		
 		protected var contentsLayer:Sprite;
@@ -47,12 +50,15 @@ package exey.moss.starling.gui.comps.button
 			if(_skin) addChild(_skin);			
 		}
 		
+		public var onOver:Signal = new Signal();
+		public var onOut:Signal = new Signal();
+		
 		//--------------------------------------------------------------------------
 		//
 		//  Constructor
 		//
 		//--------------------------------------------------------------------------		
-		public function EmptyButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, initEmptySkin:Boolean = false)
+		public function EmptyButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, initEmptySkin:Boolean = false, addToSkin:DisplayObject = null)
 		{
 			super(parent, xpos, ypos);
 			this.handler = handler;
@@ -69,6 +75,9 @@ package exey.moss.starling.gui.comps.button
 				skin = new Sprite();
 				contentsLayer.addChild(skin);
 			}
+			if (addToSkin) {
+				skin.addChild(addToSkin);
+			}
 		}
 		
 		protected function resetContents():void
@@ -80,15 +89,24 @@ package exey.moss.starling.gui.comps.button
 		
 		protected function touch_handler(event:TouchEvent):void
 		{
-			Mouse.cursor = (useHandCursor2 && _enabled && event.interactsWith(this)) ? MouseCursor.BUTTON : MouseCursor.AUTO;
-			//trace("3:MouseCursor", Mouse.cursor, "|", useHandCursor2, _enabled, event.interactsWith(this))
+			var isInteract:Boolean = event.interactsWith(this);
+			Mouse.cursor = (useHandCursor2 && _enabled && isInteract) ? MouseCursor.BUTTON : MouseCursor.AUTO;
 			var touch:Touch = event.getTouch(this);
-			if (!_enabled || touch == null) return;
-			if (touch.phase == TouchPhase.BEGAN && !isDown) {
+			if (!isInteract) {
+				//trace("4:touch_handler", isInteract, isHover)
+				onOut.dispatch();
+				isHover = false;
+			}			
+			if (!_enabled || touch == null) return;			
+			if (touch.phase == TouchPhase.HOVER && !isDown && !isHover && isInteract) {
+				//trace("3:touch_handler", touch.phase, event.interactsWith(this), isDown)
+				isHover = true;
+				onOver.dispatch();
+			} else if (touch.phase == TouchPhase.BEGAN && !isDown) {
 				contentsLayer.scaleX = contentsLayer.scaleY = scaleWhenDown;
 				contentsLayer.x = (1.0 - scaleWhenDown) / 2.0 * skin.width;
 				contentsLayer.y = (1.0 - scaleWhenDown) / 2.0 * skin.height;
-				isDown = true;
+				isDown = true;				
 			} else if (touch.phase == TouchPhase.MOVED && isDown) {
 				// reset button when user dragged too far away after pushing
 				var buttonRect:Rectangle = getBounds(stage);
@@ -98,8 +116,9 @@ package exey.moss.starling.gui.comps.button
 			} else if (touch.phase == TouchPhase.ENDED && isDown) {
 				resetContents();
 				dispatchEventWith(Event.TRIGGERED, true);
-				if(handler != null) handler.apply(null, [this])
+				if (handler != null) handler.apply(null, [this])
 			}
+
 		}
 		
 		public function destroy():void

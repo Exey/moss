@@ -148,6 +148,14 @@ package exey.moss.mngr
 			}
 			return null;
 		}
+		
+		static public function removeAllSounds():void 
+		{
+			for (var i:int = 0; i <sounds.length; i++) {
+				sounds[i] = null;
+				sounds.splice(i, 1);
+			}
+		}
 	}
 }
 import flash.media.Sound;

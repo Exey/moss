@@ -26,8 +26,7 @@ package exey.moss.gui.comps.window
 
 		private function initialize(title:String, type:String):void
 		{
-			titleTF = new TextFieldLabel(this, 0, 7, new TextFormat( "Arial", 20, 0x000000, "bold" ));
-			titleTF.text = title;
+			titleTF = new TextFieldLabel(this, 0, 7, new TextFormat( "Arial", 20, 0x000000, "bold" ), title);
 			titleTF.filters = [new GlowFilter(0xFFFFFF, 1, 2, 2, 10, BitmapFilterQuality.MEDIUM)]
 			AlignUtil.toHorizontalCenter(titleTF, this);
 		}

@@ -16,6 +16,22 @@
 			return bmd.histogram()[0]
 		}
 		
+		/**Difference ratio between histograms, 1.0 means completely identical, 0.0 means completely different */
+		static public function compareIntensityHistograms(h1:Vector.<uint>, h2:Vector.<uint>, maxValue:Number = 64):Number 
+		{
+			if (h1.length != h2.length) {
+				trace("3:CAN'T COMAPRE", h1.length, h2.length)
+				return NaN;
+			}
+			var size:int = h1.length;
+			var diff:Number = 0;
+			for (var i:int = 0; i < size; i++) {
+				diff += Math.abs(h1[i] - h2[i]);
+			}
+			
+			return 1.0 - diff / (size*maxValue);
+		}
+		
 		static public function horizontalIntensity(thresholded:BitmapData, height:Number = 64):Vector.<uint>
 		{
 			var result:Vector.<uint> = new Vector.<uint>(thresholded.width);

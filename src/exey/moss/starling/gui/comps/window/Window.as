@@ -1,20 +1,20 @@
-package exey.moss.gui.comps.window
-{
+﻿package exey.moss.starling.gui.comps.window {
 	import exey.moss.factories.GuiFactory;
-	import exey.moss.gui.comps.button.EmptyButton;
-	import exey.moss.mngr.ToolTipManager;
+	import exey.moss.starling.gui.comps.button.EmptyButton;
 	import exey.moss.utils.AlignUtil;
-	import flash.display.DisplayObjectContainer;
+	import exey.moss.utils.DrawUtil;
+	import exey.moss.utils.PlaceUtil;
+	import exey.moss.utils.StarlingUtil;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.text.TextField;
+	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	/**
-	 * Window
+	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class Window extends CenteredWindowAbstract
-	{
-		//public var closeSignal:Signal = new Signal();
+	public class Window extends CenteredWindowAbstract {
+		
 		protected var closeButton:EmptyButton;
 		protected var header:WindowHeader;
 
@@ -41,15 +41,16 @@ package exey.moss.gui.comps.window
 
 		protected function addCloseButton(width:Number = NaN, tooltipText:String = ""):void
 		{
-			if (isNaN(width)) width = this.width	
-			closeButton = new EmptyButton(_container, width-30, 5, onClose);
-			closeButton.addChild(GuiFactory.closeButton());
-			closeButton.scaleX = 1.5;
-			closeButton.scaleY = 1.5;
-			ToolTipManager.addTextToolTip(closeButton, tooltipText);
+			if (isNaN(width)) width = this.width;
+			closeButton = new EmptyButton(_container, width - 30, 5, onClose, true);
+			var s:Sprite = GuiFactory.closeButton(0x000000, 0, 0, true, 0xFFFFFF, 0x000000, 0x000000, 1.5);
+			DrawUtil.rect(s.graphics, -s.width * 0.05, -s.height * 0.05, s.width * 1.1, s.height * 1.1, 0, 0);
+			var cb:DisplayObject = StarlingUtil.imageFromDO(s);
+			PlaceUtil.place(cb, closeButton.skin, -s.width*1.5, s.height*0.7);
+			//ToolTipManager.addTextToolTip(closeButton, tooltipText);
 		}
 
-		protected function onClose(e:MouseEvent):void
+		protected function onClose(b:EmptyButton):void
 		{
 			close();
 		}
@@ -58,5 +59,6 @@ package exey.moss.gui.comps.window
 		{
 			closeSignal.dispatch(this);
 		}
+		
 	}
 }

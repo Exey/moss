@@ -37,14 +37,14 @@ package exey.moss.utils{
             return (rgb3.r << 16) | (rgb3.g << 8) | rgb3.b;			
 		}			
 		
-		/**Difference ratio between colors*/
+		/**Difference ratio between colors, 1.0 means completely identical, 0.0 means completely different */
 		static public function compareColors(color1:uint, color2:uint):Number
 		{
 			var rgb1:Object = ColorUtil.hex2RGB(color1)
 			var rgb2:Object = ColorUtil.hex2RGB(color2)
 			return 1.0 - Number(Math.abs(rgb1.r - rgb2.r) + 
 								Math.abs(rgb1.g - rgb2.g) + 
-								Math.abs(rgb1.b - rgb2.b)) / (256.0 * 3);
+								Math.abs(rgb1.b - rgb2.b)) / 768.0; //256.0 * 3;
 		}
 		
 		static public function averageColorFromBitmapRegion(b:BitmapData, x:Number, y:Number, w:Number, h:Number):uint

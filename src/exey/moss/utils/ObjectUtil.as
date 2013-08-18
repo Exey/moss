@@ -31,10 +31,16 @@ package exey.moss.utils
 			return result;
 		}
 		
-		//static public function prettify():void 
-		//{
-			
-		//}
+		static public function traceChilds(content:Object, prefix:String = ""):void {
+			if (content.numChildren) {
+				var child:Object;
+				for (var i:int, n:int = content.numChildren; i < n; ++i) {
+					child = content.getChildAt(i);	
+					trace(prefix + child);
+					if (child && child.numChildren) traceChilds(child, prefix+"-");
+				}
+			}
+		}
 		
 		static public function dump(obj:Object, showFunctions:Boolean = false, showUndefined:Boolean = false, showXMLstructures:Boolean = false, maxLineLength:int = 100, indent:int = 0):String
 		{

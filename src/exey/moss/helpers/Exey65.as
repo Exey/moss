@@ -10,11 +10,14 @@ package exey.moss.helpers {
 	 */
 	public class Exey65 {
 		
-		private static const EXEY65:String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+=";
+		//private static const EXEY65:String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+=";
+		private static const EXEY65:String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!-~";
 		
-		static public function decode(v:String):Array 
+		//static public function decode(v:String):Array 
+		static public function decode(v:String):Vector.<uint> 
 		{
-			var result:Array = [];
+			var result:Vector.<uint> = new Vector.<uint>(64);
+			result.fixed = true;
 			var c:String
 			for (var i:int = 0; i < v.length; i++) {
 				c = v.charAt(i);
