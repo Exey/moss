@@ -7,6 +7,7 @@
 	import exey.moss.utils.StarlingUtil;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.text.TextFormat;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	/**
@@ -33,9 +34,9 @@
 			addHeader(title);
 		}
 
-		protected function addHeader(title:String, type:String = "simple"):void
+		protected function addHeader(title:String, type:String = "simple", textFormat:TextFormat = null):void
 		{
-			header = new WindowHeader(_container, 0, 0, title, type);
+			header = new WindowHeader(_container, 0, 0, title, type, textFormat);
 			AlignUtil.toHorizontalCenter(header, _container);
 		}
 

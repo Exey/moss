@@ -82,12 +82,12 @@ package exey.moss.utils
 			AnimationUtil.fadeOut(target, time, Cubic.easeOut);
 		}
 		
-		static public function heartbeat(target:Object, time:Number, onComplete:Function = null, minScale:Number = 0.75):void 
+		static public function heartbeat(target:Object, time:Number, onComplete:Function = null, onCompleteParam:* = null, minScale:Number = 0.75):void 
 		{
 			if (!target) return;
 			//deb(target, time, target.scaleX, target.scaleY)
 			Actuate.tween(target, time * 0.5, { scaleX: minScale, scaleY: minScale } ).ease(Elastic.easeIn).onComplete(function():void{
-				Actuate.tween(target, time * 0.5, { scaleX: 1, scaleY: 1 } ).ease(Elastic.easeInOut).onComplete(onComplete);
+				Actuate.tween(target, time * 0.5, { scaleX: 1, scaleY: 1 } ).ease(Elastic.easeInOut).onComplete(onComplete, onCompleteParam);
 			})
 		}
 		

@@ -1,5 +1,6 @@
 package exey.moss.starling.gui.comps.button 
 {
+	import exey.moss.debug.deb;
 	import exey.moss.starling.gui.abstract.ComponentAbstract;
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
@@ -70,7 +71,7 @@ package exey.moss.starling.gui.comps.button
 			
 			contentsLayer = new Sprite();
 			addChild(contentsLayer);
-			addEventListener(TouchEvent.TOUCH, touch_handler);
+			contentsLayer.addEventListener(TouchEvent.TOUCH, touch_handler);
 			if (initEmptySkin) {
 				skin = new Sprite();
 				contentsLayer.addChild(skin);

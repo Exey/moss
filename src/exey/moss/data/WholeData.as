@@ -21,7 +21,7 @@ package exey.moss.data
 		 * Plain basic deserializer
 		 * @param	json
 		 */
-		public function deserializeJSON(json:Object):void
+		public function deserializeJSON(json:Object, dispatchWholeUpdate:Boolean = true):void
 		{
 			var v:Object;
 			var delayedSignalVars:Array = [];
@@ -31,7 +31,7 @@ package exey.moss.data
 				if(v)  trace(name+" IS UPDATED TO "+json[name]);
 				if(!v) trace("3:"+name+" IS NOT INITIALIZED");
 			}
-			wholeUpdate.dispatch();
+			if(dispatchWholeUpdate) wholeUpdate.dispatch();
 			for (var i:int = 0; i < delayedSignalVars.length; i++) {
 				v = delayedSignalVars[i];
 				v.signal.dispatch((v as Object).value);

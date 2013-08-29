@@ -14,16 +14,20 @@
 	{
 		
 		private var titleTF:TextField;
+		private var textFormat:TextFormat;
 
-		public function WindowHeader(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, title:String = "Title", type:String = "simple")
+		public function WindowHeader(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, title:String = "Title", type:String = "simple", textFormat:TextFormat = null)
 		{
 			super(parent, xpos, ypos);
+			if (!textFormat) this.textFormat = new TextFormat( "Arial", 14, 0x000000, "bold");
+			else this.textFormat = textFormat;
 			initialize(title, type);
 		}
 
 		private function initialize(title:String, type:String):void
 		{
-			titleTF = new TextFieldLabel(this, 0, 7, new TextFormat( "Arial", 14, 0x000000, "bold"), title, 300);
+			
+			titleTF = new TextFieldLabel(this, 0, 7, textFormat, title, 300);
 			//titleTF.filters = [new GlowFilter(0xFFFFFF, 1, 2, 2, 10, BitmapFilterQuality.MEDIUM)]
 			AlignUtil.toHorizontalCenter(titleTF, this);
 		}

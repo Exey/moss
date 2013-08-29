@@ -6,6 +6,7 @@ package exey.moss.starling.gui.comps.control
 	import exey.moss.utils.AlignUtil;
 	import exey.moss.utils.StarlingUtil;
 	import flash.display.Shape;
+	import flash.filters.GlowFilter;
 	import flash.text.TextFormat;
 	import org.osflash.signals.Signal;
 	import starling.display.DisplayObjectContainer;
@@ -75,7 +76,7 @@ package exey.moss.starling.gui.comps.control
 		protected function initialize(textFormat:TextFormat, embedFonts:Boolean):void
 		{
 			addChild(shapeLayer);
-			if (textFormat) {				
+			if (textFormat) {
 				textField = new TextFieldLabel(this, 0, 0, textFormat, "", barWidth, barHeight);
 				//textField.embedFonts = embedFonts;
 			} else {
@@ -84,7 +85,7 @@ package exey.moss.starling.gui.comps.control
 			}
 			//textField.mouseEnabled = false;
 			//textField.filters = [ new GlowFilter(0x474747, 1, 2, 2, 10, BitmapFilterQuality.MEDIUM)];
-			AlignUtil.toCenter(textField, this, 0, -2);
+			AlignUtil.toCenter(textField, this, 0, 0);
 			_value = 0;
 		}
 		
@@ -94,7 +95,7 @@ package exey.moss.starling.gui.comps.control
 				(shapeLayer.getChildAt(0) as Image).dispose()
 				shapeLayer.removeChildAt(0);
 			}
-			
+			/*
 			var shape:Shape = new Shape();
 			//graphics.clear();
 			var distance:Number = _borderWidth;
@@ -113,8 +114,31 @@ package exey.moss.starling.gui.comps.control
 			// glare
 			shape.graphics.beginFill(0xffffff, .6);
 			shape.graphics.drawRoundRect(0, 1, barWidth, 5, 8);
-			shapeLayer.addChild(StarlingUtil.imageFromDO(shape));
+			shapeLayer.addChild(StarlingUtil.imageFromDO(shape));*/
+			
+			var s:Object = new flash.display.Sprite();			
+			s.addChild(getBackground());
+			var mask:Shape = getBackground();
+			s.addChild(mask);
+			
+			var progress:Shape = new Shape();
+			progress.graphics.beginFill(progressColor, 1);
+			progress.graphics.drawRoundRect(0, 0, barWidth * currentPercent, barHeight, 10, 10);
+			progress.graphics.endFill();
+			progress.mask = mask;
+			s.addChild(progress);
+			
+			s.filters = [ new GlowFilter(borderColor, 0.5, 2, 2, 4, 1, true) ];
+			shapeLayer.addChild(StarlingUtil.imageFromDO(s as flash.display.Sprite));
 		}
+		
+		private function getBackground():Shape
+		{
+			var s:Shape = new Shape();
+			s.graphics.beginFill(color);
+			s.graphics.drawRoundRect(0, 0, barWidth, barHeight, 10, 10);
+			return s;
+		}		
 		
 		public function update(currentValue:Number, startValue:Number, endValue:Number):void
 		{

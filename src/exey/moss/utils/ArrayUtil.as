@@ -255,5 +255,24 @@ package exey.moss.utils
 			return null;
 		}
 		
+		static public function shuffle(arr:Array):void 
+		{
+			var arr2:Array = [];
+			while (arr.length > 0) arr2.push(arr.splice(Math.round(Math.random() * (arr.length - 1)), 1)[0]);
+		}
+		
+		static public function randomizeArray(array:Array):Array{
+			var newArray:Array = new Array();
+			while(array.length > 0){
+				newArray.push(array.splice(Math.floor(Math.random()*array.length), 1));
+			}
+			return newArray;
+		}	
+		
+		static public function randomSort(a:*, b:*):Number
+		{
+			if (Math.random() < 0.5) return -1;
+			else return 1;
+		}
 	}
 }

@@ -9,6 +9,8 @@
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 	
 	/**
 	 * ...
@@ -20,10 +22,10 @@
 		private var clickHandler:Function;
 		private var isDown:Boolean = false;
 		
-		public function TextLink(url:String, parent:DisplayObjectContainer, xpos:Number, ypos:Number, textFormat:TextFormat, text:String="", clickHandler:Function = null):void
+		public function TextLink(url:String, parent:DisplayObjectContainer, xpos:Number, ypos:Number, textFormat:TextFormat, text:String="", clickHandler:Function = null, width:Number = 200, height:Number = 50, hAlign:String = HAlign.CENTER, vAlign:String = VAlign.CENTER, underline:Boolean = true):void
 		{
-			super(parent, xpos, ypos, textFormat, text);
-			this.underline = true;
+			super(parent, xpos, ypos, textFormat, text, width, height, hAlign, vAlign);
+			this.underline = underline;
 			this.clickHandler = clickHandler;
 			this.url = url;
 			addEventListener(TouchEvent.TOUCH, touch_handler);
