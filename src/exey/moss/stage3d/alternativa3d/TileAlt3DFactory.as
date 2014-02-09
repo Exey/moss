@@ -1,4 +1,4 @@
-package exey.moss.render3d.alternativa3d 
+package exey.moss.stage3d.alternativa3d 
 {
 	import flash.display.BitmapData;
 	/**

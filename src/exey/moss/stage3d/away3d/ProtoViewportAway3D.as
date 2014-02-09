@@ -1,4 +1,4 @@
-package exey.moss.render3d.away3d
+package exey.moss.stage3d.away3d
 {
 	import away3d.cameras.Camera3D;
 	import away3d.containers.View3D;

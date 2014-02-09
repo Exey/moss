@@ -124,6 +124,7 @@ package exey.moss.mngr
 			soundData.startTime = startTime;
 			soundData.loops = loops;
 			if (soundData.paused) {
+				if(startTime > 0) soundData.position = startTime
 				soundData.channel = soundData.sound.play(soundData.position, soundData.loops, new SoundTransform(soundData.volume));
 			} else {
 				soundData.channel = soundData.sound.play(startTime, soundData.loops, new SoundTransform(soundData.volume));

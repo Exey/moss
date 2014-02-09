@@ -14,11 +14,12 @@ package exey.moss.gui.comps.button
 	 */
 	public class RadioButton extends ComponentAbstract
 	{		
+		private var textFormat:TextFormat;
 		protected const DEFAULT_RADIUS:Number = 9;
 		protected const BORDER_THICKNESS:Number = 1;
 		protected const BORDER_COLOR:uint = 0x000000;
 		protected const BACKGROUND_COLOR:uint = 0xFFFFFF;
-		protected const DOT_COLOR:uint = 0x0000FF;
+		protected const DOT_COLOR:uint = 0x454545;
 		
 		protected var _scale:Number;
 		override public function set scale(value:Number):void { _scale = value; }
@@ -34,7 +35,7 @@ package exey.moss.gui.comps.button
 				dot.visible = false;
 		}
 		
-		protected var textLabel:TextFieldLabel;
+		public var textLabel:TextFieldLabel;
 		protected var dot:Sprite;
 		
 		public var selectSignal:Signal;
@@ -44,13 +45,16 @@ package exey.moss.gui.comps.button
 		//  Constructor
 		//
 		//--------------------------------------------------------------------------		
-		public function RadioButton(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, label:String = "", scale:Number = 1) 
+		public function RadioButton(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, label:String = "", scale:Number = 1, textFormat:TextFormat = null) 
 		{
 			_scale = scale;
+			if (!textFormat) this.textFormat = new TextFormat( "Arial", 18, 0x000000, "bold" );
+			else this.textFormat = textFormat;
 			super(parent, xpos, ypos);
 			this.buttonMode = true
 			draw();
-			if (label == "") addLabel(label);
+			
+			if (label != "") addLabel(label);
 			selectSignal = new Signal();
 			selected = false;
 			this.addEventListener(MouseEvent.CLICK, onClick);
@@ -62,9 +66,10 @@ package exey.moss.gui.comps.button
 		//
 		//--------------------------------------------------------------------------			
 		
-		protected function addLabel(label:String, color:uint = 0x000000):void 
+		protected function addLabel(label:String, color:uint = uint.MAX_VALUE):void 
 		{
-			textLabel = new TextFieldLabel(this, 24+4, -2, new TextFormat( "Arial", 18, color, "bold" ), label, false);
+			if(color < uint.MAX_VALUE) textFormat.color = color 
+			textLabel = new TextFieldLabel(this, 24+4, -2, textFormat, label, false);
 		}		
 		
 		protected function onClick(e:MouseEvent):void
@@ -83,9 +88,9 @@ package exey.moss.gui.comps.button
 			
 			dot = new Sprite();
 			dot.graphics.beginFill(DOT_COLOR);
-			dot.graphics.drawCircle(radius-2*scale, radius-2*scale, radius-2*scale);
-			dot.x = 2 * scale;
-			dot.y = 2 * scale;
+			dot.graphics.drawCircle(radius-4*scale, radius-4*scale, radius-4*scale);
+			dot.x = 4 * scale;
+			dot.y = 4 * scale;
 			addChild(dot);
 		}
 		

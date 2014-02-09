@@ -1,4 +1,4 @@
-package exey.moss.render3d.utils 
+package exey.moss.stage3d.utils 
 {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.Scene3D;

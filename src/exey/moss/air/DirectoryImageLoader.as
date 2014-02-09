@@ -42,7 +42,7 @@
 		 * @param	onNext
 		 * @param	onImageListingComplete
 		 */
-		public function DirectoryImageLoader(root:File, dirName:String, onImageListed:Function, onImageLoad:Function, onAllLoad:Function = null, onNext:Function = null, onImageListingComplete:Function = null) 
+		public function DirectoryImageLoader(root:File, dirName:String, onImageListed:Function, onImageLoad:Function, onAllLoad:Function = null, onNext:Function = null, onImageListingComplete:Function = null, startListing:Boolean = true) 
 		{
 			this.onImageListingComplete = onImageListingComplete;
 			this.onNext = onNext;
@@ -51,7 +51,8 @@
 			this.onImageListed = onImageListed;
 			this.dirName = dirName;
 			this.root = root;
-			start();
+			if(startListing)
+				start();
 		}
 		
 		protected function start():void {

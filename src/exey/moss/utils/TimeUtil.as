@@ -1,5 +1,7 @@
 package exey.moss.utils 
 {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	/**
 	 * Comfortable work with time
 	 * @author Exey Panteleev
@@ -150,6 +152,20 @@ package exey.moss.utils
 		{
 			s += ( s.length > 0 ) ? " " : "";
 			return s;
+		}
+		
+		static public function delay(func:Function, params:Array, delay:int = 350, repeat:int = 1):void
+		{
+			var f:Function;
+			var timer:Timer = new Timer(delay, repeat);
+			timer.addEventListener(TimerEvent.TIMER, f = function():void {
+				func.apply(null, params);
+				if (timer.currentCount == repeat) {
+					timer.removeEventListener(TimerEvent.TIMER, f);
+					timer = null;
+				}
+			});
+			timer.start();
 		}
 		
 	}

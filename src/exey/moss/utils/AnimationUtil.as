@@ -65,7 +65,7 @@ package exey.moss.utils
 			Actuate.tween(target, time, { alpha: 0}).ease(ease).onComplete(completeHandler);
 		}
 		
-		static public function slideY(target:DisplayObject, time:Number, ease:IEasing, newY:Number):void
+		static public function slideY(target:Object, time:Number, ease:IEasing, newY:Number):void
 		{
 			Actuate.tween(target, time, {y:newY}).ease(ease);
 		}

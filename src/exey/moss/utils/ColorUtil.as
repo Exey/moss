@@ -209,7 +209,7 @@ package exey.moss.utils{
 		{
 			var rgb:Object = ColorUtil.hex2RGB(hex);
 			var r:Number = rgb.r; 
-			var g:Number = rgb.g; 
+			var g:Number = rgb.g;
 			var b:Number = rgb.b;
 			var hsl:Object = ColorUtil.rgbToHSL(r, g, b);
 			var h:Number = hsl.h;
@@ -256,5 +256,10 @@ package exey.moss.utils{
 			return parseInt("0x"+resultHex);
 		}
 		
+		/** Creates an ARGB color, stored in an unsigned integer. Channels are expected in the range 0 - 255. */
+        static public function argb(alpha:int, red:int, green:int, blue:int):uint
+        {
+            return (alpha << 24) | (red << 16) | (green << 8) | blue;
+        }
 	}
 }

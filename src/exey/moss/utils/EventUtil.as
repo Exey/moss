@@ -14,21 +14,21 @@ package exey.moss.utils
 	 */
 	public class EventUtil 
 	{
-		static public function onStage(container:Object, handler:Function):void 
+		static public function onStage(container:Object, handler:Function, addedToStageConstant:String = Event.ADDED_TO_STAGE):void 
 		{
 			if (container.stage) {
 				handler();
 			} else {
-				container.addEventListener(Event.ADDED_TO_STAGE, function(e:Event = null):void {
-					container.removeEventListener(Event.ADDED_TO_STAGE, arguments.callee);
+				container.addEventListener(addedToStageConstant, function(e:Object = null):void {
+					container.removeEventListener(addedToStageConstant, arguments.callee);
 					handler();
 				})
 			}
 		}
 		
-		static public function onRemovedStage(container:DisplayObjectContainer, handler:Function):void 
+		static public function onRemovedStage(container:Object, handler:Function, removedFromStageConstant:String = Event.REMOVED_FROM_STAGE):void 
 		{
-			container.addEventListener(Event.REMOVED_FROM_STAGE, function(e:Event = null):void {
+			container.addEventListener(Event.REMOVED_FROM_STAGE, function(e:Object = null):void {
 				container.removeEventListener(Event.REMOVED_FROM_STAGE, arguments.callee);
 				handler();
 			})
@@ -68,11 +68,11 @@ package exey.moss.utils
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);			
 		}
 		
-		static public function onNextFrame(container:EventDispatcher, handler:Function):void 
+		static public function onNextFrame(container:EventDispatcher, handler:Function, ...params):void 
 		{
 			container.addEventListener(Event.ENTER_FRAME, function(e:Event = null):void {
 				container.removeEventListener(Event.ENTER_FRAME, arguments.callee);
-				handler();
+				handler.apply(null, params);
 			})
 		}
 		

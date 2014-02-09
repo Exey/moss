@@ -14,9 +14,9 @@ package exey.moss.helpers {
 		private static const EXEY65:String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!-~";
 		
 		//static public function decode(v:String):Array 
-		static public function decode(v:String):Vector.<uint> 
+		static public function decode(v:String, length:uint = 64):Vector.<uint> 
 		{
-			var result:Vector.<uint> = new Vector.<uint>(64);
+			var result:Vector.<uint> = new Vector.<uint>(length);
 			result.fixed = true;
 			var c:String
 			for (var i:int = 0; i < v.length; i++) {

@@ -4,7 +4,7 @@ package exey.moss.starling.ctrl
 	import starling.display.DisplayObjectContainer;
 	/**
 	 * ...
-	 * @author ...
+	 * @author Exey Panteleev
 	 */
 	public class AbstractViewController 
 	{

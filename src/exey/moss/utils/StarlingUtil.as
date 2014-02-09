@@ -11,7 +11,8 @@ package exey.moss.utils
 	 * @author Exey Panteleev
 	 */
 	public class StarlingUtil
-	{
+	{	
+		
 		static public function drawAndAdd(container:DisplayObjectContainer, xpos:Number, ypos:Number, method:Function, ...methodParams):Image 
 		{
 			var s:Shape = new Shape();
@@ -34,7 +35,12 @@ package exey.moss.utils
 			img.x = xpos;
 			img.y = ypos;
 			return img;
-		}		
+		}
+		
+		static public function textureFromDO(source:flash.display.DisplayObject):Texture 
+		{
+			return Texture.fromBitmapData(BitmapUtil.rasterize(source as flash.display.DisplayObject));
+		}
 		
 		static public function imageFromDO(source:flash.display.DisplayObject):Image 
 		{

@@ -1,5 +1,6 @@
 package exey.moss.utils 
 {
+	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	/**
@@ -26,6 +27,14 @@ package exey.moss.utils
 			parent.addChild(displayObject);
 			displayObject.x = xPos;
 			displayObject.y = yPos;
+			return displayObject;
+		}
+		
+		static public function placeAndSetSize(displayObject:Object, parent:Object, xPos:Number, yPos:Number, width:Number, height:Number):Object
+		{
+			place(displayObject, parent, xPos, yPos);
+			displayObject.width = width;
+			displayObject.height = height;
 			return displayObject;
 		}
 		
@@ -61,6 +70,23 @@ package exey.moss.utils
 			DrawUtil.rect(s.graphics, 0, 0, element.width + padding * 2, element.height + padding * 2, 0x000000, 0);
 			s.addChild(element);
 			return s;
+		}
+		
+		static public function scaleTo(displayObject:DisplayObject, widthMax:Number, heightMax:Number):DisplayObject 
+		{
+			var widthRatio:Number = widthMax/displayObject.width;
+			var heightRatio:Number = heightMax/displayObject.height;
+			if (widthRatio >= 1 || heightRatio >= 1) return displayObject;
+			var ratio:Number = Math.min(widthRatio, heightRatio);
+			displayObject.scaleX = displayObject.scaleY = ratio;
+			return displayObject;
+		}
+		
+		static public function placeGroup(elements:Array, parent:Object):void 
+		{
+			var length:uint = elements.length;
+			for (var i:int = 0; i < length; i++) 
+				parent.addChild(elements[i]);
 		}
 		
 	}

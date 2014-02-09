@@ -35,7 +35,7 @@ package exey.moss.utils
 		static public function rasterize(source:DisplayObject):BitmapData
 		{
 			var b:BitmapData = new BitmapData(source.width, source.height, true, 0x00000000);
-			b.draw(source)
+			b.draw(source);
 			return b;
 		}
 		

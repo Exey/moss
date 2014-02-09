@@ -141,7 +141,7 @@ package exey.moss.mngr
 		
 		/**
 		 *
-		 * @param	group [url]
+		 * @param	group [url, url, ..]
 		 * @param	errorHandler
 		 */
 		static public function loadGroup(group:Array, completeHandler:Function = null, id:String = '', ...completeParams):void
@@ -234,7 +234,7 @@ package exey.moss.mngr
 					var params:Array = [new AssetData(url, loader.content)];
 					params = params.concat(pendingHandlerCompleteParams[url])
 					delete pendingHandlerCompleteParams[url];
-					//trace("================ResourceManager====================", ObjectUtil.getKeys(pendingHandlerCompleteParams).length, "|", params)
+					//trace("ResourceManager", ObjectUtil.getKeys(pendingHandlerCompleteParams).length, "|", params)
 					handler.apply(null, params);
 				}
 				pendingHandlers[url] = null;

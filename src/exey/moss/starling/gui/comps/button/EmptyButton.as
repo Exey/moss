@@ -119,7 +119,6 @@ package exey.moss.starling.gui.comps.button
 				dispatchEventWith(Event.TRIGGERED, true);
 				if (handler != null) handler.apply(null, [this])
 			}
-
 		}
 		
 		public function destroy():void

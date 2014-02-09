@@ -1,4 +1,4 @@
-package exey.moss.render3d.alternativa3d 
+package exey.moss.stage3d.alternativa3d 
 {
 	import alternativa.engine3d.materials.FillMaterial;
 	import alternativa.engine3d.materials.TextureMaterial;

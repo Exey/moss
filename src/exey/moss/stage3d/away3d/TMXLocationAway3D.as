@@ -1,4 +1,4 @@
-package exey.moss.render3d.away3d {
+package exey.moss.stage3d.away3d {
 	import away3d.containers.View3D;
 	import exey.moss.helpers.BitmapSlicer;
 	import exey.moss.mngr.AssetManager;

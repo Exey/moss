@@ -20,11 +20,11 @@ package exey.moss.utils
 			graphics.drawRect( startX, startY, width, height );
 		}
 		
-		static public function histogram(g:Graphics, startX:Number, startY:Number, w:Number, h:Number, values:Array, backgroundColor:uint = 0xFFFFFF, maxValue:Number = NaN, clearGraphics:Boolean = true):void 
+		static public function histogram(g:Graphics, startX:Number, startY:Number, w:Number, h:Number, values:Array, backgroundColor:uint = 0xFFFFFF, maxValue:Number = NaN, clearGraphics:Boolean = true, color:uint = 0x000000, backgroundAlpha:Number = 1):void 
 		{
 			if(clearGraphics) g.clear();
-			DrawUtil.rect(g, startX, startY, w, h, backgroundColor);
-			g.lineStyle(1, 0, 1, true);
+			DrawUtil.rect(g, startX, startY, w, h, backgroundColor, backgroundAlpha);
+			g.lineStyle(1, color, 1, true);
 			for (var i:int = 0; i < values.length; i++) {
 				g.moveTo(startX+i, startY+h);
 				if(isNaN(maxValue))	g.lineTo(startX+i, startY+h-values[i]);
@@ -83,6 +83,7 @@ package exey.moss.utils
 			graphics.beginFill(color, alpha)
 			//graphics.drawRect(startX, startY, width, height)
 			graphics.drawRoundRect(startX, startY, width, height, ellipseWidth)
+			graphics.lineStyle()
 		}
 		
 		static public function gradientRoundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, colors:Array, ellipseWidth:Number = 20, alpha:Number = 1):void
@@ -189,8 +190,10 @@ package exey.moss.utils
 		 * @param x:Number - The x centre of the circumscribed circle.
 		 * @param y:Number - The y centre of the circumscribed circle.
 		 * @param ps:Number - The phase shift or angular offset of the polygons vertices.
+		 * @example
+		 * 	DrawUtil.star(star.graphics, 5, 10, 20, 20, 20, 0xFECC36, 0xFFFFFF)
 		 */
-		static public function star(graphics:Graphics, p:Number, er:Number, ir:Number, x:Number, y:Number, color:uint, borderColor:uint, ps:Number = undefined, borderThickness:Number = 2, borderAlpha:Number = 1):void
+		static public function star(graphics:Graphics, p:Number, er:Number, ir:Number, x:Number, y:Number, color:uint = 0xFECC36, borderColor:uint = 0xFFFFFF, ps:Number = undefined, borderThickness:Number = 2, borderAlpha:Number = 1):void
 		{
 			graphics.lineStyle(borderThickness, borderColor, borderAlpha, true);
 			graphics.beginFill(color);
@@ -284,13 +287,13 @@ package exey.moss.utils
 			line(g, x+w*(1-mult), y+h*0.5, x+w*(1-mult)+w*mult, y+h*0.5, color, lineThickness, lineAlpha);
 		}
 		
-		static public function play(g:Graphics, fillColor:uint, size:Number):void 
+		static public function play(g:Graphics, fillColor:uint, size:Number, startX:Number = 0, startY:Number = 0):void 
 		{
 			g.beginFill(fillColor);	
-			g.moveTo(0, 0);
-			g.lineTo(0, size);
-			g.lineTo(size*0.9, size*0.5);
-			g.lineTo(0, 0);
+			g.moveTo(startX+0, startY+0);
+			g.lineTo(startX+0, startY+size);
+			g.lineTo(startX+size*0.9, startY+size*0.5);
+			g.lineTo(startX+0, startY+0);
 		}
 		
 		/**

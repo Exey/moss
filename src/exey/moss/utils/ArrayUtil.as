@@ -264,7 +264,7 @@ package exey.moss.utils
 		static public function randomizeArray(array:Array):Array{
 			var newArray:Array = new Array();
 			while(array.length > 0){
-				newArray.push(array.splice(Math.floor(Math.random()*array.length), 1));
+				newArray.push(array.splice(Math.floor(Math.random()*array.length), 1)[0]);
 			}
 			return newArray;
 		}	
@@ -273,6 +273,18 @@ package exey.moss.utils
 		{
 			if (Math.random() < 0.5) return -1;
 			else return 1;
+		}
+		
+		static public function wrapElementsToObjectProperty(arr:Array, propertyName:String):Array
+		{
+			var result:Array = [];
+			var o:Object;
+			for (var i:int = 0; i < arr.length; i++) {
+				o = { };
+				o[propertyName] = arr[i];
+				result[i] = o;
+			}
+			return result
 		}
 	}
 }

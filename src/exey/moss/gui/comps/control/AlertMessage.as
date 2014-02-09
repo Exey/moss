@@ -16,7 +16,7 @@ package exey.moss.gui.comps.control
 	 * @see AlertManager
 	 * @author Exey Panteleev
 	 */
-	public class AlertMessage extends ComponentAbstract
+	public class AlertMessage extends ComponentAbstract implements IAlertMessage
 	{
 		static public const RED:uint = 0xFF8080;
 		static public const BLUE:uint = 0x417DFC;
@@ -29,12 +29,22 @@ package exey.moss.gui.comps.control
 		
 		private var textField:TextField;
 		
-		public function AlertMessage(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, text:String = "", color:uint = AlertMessage.BLUE, messageWidth:Number = 600, textFormat:TextFormat = null)
+		/**
+		 * 
+		 * @param	parent flash.display.DisplayObjectContainer
+		 * @param	xpos
+		 * @param	ypos
+		 * @param	text
+		 * @param	color
+		 * @param	messageWidth
+		 * @param	textFormat
+		 */
+		public function AlertMessage(parent:Object = null, xpos:Number = 0, ypos:Number = 0, text:String = "", color:uint = AlertMessage.BLUE, messageWidth:Number = 600, textFormat:TextFormat = null)
 		{
 			this.messageWidth = messageWidth;
 			initialize(text, color, textFormat);
 			this.cacheAsBitmap = true;
-			super(parent, xpos, ypos);
+			super(parent as DisplayObjectContainer, xpos, ypos);
 		}
 		
 		private function initialize(text:String, color:uint, textFormat:TextFormat):void

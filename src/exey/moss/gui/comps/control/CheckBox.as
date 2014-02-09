@@ -5,6 +5,7 @@ package exey.moss.gui.comps.control
 	import flash.display.Bitmap;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.text.TextFormat;
 	
 	/**
 	 * ...
@@ -13,9 +14,9 @@ package exey.moss.gui.comps.control
 	public class CheckBox extends RadioButton
 	{
 		
-		public function CheckBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, label:String = "", scale:Number = 1) 
+		public function CheckBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, label:String = "", scale:Number = 1, textFormat:TextFormat = null) 
 		{
-			super(parent, xpos, ypos, label, scale);
+			super(parent, xpos, ypos, label, scale, textFormat);
 		}
 		
 		override public function draw():void
@@ -29,8 +30,8 @@ package exey.moss.gui.comps.control
 			dot = new Sprite();
 			dot.graphics.beginFill(DOT_COLOR);
 			dot.graphics.drawRect(0, 0, radius*2 - scale*4, radius*2 - scale*4);
-			dot.x = 2 * scale;
-			dot.y = 2 * scale;
+			dot.x = (4 * scale+BORDER_THICKNESS)*0.5;
+			dot.y = (4 * scale+BORDER_THICKNESS)*0.5;
 			addChild(dot);
 		}		
 		

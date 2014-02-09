@@ -12,7 +12,7 @@ package exey.moss.socnet {
 			
 		}
 		
-		static public function wall_Post
+		//static public function wall_Post
 		
 	}
 }

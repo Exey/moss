@@ -27,11 +27,13 @@ package exey.moss.utils
 		
 		static public function getUserAgent():* 
 		{
+			if(!ExternalInterface.available) return ""
 			return ExternalInterface.call("window.navigator.userAgent.toString");			
 		}
 		
 		static public function getPlatform():* 
 		{
+			if(!ExternalInterface.available) return ""
 			return ExternalInterface.call("window.navigator.platform.toString");
 		}
 		

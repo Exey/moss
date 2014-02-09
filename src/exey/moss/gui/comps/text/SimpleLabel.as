@@ -22,11 +22,11 @@ package exey.moss.gui.comps.text
 		
 		public function set text(value:String):void {
 			textField.text = value;
-			redrawBackground(color)
+			if (value.length) redrawBackground(color)
 		}
 		public function set htmlText(value:String):void {
 			textField.htmlText = value;
-			redrawBackground(color)
+			if (value.length && textField.htmlText.length) redrawBackground(color)
 		}
 		
 		public function SimpleLabel(parent:DisplayObjectContainer, xpos:Number, ypos:Number, text:String, color:uint, textFormat:TextFormat, embedFonts:Boolean = false, horizontalPadding:Number = 5, verticalPadding:Number = 5)

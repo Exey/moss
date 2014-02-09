@@ -2,6 +2,7 @@ package exey.moss.factories
 {
 	import exey.moss.utils.ColorUtil;
 	import exey.moss.utils.DrawUtil;
+	import flash.display.BlendMode;
 	import flash.display.Shape;
 	import flash.display.SpreadMethod;
 	import flash.display.Sprite;
@@ -15,15 +16,24 @@ package exey.moss.factories
 	public class GuiFactory
 	{
 		
-		static public function arrowGradientButton(width:Number, height:Number, cornerRadius:Number, fillColor:Array, fillAlpha:Number, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0, isGlare:Boolean=true):Sprite 
+		static public function arrowGradientButton(width:Number, height:Number, cornerRadius:Number, fillColor:Array, fillAlpha:Number, lineThickness:Number = 0, lineColor:Number = 0, lineAlpha:Number = 0, isGlare:Boolean=true, arrowPercent:Number = 0.25):Sprite 
 		{
 			var button:Sprite = new Sprite();
 			var matrix:Matrix = new Matrix();
 			matrix.createGradientBox(width, height, -Math.PI * 0.5, 0, -height * 0.25);
 			button.graphics.lineStyle(lineThickness, lineColor, lineAlpha);
 			button.graphics.beginGradientFill("linear", fillColor, [ 1, 1 ], [ 0, 255 ], matrix, "pad", "RGB", 1);
-			DrawUtil.arrowRect(button.graphics, width, height);
+			DrawUtil.arrowRect(button.graphics, width, height, 1, arrowPercent);
 			button.filters = [ new GlowFilter(ColorUtil.luminance(fillColor[0], -0.05), 0.5, 2, 2, 4, 1, true) ];
+			return button;
+		}
+		
+		static public function arrowBorderedButton(w:Number, h:Number, fillColor:Number, fillAlpha:Number, borderColor:Number, borderThickness:Number, arrowPercent:Number = 0.25):Sprite 
+		{
+			var button:Sprite = new Sprite();
+			button.graphics.lineStyle(borderThickness, borderColor);
+			button.graphics.beginFill(fillColor, fillAlpha);
+			DrawUtil.arrowRect(button.graphics, w, h, 1, arrowPercent);
 			return button;
 		}
 		
@@ -64,12 +74,13 @@ package exey.moss.factories
 			if (isGlare) {
 				var glare:Shape = new Shape();
 				matrix = new Matrix();
-				matrix.createGradientBox(width * 0.9, height * 0.4, Math.PI * 0.5);				
-				glare.graphics.beginGradientFill("linear", [0xFFFFFF, 0xFFFFFF, fillColor], [1, 0.2, 0.1], [ 0, 255, 0 ], matrix, "pad", "RGB", 0);
-				glare.graphics.drawRoundRect(0, 0, width * 0.9, height * 0.4, cornerRadius*0.5, cornerRadius*0.5);
+				matrix.createGradientBox(width * 0.5, height * 0.4, Math.PI * 0.5);				
+				glare.graphics.beginGradientFill("linear", [0xFFFFFF, fillColor, fillColor], [0.6, 0.15, 0.01], [ 0, 255, 0 ], matrix, "pad", "RGB", 0);
+				glare.graphics.drawRoundRect(0, 0, width * 0.95, height * 0.45, cornerRadius*0.5, cornerRadius*0.5);
 				glare.graphics.endFill();
-				glare.x = width * 0.05-width*0.5;
-				glare.y = height * 0.1-height*0.5;
+				glare.x = width * 0.025-width*0.5;
+				glare.y = height * 0.05 - height * 0.5;
+				//glare.blendMode = BlendMode.OVERLAY;
 				button.addChild(glare);
 			}
 			return button;
@@ -93,6 +104,13 @@ package exey.moss.factories
 			button.graphics.lineTo(startX+5*sizeMultiplier, 	startY+10*sizeMultiplier);
 			button.graphics.lineStyle();
 			button.graphics.endFill();
+			return button;
+		}
+		
+		static public function flatBorderedButton(w:Number, h:Number, fillColor:Number, fillAlpha:Number, borderColor:Number, borderThickness:Number, ellipseWidth:Number):Sprite 
+		{
+			var button:Sprite = new Sprite();
+			DrawUtil.borderedRoundRect(button.graphics, -w*0.5, -h*0.5, w, h, fillColor, borderColor, borderThickness, ellipseWidth)
 			return button;
 		}
 		

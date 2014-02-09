@@ -1,4 +1,4 @@
-package exey.moss.render3d.alternativa3d
+package exey.moss.stage3d.alternativa3d
 {
 	import alternativa.engine3d.core.Object3D;
 	import alternativa.engine3d.materials.TextureMaterial;
@@ -8,7 +8,7 @@ package exey.moss.render3d.alternativa3d
 	import exey.moss.helpers.BitmapSlicer;
 	import exey.moss.mngr.AssetManager;
 	import exey.moss.mngr.data.AssetData;
-	import exey.moss.render3d.utils.Alternativa3DUtil;
+	import exey.moss.stage3d.utils.Alternativa3DUtil;
 	import exey.moss.utils.LoaderUtil;
 	import exey.moss.utils.TmxUtil;
 	import flash.display.BitmapData;

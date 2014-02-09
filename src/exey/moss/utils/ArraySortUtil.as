@@ -4,7 +4,7 @@ package exey.moss.utils
 	 * ...
 	 * @author Exey Panteleev
 	 */
-	public class ArraySortUtils 
+	public class ArraySortUtil
 	{
 		
         static public function stringLongToShortw(a:String, b:String):int {

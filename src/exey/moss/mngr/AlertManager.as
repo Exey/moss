@@ -3,8 +3,9 @@ package exey.moss.mngr
 	import com.eclecticdesignstudio.motion.Actuate;
 	import com.eclecticdesignstudio.motion.easing.Cubic;
 	import exey.moss.gui.comps.control.AlertMessage;
+	import exey.moss.gui.comps.control.IAlertMessage;
 	import exey.moss.utils.AnimationUtil;
-	import flash.display.DisplayObjectContainer;
+	import exey.moss.utils.PlaceUtil;
 	import flash.text.TextFormat;
 	/**
 	 * Alert messages manager
@@ -12,17 +13,15 @@ package exey.moss.mngr
 	 */
 	public class AlertManager
 	{	
-		static public var ALERT_Y:Number = 200;
-		
-		static private var alertContainer:DisplayObjectContainer;
-		static private var alertMessage:AlertMessage;
+		static private var alertContainer:Object;
+		static private var alertMessage:IAlertMessage;
 		
 		static private var textFormat:TextFormat;
 		static private var messagePosX:Number;
 		static private var messagePosY:Number;
 		static private var messageWidth:Number;
 		
-		public function AlertManager(alertContainer:DisplayObjectContainer, messagePosX:Number = 0, messagePosY:Number = 0, messageWidth:Number = 100, textFormat:TextFormat = null) 
+		public function AlertManager(alertContainer:Object, messagePosX:Number = 0, messagePosY:Number = 0, messageWidth:Number = 100, textFormat:TextFormat = null) 
 		{
 			AlertManager.alertContainer = alertContainer;
 			AlertManager.messagePosY = messagePosY;
@@ -38,12 +37,23 @@ package exey.moss.mngr
 			else Actuate.timer(3).onComplete(destoyAlertMessage);
 		}
 		
-		static public function show(text:String, animate:Boolean = false, color:uint = 0x417DFC):void
+		static public function showAlertMessage(alertMessage:IAlertMessage, animate:Boolean = false, newYPos:Number = 200):void 
+		{
+			if (alertMessage) alertMessage.hide();
+			AlertManager.alertMessage = alertMessage;
+			PlaceUtil.place(alertMessage, alertContainer, messagePosX, messagePosY);
+			if (animate) {
+				alertMessage.y = -alertMessage.height;
+				AnimationUtil.slideY(alertMessage, 1, Cubic.easeOut, newYPos);
+			}
+		}
+		
+		static public function show(text:String, animate:Boolean = false, color:uint = 0x417DFC, newYPos:Number = 200):void
 		{
 			if (alertMessage) alertMessage.hide();
 			if (animate) {
 				alertMessage = new AlertMessage(alertContainer, messagePosX, messagePosY, text, color, messageWidth, textFormat);
-				AnimationUtil.slideY(alertMessage, 1, Cubic.easeOut, ALERT_Y);
+				AnimationUtil.slideY(alertMessage, 1, Cubic.easeOut, newYPos);
 			} else {
 				alertMessage = new AlertMessage(alertContainer, messagePosX, messagePosY, text, color, messageWidth, textFormat);
 			}

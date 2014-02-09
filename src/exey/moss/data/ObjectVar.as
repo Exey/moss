@@ -4,7 +4,7 @@ package exey.moss.data
 	
 	/**
 	 * ...
-	 * @author ...
+	 * @author Exey Panteleev
 	 */
 	public class ObjectVar extends VarAbstract implements IVar 
 	{		

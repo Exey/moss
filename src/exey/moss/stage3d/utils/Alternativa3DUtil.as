@@ -1,10 +1,10 @@
-package exey.moss.render3d.utils 
+package exey.moss.stage3d.utils 
 {
 	import alternativa.engine3d.alternativa3d;
 	import alternativa.engine3d.core.Object3D;
 	import alternativa.engine3d.core.VertexAttributes;
 	import alternativa.engine3d.resources.Geometry;
-	/**
+	/** 
 	 * ...
 	 * @author Exey Panteleev
 	 */
@@ -17,6 +17,13 @@ package exey.moss.render3d.utils
 			//for  (var i:int = 0; i< p.numSurfaces; i++)
 				//target.addSurface(null, p.getSurface(i).indexBegin, p.getSurface(i).numTriangles);
 		//}
+		
+		/**
+		 * Scale UV Coordinates
+		 * @param	geometry
+		 * @param	multiplierX
+		 * @param	multiplierY
+		 */
 		static public function terrainTiling(geometry:Geometry, multiplierX:Number, multiplierY:Number):void
 		{
 			var uvs:Vector.<Number> = geometry.getAttributeValues(VertexAttributes.TEXCOORDS[0]);

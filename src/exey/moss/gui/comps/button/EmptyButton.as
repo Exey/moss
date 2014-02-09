@@ -42,14 +42,19 @@ package exey.moss.gui.comps.button
 		//  Constructor
 		//
 		//--------------------------------------------------------------------------		
-		public function EmptyButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, initEmptySkin:Boolean = false)
+		public function EmptyButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, initEmptySkin:Boolean = false, addToSkin:DisplayObject = null, skinAddition:DisplayObject = null)
 		{
 			super(parent, xpos, ypos);
 			this.handler = handler;
 			if(handler != null) this.addEventListener(MouseEvent.CLICK, handler);
 			this.buttonMode = true;
-			if (initEmptySkin)
+			if (initEmptySkin) {
 				skin = new Sprite();
+			}
+			if (addToSkin) {
+				(skin as DisplayObjectContainer).addChild(addToSkin);
+				if (skinAddition) (skin as DisplayObjectContainer).addChild(skinAddition);
+			}	
 		}
 		
 		public function destroy():void

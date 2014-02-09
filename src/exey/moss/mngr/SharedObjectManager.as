@@ -16,6 +16,5 @@
         static public function getData(name:String):Object {
             return SharedObject.getLocal(name).data;
         }
-
     }
 }

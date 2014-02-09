@@ -80,6 +80,7 @@ package exey.moss.mngr
 			data.onOut 	= function(e:MouseEvent):void { hideCurrent(); }
 			data.target.addEventListener(MouseEvent.ROLL_OVER, data.onOver);
 			data.target.addEventListener(MouseEvent.ROLL_OUT, data.onOut);			
+			//data.target.addEventListener(MouseEvent.MOUSE_OUT, data.onOut);			
 		}
 		
 		static public function remove(data:ToolTipData):void 
