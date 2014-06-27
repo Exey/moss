@@ -12,7 +12,12 @@ package exey.moss.gui.comps.button
 	 */
 	public class EmptyButton extends ComponentAbstract
 	{
-		private var handler:Function;
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Properties
+		//
+		//--------------------------------------------------------------------------
 		
 		private var _skin:DisplayObject;
 		public function get skin():DisplayObject { return _skin; }
@@ -39,14 +44,22 @@ package exey.moss.gui.comps.button
 		
 		//--------------------------------------------------------------------------
 		//
+		//  Protected vars
+		//
+		//--------------------------------------------------------------------------
+		
+		protected var handler:Function;
+		
+		//--------------------------------------------------------------------------
+		//
 		//  Constructor
 		//
-		//--------------------------------------------------------------------------		
+		//--------------------------------------------------------------------------
+		
 		public function EmptyButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, initEmptySkin:Boolean = false, addToSkin:DisplayObject = null, skinAddition:DisplayObject = null)
 		{
 			super(parent, xpos, ypos);
-			this.handler = handler;
-			if(handler != null) this.addEventListener(MouseEvent.CLICK, handler);
+			addHandler(handler);
 			this.buttonMode = true;
 			if (initEmptySkin) {
 				skin = new Sprite();
@@ -55,6 +68,18 @@ package exey.moss.gui.comps.button
 				(skin as DisplayObjectContainer).addChild(addToSkin);
 				if (skinAddition) (skin as DisplayObjectContainer).addChild(skinAddition);
 			}	
+		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  API
+		//
+		//--------------------------------------------------------------------------
+		
+		public function addHandler(handler:Function):void {
+			this.handler = handler;
+			if (handler != null) 
+				this.addEventListener(MouseEvent.CLICK, handler);
 		}
 		
 		public function destroy():void

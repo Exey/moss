@@ -22,9 +22,12 @@ package exey.moss.utils
 			return displayObject;
 		}
 		
-		static public function place(displayObject:Object, parent:Object, xPos:Number, yPos:Number):Object
+		static public function place(displayObject:Object, parent:Object, xPos:Number, yPos:Number, depthIndex:int = -1):Object
 		{
-			parent.addChild(displayObject);
+			if (depthIndex != -1)
+				parent.addChildAt(displayObject, depthIndex)
+			else
+				parent.addChild(displayObject);
 			displayObject.x = xPos;
 			displayObject.y = yPos;
 			return displayObject;

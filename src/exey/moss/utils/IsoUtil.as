@@ -16,13 +16,14 @@
 		 * @param	z screen Z
 		 * @return space coords
 		 */
-		static public function screenToSpace(x:Number, y:Number, z:Number = 0):Vector3D 
+		static public function screenToSpace(x:Number, y:Number, z:Number = 0, v3d:Vector3D = null):Vector3D 
 		{
 			var r:Number = 2; // ratio
-			var sx:Number = x / r + y + z;
-			var sy:Number = y - x / r + z;
-			var sz:Number = z;
-			return new Vector3D(sx, sy, sz);
+			if (!v3d) v3d = new Vector3D();
+			v3d.x = x / r + y + z;
+			v3d.y = y - x / r + z;
+			v3d.z = z;
+			return v3d;
 		}
 		
 		/**
@@ -32,13 +33,14 @@
 		 * @param	z space Z
 		 * @return screen coords
 		 */
-		static public function spaceToScreen(x:Number, y:Number, z:Number = 0):Vector3D 
+		static public function spaceToScreen(x:Number, y:Number, z:Number = 0, v3d:Vector3D = null):Vector3D 
 		{
 			var r:Number = 2; // ratio
-			var sx:Number = x - y;
-			var sy:Number = (x + y) / r - z;
-			var sz:Number = z;
-			return new Vector3D(sx, sy, sz);
+			if (!v3d) v3d = new Vector3D();
+			v3d.x = x - y;
+			v3d.y = (x + y) / r - z;
+			v3d.z = z;
+			return v3d;
 		}
 		
 		/**

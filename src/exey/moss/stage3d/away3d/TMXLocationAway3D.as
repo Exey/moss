@@ -3,8 +3,6 @@ package exey.moss.stage3d.away3d {
 	import exey.moss.helpers.BitmapSlicer;
 	import exey.moss.mngr.AssetManager;
 	import exey.moss.mngr.data.AssetData;
-	import exey.moss.render3d.away3d.TileAway3D;
-	import exey.moss.render3d.away3d.TileAway3DFactory;
 	import exey.moss.utils.LoaderUtil;
 	import exey.moss.utils.TmxUtil;
 	import flash.display.BitmapData;

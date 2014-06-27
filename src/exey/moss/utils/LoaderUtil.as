@@ -6,9 +6,11 @@ package exey.moss.utils
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
+	import flash.net.URLVariables;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
@@ -53,16 +55,30 @@ package exey.moss.utils
 			return bitmap
 		}
 		
-		static public function loadWithURLLoader(url:String, handler:Function, dataFormat:String = null):void 
+		static public function loadWithURLLoader(url:String, handler:Function, dataFormat:String = null, vars:URLVariables = null, method:String = "GET", antiCache:Boolean = false, errorHandler:Function = null):void 
 		{
 			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error);
+            loader.addEventListener(IOErrorEvent.IO_ERROR, error);
 			if (dataFormat)
 				loader.dataFormat = dataFormat;
 			loader.addEventListener(Event.COMPLETE, function(e:Event = null):void {
 				loader.removeEventListener(Event.COMPLETE, arguments.callee);
 				handler.apply(null, [e.target.data]);
 			});
-			loader.load(new URLRequest(url));
+			var r:URLRequest = new URLRequest(url);
+			if (vars) {
+				if (antiCache)
+					vars.anticache = new Date().getTime()
+				r.data = vars;
+				r.method = method;
+			}
+			loader.load(r);
+			function error(e:Event):void {
+				trace("3:LoaderUtil ERROR", e);
+				if (errorHandler != null)
+					errorHandler.apply(null, [e]);
+			}
 		}
 		
 		static public function loadWithLoader(url:String, handler:Function):void 

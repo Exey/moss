@@ -1,7 +1,7 @@
 package exey.moss.helpers 
 {
 	/**
-	 * ...
+	 * Layouts
 	 * @author Exey Panteleev
 	 */
 	public class LayoutHelper 

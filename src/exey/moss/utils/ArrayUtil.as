@@ -6,6 +6,16 @@ package exey.moss.utils
  */
 	public class ArrayUtil {		
 		
+		/** returns arrays of x/y in array */ 
+		static public function generateXYArray(startX:int, startY:int, sizeX:int, sizeY:int):Array
+		{
+			var arr:Array = [];
+			var length:int = sizeX*sizeY;
+			for (var i:int = 0; i < length; i++) 
+				arr.push([startX + (i%sizeX), startY + int(i/sizeX)]);
+			return arr;
+		}
+		
 		static public function maxValue(a:Array):Number
 		{
 			var maxValue:int;

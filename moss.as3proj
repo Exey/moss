@@ -9,7 +9,7 @@
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />
-    <movie minorVersion="1" />
+    <movie minorVersion="2" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>
@@ -20,9 +20,11 @@
   <!-- Build options -->
   <build>
     <option accessible="False" />
+    <option advancedTelemetry="False" />
     <option allowSourcePathOverlap="False" />
     <option benchmark="False" />
     <option es="False" />
+    <option inline="True" />
     <option locale="" />
     <option loadConfig="" />
     <option optimize="True" />
@@ -40,7 +42,7 @@
     <option linkReport="" />
     <option loadExterns="" />
     <option staticLinkRSL="True" />
-    <option additional="java.home=&quot;c:\Program Files (x86)\Java\jre6\&quot;" />
+    <option additional="-define CONFIG::debug true -define CONFIG::release false" />
     <option compilerConstants="" />
     <option minorVersion="" />
   </build>
@@ -54,7 +56,10 @@
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
-    <!-- example: <element path="..." /> -->
+    <element path="c:\Dropbox\_my_engines\moss\swc\playerglobal.swc" />
+    <element path="c:\Dropbox\_my_engines\moss\swc\fl.swc" />
+    <element path="c:\Dropbox\_my_engines\moss\swc\as3-signals-v0.9-BETA.swc" />
+    <element path="c:\Dropbox\_my_engines\moss\swc\Actuate.swc" />
   </externalLibraryPaths>
   <!-- Runtime Shared Libraries -->
   <rslPaths>
@@ -74,7 +79,7 @@
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
-    <!-- example: <hidden path="..." /> -->
+    <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />

@@ -33,7 +33,22 @@
 		protected var onImageListingComplete:Function;
 		
 		/**
-		 * 
+		 * @example <code>
+			new DirectoryImageLoader(File.applicationDirectory, "bitmaps", 
+				function(f:File):Boolean { // image listed
+					trace("0:DIL image listed", RegExpUtil.filenameWithoutExtFromUrl(f.url))
+					return true
+				},function(b:Bitmap, loadedIndex:int, nextIndex:uint):void { // image loaded
+					trace("2:DIL image loaded", loadedIndex, b.bitmapData)
+				},function():void { // all loaded
+					trace("3:DIL all loaded")
+				},function(f:File):void { // on next
+					trace("DIL next", RegExpUtil.filenameWithoutExtFromUrl(f.url))
+				},function():void { // image listing complete
+					trace("3:DIL listing complete")
+				}
+			);
+		 * </code>
 		 * @param	root
 		 * @param	dirName
 		 * @param	onImageListed  must return Boolean
@@ -54,7 +69,7 @@
 			if(startListing)
 				start();
 		}
-		
+		 
 		protected function start():void {
 			root.addEventListener(FileListEvent.DIRECTORY_LISTING, dir_directoryListing);
 			root.getDirectoryListingAsync();

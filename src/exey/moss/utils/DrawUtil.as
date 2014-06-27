@@ -75,6 +75,7 @@ package exey.moss.utils
 			graphics.beginFill(color, alpha);
 			graphics.drawRect(startX, startY, width, height)
 			graphics.endFill();
+			graphics.lineStyle();
 		}
 		
 		static public function borderedRoundRect(graphics:Graphics, startX:Number, startY:Number, width:Number, height:Number, color:uint, borderColor:uint, borderThickness:Number, ellipseWidth:Number = 20, alpha:Number = 1, borderAlpha:Number = 1, pixelHinting:Boolean = false):void

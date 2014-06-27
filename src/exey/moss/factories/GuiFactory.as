@@ -107,9 +107,9 @@ package exey.moss.factories
 			return button;
 		}
 		
-		static public function flatBorderedButton(w:Number, h:Number, fillColor:Number, fillAlpha:Number, borderColor:Number, borderThickness:Number, ellipseWidth:Number):Sprite 
+		static public function flatBorderedButton(w:Number, h:Number, fillColor:Number, fillAlpha:Number, borderColor:Number, borderThickness:Number, ellipseWidth:Number, button:Sprite = null):Sprite 
 		{
-			var button:Sprite = new Sprite();
+			if(!button) button = new Sprite();
 			DrawUtil.borderedRoundRect(button.graphics, -w*0.5, -h*0.5, w, h, fillColor, borderColor, borderThickness, ellipseWidth)
 			return button;
 		}

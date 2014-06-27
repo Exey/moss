@@ -17,6 +17,12 @@ package exey.moss.mngr
 	 */
 	public class AssetManager {
 		
+		//--------------------------------------------------------------------------
+		//
+		//  Signals
+		//
+		//--------------------------------------------------------------------------
+		
 		static public const error:Signal = new Signal();
 		
 		//--------------------------------------------------------------------------
@@ -144,7 +150,7 @@ package exey.moss.mngr
 		 * @param	group [url, url, ..]
 		 * @param	errorHandler
 		 */
-		static public function loadGroup(group:Array, completeHandler:Function = null, id:String = '', ...completeParams):void
+		static public function loadGroup(group:Array, completeHandler:Function = null, id:String = '', ...completeParams):AssetManagerGroup
 		{
 			if (id == "")
 				id = new Date().getTime().toString();
@@ -159,18 +165,20 @@ package exey.moss.mngr
 				else
 					groupForLoading.push(url);
 			}
+			var resourceManagerGroup:AssetManagerGroup;
 			if (groupForLoading.length == 0 && completeHandler != null)
 			{
 				completeHandler.apply(null, [groupLoaded].concat(completeParams));
 			}
 			else
 			{
-				var resourceManagerGroup:AssetManagerGroup = new AssetManagerGroup(groupForLoading, groupLoaded, completeHandler);
+				resourceManagerGroup = new AssetManagerGroup(groupForLoading, groupLoaded, completeHandler);
 				resourceManagerGroup.id = id;
 				resourceManagerGroup.completeParams = completeParams;
 				resourceManagerGroup.addEventListener(Event.COMPLETE, deleteAssetManagerGroup);
 				resourceManagerGroups.push(resourceManagerGroup);
 			}
+			return resourceManagerGroup
 		}
 		
 		static public function unlinkGroupCompleteHandler(id:String):void
@@ -271,6 +279,7 @@ import flash.system.ApplicationDomain;
 import flash.system.LoaderContext;
 import flash.system.Security;
 import flash.system.SecurityDomain;
+import org.osflash.signals.Signal;
 /**
  * @private
  */
@@ -282,6 +291,7 @@ internal final class AssetManagerGroup extends EventDispatcher
 	private var result:Vector.<AssetData>;
 	public var id:String;
 	public var completeParams:Array
+	public var fileLoadedSignal:Signal = new Signal();
 	
 	public function AssetManagerGroup(urls:Vector.<String>, groupLoaded:Vector.<AssetData>, completeHandler:Function):void
 	{
@@ -300,6 +310,7 @@ internal final class AssetManagerGroup extends EventDispatcher
 	
 	private function load_complete(data:AssetData, index:int):void
 	{
+		fileLoadedSignal.dispatch(data);
 		result[index] = data;
 		urls.splice(urls.indexOf(data.url), 1);
 		if (urls.length == 0 && completeHandler != null)
@@ -312,7 +323,7 @@ internal final class AssetManagerGroup extends EventDispatcher
 
 internal final class AnyResourceLoader extends EventDispatcher
 {
-	private const TEXT_EXTENSIONS:Array = ["json", "js", "xml", "tmx", "dae", "css", "md5mesh", "md5anim"];
+	private const TEXT_EXTENSIONS:Array = ["json", "js", "xml", "tmx", "dae", "css", "md5mesh", "md5anim", "fnt", "csv", "map"];
 	
 	public var request:URLRequest;
 	public var content:*;
@@ -325,7 +336,7 @@ internal final class AnyResourceLoader extends EventDispatcher
 	
 	public function load(url:String):void 
 	{
-		trace("1:LOAD", url);
+		trace("0:LOAD", url);
 		request = new URLRequest(url)
 		var ext:String = url.substr(url.lastIndexOf('.') + 1, url.length).toLowerCase();		
 		if (TEXT_EXTENSIONS.indexOf(ext) > -1) {
