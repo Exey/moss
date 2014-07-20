@@ -2,7 +2,6 @@ package exey.moss.mngr
 {
 	import exey.moss.mngr.data.AssetData;
 	import exey.moss.utils.ObjectUtil;
-	import exey.moss.utils.SignalUtil;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

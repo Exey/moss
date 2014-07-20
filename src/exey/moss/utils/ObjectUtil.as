@@ -36,8 +36,8 @@ package exey.moss.utils
 				var child:Object;
 				for (var i:int, n:int = content.numChildren; i < n; ++i) {
 					child = content.getChildAt(i);	
-					trace(prefix + child);
-					if (child && child.numChildren) traceChilds(child, prefix+"-");
+					trace(prefix, child, child.hasOwnProperty("name") ? child.name : "");
+					if (child && child.hasOwnProperty("numChildren")) traceChilds(child, prefix+"-");
 				}
 			}
 		}

@@ -5,7 +5,7 @@ package exey.moss.stage3d.alternativa3d
 	import alternativa.engine3d.primitives.Plane;
 	import alternativa.engine3d.resources.BitmapTextureResource;
 	import exey.moss.debug.deb;
-	import exey.moss.helpers.BitmapSlicer;
+	import exey.moss.processing.BitmapSlicer;
 	import exey.moss.mngr.AssetManager;
 	import exey.moss.mngr.data.AssetData;
 	import exey.moss.stage3d.utils.Alternativa3DUtil;

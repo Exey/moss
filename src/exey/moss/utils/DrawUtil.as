@@ -315,5 +315,25 @@ package exey.moss.utils
 			graphics.lineTo(w * 0.5, 	-h * 0.5);
 		}
 		
+		static public function matrix(graphics:Graphics, startX:Number, startY:Number, split:Array, pixelSize:Number, lenX:int, lenY:int, color:uint, backgroundColor:int = -1):void 
+		{
+			if (backgroundColor >= 0) {
+				graphics.beginFill(backgroundColor);
+				graphics.drawRect(startX, startY, pixelSize*lenX, pixelSize*lenY);
+				graphics.endFill();
+			}			
+			var i:int, x:int, y:int
+			var c:uint
+			for (x = 0; x < lenX; x++) {
+				for (y = 0; y < lenY; y++) {			
+					if (split[i++] == 1) {
+						graphics.beginFill(color);
+						graphics.drawRect(startX+x*pixelSize, startY+y*pixelSize, pixelSize, pixelSize);
+						graphics.endFill();
+					}					
+				}
+			}
+		}
+		
 	}
 }

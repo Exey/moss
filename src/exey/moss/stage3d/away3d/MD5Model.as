@@ -40,7 +40,7 @@
 		
 		protected function parse_complete(e:AssetEvent):void
 		{
-			deb(e.asset.assetType, e.asset);
+			//deb(e.asset.assetType, e.asset);
 			//AssetLibrary.removeEventListener(AssetEvent.ASSET_COMPLETE, parse_complete);
 			if (e.asset.assetType == AssetType.MESH) {
 				mesh = e.asset as Mesh;

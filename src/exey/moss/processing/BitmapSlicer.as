@@ -1,5 +1,4 @@
-package exey.moss.helpers
-{
+package exey.moss.processing {
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;

@@ -31,12 +31,9 @@ package exey.moss.gui.comps.button
 			})
 		}
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Constructor
-		//
-		//--------------------------------------------------------------------------
-		
+		/**
+		 * Constructor
+		 */
 		public function GrowButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, growRatio:Number = 1.1) 
 		{
 			super(parent, xpos, ypos, handler);
@@ -55,13 +52,7 @@ package exey.moss.gui.comps.button
 		{
 			if (!skin) return;
 			skin.scaleY = skin.scaleX = growRatio;
-		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  API
-		//
-		//--------------------------------------------------------------------------			
+		}		
 		
 		public function addMovieClip(string:String):void 
 		{
@@ -78,12 +69,6 @@ package exey.moss.gui.comps.button
 		{
 			addChild(displayObject)
 		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Event Handlers
-		//
-		//--------------------------------------------------------------------------
 		
 		protected function handler_rollOut(e:MouseEvent):void 
 		{

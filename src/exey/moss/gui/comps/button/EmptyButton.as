@@ -13,12 +13,6 @@ package exey.moss.gui.comps.button
 	public class EmptyButton extends ComponentAbstract
 	{
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Properties
-		//
-		//--------------------------------------------------------------------------
-		
 		private var _skin:DisplayObject;
 		public function get skin():DisplayObject { return _skin; }
 		public function set skin(value:DisplayObject):void {
@@ -42,20 +36,11 @@ package exey.moss.gui.comps.button
 			}
 		}
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Protected vars
-		//
-		//--------------------------------------------------------------------------
-		
 		protected var handler:Function;
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Constructor
-		//
-		//--------------------------------------------------------------------------
-		
+		/**
+		 * Constructor
+		 */
 		public function EmptyButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, initEmptySkin:Boolean = false, addToSkin:DisplayObject = null, skinAddition:DisplayObject = null)
 		{
 			super(parent, xpos, ypos);
@@ -69,12 +54,6 @@ package exey.moss.gui.comps.button
 				if (skinAddition) (skin as DisplayObjectContainer).addChild(skinAddition);
 			}	
 		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  API
-		//
-		//--------------------------------------------------------------------------
 		
 		public function addHandler(handler:Function):void {
 			this.handler = handler;

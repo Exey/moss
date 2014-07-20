@@ -81,7 +81,7 @@ package exey.moss.utils
 			}
 		}
 		
-		static public function loadWithLoader(url:String, handler:Function):void 
+		static public function loadWithLoader(url:String, handler:Function):Loader 
 		{
 			var loader:Loader = new Loader();			
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event = null):void {
@@ -92,6 +92,7 @@ package exey.moss.utils
 				trace("3:LOADER ERROR ", e.target.url, e)
 			});
 			loader.load(new URLRequest(url), new LoaderContext(true));
+			return loader;
 		}		
 		
 		static public function loadBytesToCurrentDomain(bytes:ByteArray, eventHandler:Function):void 

@@ -6,6 +6,24 @@ package exey.moss.utils
  */
 	public class ArrayUtil {		
 		
+		static public function remove(array:Array, index:int):Array 
+		{
+			var original:Array = array.slice(); // a, b, c, d
+			var temp:Array = original.splice(index); // b, c, d
+			temp.shift(); // c, d
+			original = original.concat(temp); // a, c, d
+			return original;
+		}
+		
+		static public function insert(array:Array, index:int, value:*):Array
+		{
+			var original:Array = array.slice(); // a, c, d
+			var temp:Array = original.splice(index); // c, d
+			original[index] = value; // b
+			original = original.concat(temp); // a, b, c, d
+			return original;
+		}
+		
 		/** returns arrays of x/y in array */ 
 		static public function generateXYArray(startX:int, startY:int, sizeX:int, sizeY:int):Array
 		{
@@ -263,7 +281,7 @@ package exey.moss.utils
 				if (source[i][propertyName] == propertyValue) 
 					return source[i];
 			return null;
-		}
+		}	
 		
 		static public function shuffle(arr:Array):void 
 		{

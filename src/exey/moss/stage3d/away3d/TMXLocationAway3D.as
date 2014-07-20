@@ -1,6 +1,6 @@
 package exey.moss.stage3d.away3d {
 	import away3d.containers.View3D;
-	import exey.moss.helpers.BitmapSlicer;
+	import exey.moss.processing.BitmapSlicer;
 	import exey.moss.mngr.AssetManager;
 	import exey.moss.mngr.data.AssetData;
 	import exey.moss.utils.LoaderUtil;

@@ -1,5 +1,5 @@
-package exey.moss.helpers {
-	import exey.moss.helpers.BitmapSlicer;
+package exey.moss.processing {
+	import exey.moss.processing.BitmapSlicer;
 	import exey.moss.utils.ColorUtil;
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -41,7 +41,6 @@ package exey.moss.helpers {
 			colorsDictionary = [];
 			var n:String;
 			for each(var b:BitmapData in sliced.slices) {
-				//colorsDictionary.push([ColorUtil.averageColorFromBitmapRegion(b, 0, 0, b.width, b.height), sliced.slices.indexOf(b)])
 				n = names[sliced.slices.indexOf(b)];
 				if(n) colorsDictionary.push([ColorUtil.averageColorFromBitmapRegion(b, 0, 0, b.width, b.height), n])
 				//trace(EmbedResources.FLAGS[sliced.slices.indexOf(b)], ColorUtil.averageColorFromBitmapRegion(b, 0, 0, b.width, b.height))

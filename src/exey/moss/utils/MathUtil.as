@@ -63,6 +63,62 @@ package exey.moss.utils
 			return Math.sqrt(dX*dX + dY*dY);
 		}
 		
+		/** distance in string */
+		static public function levenshtein(s1:String, s2:String):uint
+		{
+		     const len1:uint = s1.length, len2:uint = s2.length;
+		     var d:Vector.<Vector.<uint> >=new Vector.<Vector.<uint> >(len1+1);
+		     for(i=0; i<=len1; ++i) 
+			d[i] = new Vector.<uint>(len2+1);
+ 
+		     d[0][0]=0;
+ 
+		     var i:int;
+		     var j:int;
+ 
+		     for(i=1; i<=len1; ++i) d[i][0]=i; //int faster than uint
+		     for(i=1; i<=len2; ++i) d[0][i]=i;
+ 
+		     for(i = 1; i <= len1; ++i)
+		          for(j = 1; j <= len2; ++j)
+		               d[i][j] = Math.min( Math.min(d[i - 1][j] + 1,d[i][j - 1] + 1),
+		                           d[i - 1][j - 1] + (s1.charAt(i - 1) == s2.charAt(j - 1) ? 0 : 1) );
+		     return(d[len1][len2]);
+		}
+		
+		/** distance in string */
+		static public function hamming(s1:String, s2:String):int
+		{
+			var distance:int = 0;
+			for(var i:int=0; i<s1.length; i++)
+				if(s1.charAt(i) != s2.charAt(i))
+					distance++;
+			return distance;
+		}	
+		
+		static public function gcd( i1:int , i2:int ):int
+		{
+			if ( i2 == 0 )
+			{
+				return i1 ;
+			}
+			else if ( i1 == i2 )
+			{
+				return i1 ;
+			}
+			else
+			{
+				var t:int ;
+				while( i2 != 0 )
+				{
+					t  = i2 ;
+					i2 = i1 % i2 ;
+					i1 = t ;
+				}
+				return i1 ;
+			}
+		}
+		
 		static public function distance3d(from:Vector3D, to:Vector3D):void 
 		{
 			

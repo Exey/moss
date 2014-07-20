@@ -17,19 +17,8 @@ package exey.moss.gui.comps.control {
 	 */
 	public class SubButton extends GrowButton
 	{
-		//--------------------------------------------------------------------------
-		//
-		//  Static
-		//
-		//--------------------------------------------------------------------------
 		
 		static private const GROW_RATIO:Number = 1.1;
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Properties
-		//
-		//--------------------------------------------------------------------------
 		
 		private var _tf:TextField;
 		
@@ -62,21 +51,12 @@ package exey.moss.gui.comps.control {
 		//private var _label:String;
 		//public function get label():String { return _label; }
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Private Vars
-		//
-		//--------------------------------------------------------------------------
-		
 		private var textFormat:TextFormat;
 		private var backgroundColor:uint;
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Constructor
-		//
-		//--------------------------------------------------------------------------
-		
+		/**
+		 * Constructor
+		 */
 		public function SubButton(parent:DisplayObjectContainer, xpos:Number, ypos:Number, handler:Function, text:String, scaleRatio:Number = 1, textFormat:TextFormat = null, backgroundColor:uint = 0xEED186, backgroundAlpha:Number = 1, widthPadding:Number = 20, heightPadding:Number = 8) 
 		{
 			super(parent, xpos, ypos, handler, GROW_RATIO);
@@ -85,12 +65,6 @@ package exey.moss.gui.comps.control {
 			else this.textFormat = textFormat;
 			initialize(scaleRatio, backgroundAlpha, widthPadding, heightPadding, text);
 		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  API
-		//
-		//--------------------------------------------------------------------------
 		
 		override public function addHandler(handler:Function):void {
 			//super.addHandler(handler);

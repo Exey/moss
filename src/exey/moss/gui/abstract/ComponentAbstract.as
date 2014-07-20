@@ -1,6 +1,5 @@
 package exey.moss.gui.abstract
 {
-	import exey.moss.utils.AnimationUtil;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.DisplayObjectContainer;

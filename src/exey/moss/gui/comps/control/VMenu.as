@@ -14,19 +14,8 @@ package exey.moss.gui.comps.control
 	 */
 	public class VMenu extends ComponentAbstract 
 	{
-		//--------------------------------------------------------------------------
-		//
-		//  Signals
-		//
-		//--------------------------------------------------------------------------
 		
 		public var labelClick:Signal;
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Properties
-		//
-		//--------------------------------------------------------------------------
 		
 		public var menuLabels:Array;
 		
@@ -59,11 +48,6 @@ package exey.moss.gui.comps.control
 		private var _isOpen:Boolean = false;
 		public function get isOpen():Boolean { return _isOpen; }
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Private vars
-		//
-		//--------------------------------------------------------------------------
 		
 		private var menuPanel:Sprite;
 		private var textFormat:TextFormat;
@@ -85,11 +69,6 @@ package exey.moss.gui.comps.control
 			labelClick = new Signal()
 		}
 		
-		//--------------------------------------------------------------------------
-		//
-		//  API
-		//
-		//--------------------------------------------------------------------------
 		
 		public function initFromArray(value:Vector.<String>):Sprite 
 		{
@@ -124,12 +103,6 @@ package exey.moss.gui.comps.control
 			_isOpen = false;
 			super.hide();
 		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Private functions
-		//
-		//--------------------------------------------------------------------------
 		
 		private function setPropertyForAllElements(propertyName:String, propertyValue:*):void {
 			var len:int = menuLabels.length;

@@ -1,5 +1,4 @@
-package exey.moss.helpers 
-{
+package exey.moss.processing {
 	import exey.moss.utils.ArrayUtil;
 	import flash.display.BitmapData;
 	/**
