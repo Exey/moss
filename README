@@ -1,6 +1,6 @@
 Moss (ru: Мох)
 
-Kit for game speedcoding on AS3/Flash
+Kit for game speedcoding on ActionScript/Adobe Air
 Dependencies:
 	http://code.google.com/p/actuate/
 	https://github.com/robertpenner/as3-signals
